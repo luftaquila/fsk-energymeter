@@ -59,12 +59,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOC
-#define ADC_HALL_Pin GPIO_PIN_0
-#define ADC_HALL_GPIO_Port GPIOA
-#define ADC_LV_Pin GPIO_PIN_1
-#define ADC_LV_GPIO_Port GPIOA
-#define SPI1_CS_Pin GPIO_PIN_4
-#define SPI1_CS_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
