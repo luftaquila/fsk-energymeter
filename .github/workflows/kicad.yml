@@ -1,0 +1,32 @@
+name: Build schematic and artwork images
+
+on:
+  push:
+    paths:
+      - 'device/hardware/**'
+  workflow_call:
+  workflow_dispatch:
+  
+jobs:
+  build-image:
+    name: export KiCAD images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install KiCAD
+        run: |
+          sudo add-apt-repository ppa:kicad/kicad-8.0-releases
+          sudo apt-get update
+          sudo apt-get install -y kicad
+
+      - name: generate images
+        run: |
+          mkdir -p kicad
+          kicad-cli sch export svg device/hardware/fsk-energymeter.kicad_sch -o kicad --exclude-drawing-sheet --no-background-color
+          kicad-cli pcb export svg device/hardware/fsk-energymeter.kicad_pcb -o kicad/artwork.svg --layers "B.Cu,F.Cu,F.Silkscreen,B.Silkscreen,User.Drawings,Edge.Cuts" --exclude-drawing-sheet
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kicad
+          path: kicad
