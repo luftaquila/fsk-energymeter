@@ -57,6 +57,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
+extern SD_HandleTypeDef hsd;
 extern TIM_HandleTypeDef htim5;
 /* USER CODE BEGIN EV */
 
@@ -212,6 +213,20 @@ void ADC_IRQHandler(void)
   /* USER CODE BEGIN ADC_IRQn 1 */
 
   /* USER CODE END ADC_IRQn 1 */
+}
+
+/**
+  * @brief This function handles SDIO global interrupt.
+  */
+void SDIO_IRQHandler(void)
+{
+  /* USER CODE BEGIN SDIO_IRQn 0 */
+
+  /* USER CODE END SDIO_IRQn 0 */
+  HAL_SD_IRQHandler(&hsd);
+  /* USER CODE BEGIN SDIO_IRQn 1 */
+
+  /* USER CODE END SDIO_IRQn 1 */
 }
 
 /**

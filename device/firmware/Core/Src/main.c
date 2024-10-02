@@ -20,7 +20,9 @@
 #include "main.h"
 #include "adc.h"
 #include "crc.h"
+#include "fatfs.h"
 #include "rtc.h"
+#include "sdio.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -112,6 +114,8 @@ int main(void)
   MX_RTC_Init();
   MX_SPI1_Init();
   MX_TIM5_Init();
+  MX_SDIO_SD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   GPIO_InitTypeDef GPIO_InitStruct;
 
