@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build-firmware:
+    uses: ./.github/workflows/firmware.yml
+  build-native:
+    uses: ./.github/workflows/native.yml
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    needs: [build-firmware, build-native]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          zip -r firmware-${{ github.ref_name }}.zip controller sensor
+          (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-macos-arm64-${{ github.ref_name }}.app.zip .)
+          mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-windows-x64-${{ github.ref_name }}.exe
+          mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-linux-x64-${{ github.ref_name }}.AppImage
+          mv native/src-tauri/fsk-entry.json fsk-entry.json
+      - uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: |
+            firmware-*.zip
+            fsk-energymeter-windows-x64-*
+            fsk-energymeter-macos-arm64-*
+            fsk-energymeter-linux-x64-*
+            fsk-entry.json
+          commit: ${{ github.sha }}
+          tag: ${{ github.ref_name }}
+          body: |
+            ## Note
+            ### Firmwares
+            Use [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) to upload the firmware to the device and set the device IDs.  
+
+            All devices must have their ID in the flash memeory. Ensure that the value `0xBADACAFE` is stored at the memory address 0x0803FF00 and device ID at 0x0803FF04.
+
+            ### Desktop Application
+
+            In MacOS, run the following command before open the installed `fsk-energymeter` for the first time.\
+            Unless, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
+
+            ```sh
+            cd /path/to/fsk-energymeter
+            xattr -c fsk-energymeter.app
+            chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
+            ```
+
+            ## Changelogs
+            ${{steps.github_release.outputs.changelog}}

@@ -4,14 +4,6 @@ compile_commands.json
 
 # Make
 build/
-dump.txt
-
-# STM32CubeIDE
-.metadata/
-.settings/
-Release/
-Debug/
-*.launch
 
 # Created by https://www.toptal.com/developers/gitignore/api/c,vim,kicad
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,vim,kicad
