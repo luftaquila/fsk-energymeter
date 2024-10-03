@@ -1,0 +1,51 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP NE555DR
+D Single Precision Timer
+K
+F http://www.ti.com/lit/ds/symlink/ne555.pdf
+$ENDCMP
+#
+$CMP MP2338GTL-Z
+D Switching Voltage Regulators High-Efficiency,28V,3A,430kHz Synchronous Buck with PG and ext.SS In SOT583 Package
+K
+F https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2338GTL/document_id/9461/
+$ENDCMP
+#
+$CMP T4145415051-001
+D Body Features: Shell Base Material Brass | Shell Plating Material Nickel | Circular Connector Insulation Material Type Polyamide GF | Configuration Features: Number of Positions 5 | Number of Power Positions 0 | Number of Signal Positions 5 | Contact Features: Circular Connector Contact Type Socket | Reverse Gender No | Housing Features: Circular Connector Shell Size 12 | Industry Standards: UL Flammability Rating UL 94HB | Mechanical Attachment: Polarization Code B | Mating Alignment Type Keyed | Mating Re
+K
+F https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1-1773701-8_M8M12_CONNECTOR_SYSTEM&DocType=Catalog%20Section&DocLang=Japanese&PartCntxt=T4145415051-001&DocFormat=pdf
+$ENDCMP
+#
+$CMP MAX22530AWE+
+D Field-Side Self-Powered, 4-Channel, 12-bit, Isolated ADC
+K
+F https://www.analog.com/MAX22530/datasheet
+$ENDCMP
+#
+$CMP AP1509-33SG-13
+D Switching Voltage Regulators SW REG CNV BUCK ASYN 150K 1.4 22V 3.3V
+K
+F https://componentsearchengine.com/Datasheets/2/AP1509-33SG-13.pdf
+$ENDCMP
+#
+$CMP AP7381-33Y-13
+D DiodesZetex AP7381-33Y-13, LDO Voltage Regulator Controller, 150mA, 3.3 V 3 + Tab-Pin, SOT-89
+K
+F https://www.diodes.com/assets/Datasheets/AP7381.pdf
+$ENDCMP
+#
+$CMP AP7381-50Y-13
+D DiodesZetex AP7381-50Y-13, LDO Voltage Regulator Controller, 150mA, 5 V 3 + Tab-Pin, SOT-89
+K
+F https://www.diodes.com/assets/Datasheets/AP7381.pdf
+$ENDCMP
+#
+$CMP LM2675MX-3.3_NOPB
+D SIMPLE SWITCHER 6.5V to 40V, 1A Low Component Count Step-Down Regulator
+K
+F http://www.ti.com/lit/gpn/lm2675
+$ENDCMP
+#
+#End Doc Library
