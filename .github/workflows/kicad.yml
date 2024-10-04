@@ -1,4 +1,4 @@
-name: Build schematic and artwork images
+name: Build schematic images
 
 on:
   push:
@@ -18,14 +18,19 @@ jobs:
           sudo apt-get update
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: kicad
+          packages: kicad imagemagick
           version: 1.0
 
       - name: generate images
         run: |
+          npm i -g svgexport
           mkdir -p kicad
           kicad-cli sch export svg device/hardware/fsk-energymeter.kicad_sch -o kicad --exclude-drawing-sheet --no-background-color
           kicad-cli pcb export svg device/hardware/fsk-energymeter.kicad_pcb -o kicad/artwork.svg --layers "B.Cu,F.Cu,F.Silkscreen,B.Silkscreen,User.Drawings,Edge.Cuts" --exclude-drawing-sheet
+          svgexport kicad/fsk-energymeter.svg kicad/fsk-energymeter-transparent.png 8000:
+          convert kicad/fsk-energymeter-transparent.png -trim -bordercolor transparent -border 100x100 kicad/fsk-energymeter-transparent.png
+          svgexport kicad/fsk-energymeter.svg kicad/fsk-energymeter.png 8000: "svg{background:white;}"
+          convert kicad/fsk-energymeter.png -trim -bordercolor white -border 100x100 kicad/fsk-energymeter.png
 
       - uses: actions/upload-artifact@v4
         with:
