@@ -68,6 +68,8 @@ void Error_Handler(void);
 #define SPI1_ADC_INT_EXTI_IRQn EXTI3_IRQn
 #define SPI1_CS_Pin GPIO_PIN_4
 #define SPI1_CS_GPIO_Port GPIOA
+#define USB_DETECT_Pin GPIO_PIN_10
+#define USB_DETECT_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

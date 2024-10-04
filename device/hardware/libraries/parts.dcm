@@ -48,4 +48,16 @@ K
 F http://www.ti.com/lit/gpn/lm2675
 $ENDCMP
 #
+$CMP ASV-25.000MHZ-EJ-T
+D 25 MHz XO (Standard) HCMOS Oscillator 3.3V Enable/Disable 4-SMD, No Lead
+K
+F https://abracon.com/Oscillators/ASV.pdf
+$ENDCMP
+#
+$CMP ABM8W-25.0000MHZ-4-D1X-T3
+D Crystal 25MHz +/-10ppm (Tol) +/-20ppm (Stability) 4pF FUND 100Ohm 4-Pin SMD T/R
+K
+F https://www.abracon.com/Resonators/ABM8W.pdf
+$ENDCMP
+#
 #End Doc Library
