@@ -465,7 +465,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "",
+      "netlist": "fsk-energymeter.net",
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
@@ -610,7 +610,7 @@
     "meta": {
       "version": 1
     },
-    "net_format_name": "",
+    "net_format_name": "KiCad",
     "ngspice": {
       "fix_include_paths": true,
       "meta": {
