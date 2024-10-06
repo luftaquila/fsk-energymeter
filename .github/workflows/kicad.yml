@@ -26,11 +26,16 @@ jobs:
           npm i -g svgexport
           mkdir -p kicad
           kicad-cli sch export svg device/hardware/fsk-energymeter.kicad_sch -o kicad --exclude-drawing-sheet --no-background-color
-          kicad-cli pcb export svg device/hardware/fsk-energymeter.kicad_pcb -o kicad/artwork.svg --layers "B.Cu,F.Cu,F.Silkscreen,B.Silkscreen,User.Drawings,Edge.Cuts" --exclude-drawing-sheet
-          svgexport kicad/fsk-energymeter.svg kicad/fsk-energymeter-transparent.png 8000:
-          convert kicad/fsk-energymeter-transparent.png -trim -bordercolor transparent -border 100x100 kicad/fsk-energymeter-transparent.png
-          svgexport kicad/fsk-energymeter.svg kicad/fsk-energymeter.png 8000: "svg{background:white;}"
-          convert kicad/fsk-energymeter.png -trim -bordercolor white -border 100x100 kicad/fsk-energymeter.png
+          kicad-cli pcb export svg device/hardware/fsk-energymeter.kicad_pcb -o kicad/fsk-energymeter-artwork.svg --layers "B.Cu,F.Cu,F.Silkscreen,B.Silkscreen,User.Drawings,Edge.Cuts" --exclude-drawing-sheet
+          svgexport kicad/fsk-energymeter.svg kicad/fsk-energymeter-schematic-transparent.png 8000:
+          convert kicad/fsk-energymeter-schematic-transparent.png -trim -bordercolor transparent -border 100x100 kicad/fsk-energymeter-schematic-transparent.png
+          svgexport kicad/fsk-energymeter.svg kicad/fsk-energymeter-schematic.png 8000: "svg{background:white;}"
+          convert kicad/fsk-energymeter-schematic.png -trim -bordercolor white -border 100x100 kicad/fsk-energymeter-schematic.png
+          mv kicad/fsk-energymeter.svg fsk-energymeter-schematic.svg
+          svgexport kicad/fsk-energymeter-artwork.svg kicad/fsk-energymeter-artwork-transparent.png 8000:
+          convert kicad/fsk-energymeter-artwork-transparent.png -trim -bordercolor transparent -border 100x100 kicad/fsk-energymeter-artwork-transparent.png
+          svgexport kicad/fsk-energymeter-artwork.svg kicad/fsk-energymeter-artwork.png 8000: "svg{background:#001023;}"
+          convert kicad/fsk-energymeter-artwork.png -trim -bordercolor "#001023" -border 100x100 kicad/fsk-energymeter-artwork.png
 
       - uses: actions/upload-artifact@v4
         with:
