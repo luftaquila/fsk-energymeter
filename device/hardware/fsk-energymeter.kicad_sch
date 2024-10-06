@@ -9188,6 +9188,16 @@
 	)
 	(wire
 		(pts
+			(xy 313.69 63.5) (xy 314.96 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "91ddf056-618c-4bc7-a3ad-6af66aadf9aa")
+	)
+	(wire
+		(pts
 			(xy 273.05 200.66) (xy 273.05 203.2)
 		)
 		(stroke
@@ -9628,7 +9638,7 @@
 	)
 	(wire
 		(pts
-			(xy 311.15 63.5) (xy 314.96 63.5)
+			(xy 307.34 63.5) (xy 308.61 63.5)
 		)
 		(stroke
 			(width 0)
@@ -9978,7 +9988,7 @@
 	)
 	(wire
 		(pts
-			(xy 302.26 63.5) (xy 306.07 63.5)
+			(xy 300.99 63.5) (xy 302.26 63.5)
 		)
 		(stroke
 			(width 0)
@@ -11579,8 +11589,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 121.92 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 125.984 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11726,8 +11745,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 314.96 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 312.42 171.4562 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11804,8 +11832,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 242.57 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 245.11 104.1462 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11883,8 +11920,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 129.54 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 127 67.3162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12027,8 +12073,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 91.44 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 88.9 99.0662 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12107,6 +12162,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A105KB8NNNC"
 			(at 215.9 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C15849"
+			(at 218.44 104.1462 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12387,6 +12451,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C2894722"
+			(at 276.86 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "0e30a700-3dd9-4b61-ab07-78a6c7ddce5b")
 		)
@@ -12507,6 +12580,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C20618749"
+			(at 318.77 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "3c7a1b18-023e-4bfc-a483-cdc9291d5d74")
 		)
@@ -12607,7 +12689,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "160ae4d7-7e3b-4b50-8190-1dffe4596f66")
-		(property "Reference" "R20"
+		(property "Reference" "R21"
 			(at 288.544 203.454 0)
 			(effects
 				(font
@@ -12652,6 +12734,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 288.544 203.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "dc680017-ea9a-420c-8fc1-803514e4f590")
 		)
@@ -12661,7 +12752,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R20")
+					(reference "R21")
 					(unit 1)
 				)
 			)
@@ -12785,6 +12876,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C5156676"
+			(at 244.094 120.142 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f3fca8d0-8f4c-4f33-929f-bbe6d922a2f4")
 		)
@@ -12874,6 +12974,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A105KB8NNNC"
 			(at 134.62 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C15849"
+			(at 137.16 67.3162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13345,8 +13454,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 167.64 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 165.862 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13540,6 +13658,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C460412"
+			(at 256.54 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "659455f6-7d22-440e-8ab0-83f6879c66f5")
 		)
@@ -13622,6 +13749,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C15849"
+			(at 130.302 51.054 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "1f640cd1-9d71-4723-aa21-9571ab958921")
 		)
@@ -13646,7 +13782,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2ca37604-df64-4fa6-aa26-7b6cdfc30961")
-		(property "Reference" "R11"
+		(property "Reference" "R12"
 			(at 301.752 96.52 0)
 			(effects
 				(font
@@ -13700,6 +13836,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C22843"
+			(at 301.752 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "912a6d3a-217a-4303-b432-e822d7a11769")
 		)
@@ -13709,7 +13854,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R11")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -13836,8 +13981,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 186.69 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 184.15 67.3162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13913,8 +14067,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 287.02 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 287.0263 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13954,7 +14117,7 @@
 				)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "1.2M"
 			(at 87.63 51.816 90)
 			(effects
 				(font
@@ -13962,7 +14125,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 87.63 54.61 0)
 			(effects
 				(font
@@ -13982,6 +14145,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 87.63 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C22107"
+			(at 87.63 49.276 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14191,6 +14363,15 @@
 		)
 		(property "Manufacturer_Part_Number" "ASV-25.000MHZ-EJ-T"
 			(at 102.87 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C611667"
+			(at 98.298 109.982 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14626,7 +14807,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "38ce0ea0-ed91-4427-8138-a1c169c69482")
-		(property "Reference" "R18"
+		(property "Reference" "R19"
 			(at 280.924 203.454 0)
 			(effects
 				(font
@@ -14671,6 +14852,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 280.924 203.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "08725ad9-f25d-4842-b406-b86f702f06d5")
 		)
@@ -14680,7 +14870,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R18")
+					(reference "R19")
 					(unit 1)
 				)
 			)
@@ -14749,6 +14939,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C96446"
+			(at 322.58 171.4562 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "894b0e78-3a7f-40a0-8547-311864eb0621")
 		)
@@ -14773,7 +14972,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "3b9a0c0d-4d63-4316-8748-0be5396e1222")
-		(property "Reference" "R10"
+		(property "Reference" "R11"
 			(at 258.318 65.786 90)
 			(effects
 				(font
@@ -14818,6 +15017,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 258.318 65.786 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c1ba1559-e0f6-4805-b7e1-8a040f41449b")
 		)
@@ -14827,7 +15035,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R10")
+					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -14901,7 +15109,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 308.61 63.5 90)
+		(at 304.8 63.5 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14909,15 +15117,15 @@
 		(dnp no)
 		(uuid "3fbaf29d-d60b-48a5-98f6-898edc137370")
 		(property "Reference" "R8"
-			(at 308.61 58.166 90)
+			(at 304.8 58.166 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "9k"
-			(at 308.61 60.706 90)
+		(property "Value" "6.8k"
+			(at 304.8 60.706 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14925,7 +15133,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 308.61 63.5 0)
+			(at 304.8 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14934,7 +15142,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 308.61 63.5 0)
+			(at 304.8 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14943,7 +15151,16 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 308.61 63.5 0)
+			(at 304.8 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C23212"
+			(at 304.8 58.166 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15307,7 +15524,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4f725d3f-e69a-4484-8323-e6687ecf369f")
-		(property "Reference" "R17"
+		(property "Reference" "R18"
 			(at 277.114 203.454 0)
 			(effects
 				(font
@@ -15352,6 +15569,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 277.114 203.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "89abdf77-7af4-44d5-aaa3-f0d7cc628443")
 		)
@@ -15361,7 +15587,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R17")
+					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -15424,6 +15650,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A105KB8NNNC"
 			(at 236.22 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C15849"
+			(at 233.68 40.6462 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15755,6 +15990,15 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C123126"
+			(at 306.07 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 				(hide yes)
 			)
 		)
@@ -16130,7 +16374,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5cb7fe15-213c-48c8-b9fb-666c70a89b57")
-		(property "Reference" "R21"
+		(property "Reference" "R22"
 			(at 292.354 203.454 0)
 			(effects
 				(font
@@ -16175,6 +16419,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 292.354 203.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e9c9b53d-e8ed-4f4d-a2c4-73fa3b93ec95")
 		)
@@ -16184,7 +16437,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R21")
+					(reference "R22")
 					(unit 1)
 				)
 			)
@@ -16245,8 +16498,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 207.01 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 204.47 67.3162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16657,8 +16919,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 158.75 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 156.972 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16738,6 +17009,15 @@
 		)
 		(property "Manufacturer_Part_Number" "TAJD107K016RNJ"
 			(at 271.78 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C7223"
+			(at 269.24 142.2462 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16884,6 +17164,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A106MA8NRNC"
 			(at 132.08 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C96446"
+			(at 129.54 101.6062 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17168,6 +17457,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C3151634"
+			(at 284.48 140.6524 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b375946b-27e2-4c50-8ed4-932626ebd9cf")
 		)
@@ -17324,7 +17622,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "71ebe6d0-4a28-4f7b-83b4-e510cace82f4")
-		(property "Reference" "R12"
+		(property "Reference" "R13"
 			(at 292.1 96.266 90)
 			(effects
 				(font
@@ -17367,6 +17665,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C23345"
+			(at 292.1 96.266 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b34b15ca-2c58-4da3-9a15-2c349f093ebc")
 		)
@@ -17376,7 +17683,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R12")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -17451,6 +17758,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Small_US")
+		(at 311.15 63.5 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "793e6d78-6b8e-4a19-ac43-b3be360bffa3")
+		(property "Reference" "R9"
+			(at 311.15 58.166 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2.2k"
+			(at 311.15 60.706 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 311.15 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 311.15 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small US symbol"
+			(at 311.15 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C4190"
+			(at 311.15 58.166 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e621f23d-ac4a-419b-9a2e-f5e01ed35f7b")
+		)
+		(pin "2"
+			(uuid "2b2b0ad2-02be-4152-b340-5cc568e77e19")
+		)
+		(instances
+			(project "fsk-energymeter"
+				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
+					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 287.02 172.72 0)
 		(unit 1)
@@ -17506,6 +17889,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A106MA8NRNC"
 			(at 287.02 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C96446"
+			(at 289.56 171.4562 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17583,8 +17975,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 140.97 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 139.192 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17709,6 +18110,15 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C6419631"
+			(at 160.02 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 				(hide yes)
 			)
 		)
@@ -18049,7 +18459,7 @@
 				)
 			)
 		)
-		(property "Value" "990k"
+		(property "Value" "390k"
 			(at 110.49 51.816 90)
 			(effects
 				(font
@@ -18057,7 +18467,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 110.49 54.61 0)
 			(effects
 				(font
@@ -18077,6 +18487,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 110.49 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C17933"
+			(at 110.49 49.276 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18162,6 +18581,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C15849"
+			(at 214.63 67.3162 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "6d3a4ca4-7132-466d-a57d-07f2edfcb0c9")
 		)
@@ -18224,6 +18652,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 116.84 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C25804"
+			(at 114.3 58.4199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18365,6 +18802,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A475KO8NNNC"
 			(at 128.27 213.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C19666"
+			(at 128.27 216.916 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18594,7 +19040,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9349caf0-c88a-4557-9467-c68609be73ec")
-		(property "Reference" "R14"
+		(property "Reference" "R15"
 			(at 235.458 154.686 90)
 			(effects
 				(font
@@ -18639,6 +19085,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C21190"
+			(at 235.458 154.686 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "1146baa2-efbd-4885-82f5-1a558e2790ae")
 		)
@@ -18648,7 +19103,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R14")
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -18795,7 +19250,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "995fd2b0-5e19-48a3-b960-9bfd33cc7474")
-		(property "Reference" "R16"
+		(property "Reference" "R17"
 			(at 273.304 203.454 0)
 			(effects
 				(font
@@ -18840,6 +19295,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 273.304 203.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d90db8d4-909f-4271-9259-a1cb04e4cb4f")
 		)
@@ -18849,7 +19313,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R16")
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -19107,8 +19571,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 200.66 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 198.12 108.204 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19280,7 +19753,7 @@
 				)
 			)
 		)
-		(property "Value" "1.7k"
+		(property "Value" "2k"
 			(at 308.61 35.306 90)
 			(effects
 				(font
@@ -19308,6 +19781,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 308.61 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C22975"
+			(at 308.61 32.766 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19384,6 +19866,15 @@
 		)
 		(property "Manufacturer_Part_Number" "NCD0603G2"
 			(at 243.84 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C87326"
+			(at 244.348 154.686 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19668,6 +20159,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C1961042"
+			(at 334.01 135.8962 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "12edb0c8-956a-4cd7-96cf-5c38b01ec2fb")
 		)
@@ -19700,7 +20200,7 @@
 				)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "1.2M"
 			(at 95.25 51.816 90)
 			(effects
 				(font
@@ -19708,7 +20208,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 95.25 54.61 0)
 			(effects
 				(font
@@ -19728,6 +20228,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 95.25 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C22107"
+			(at 95.25 49.276 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19812,6 +20321,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C720505"
+			(at 319.405 199.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "4"
 			(uuid "870b03e6-8d4b-4ee2-a1db-0b79b3067b95")
 		)
@@ -19869,7 +20387,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bff288c9-64ef-4553-b22a-7b1cf061a1e1")
-		(property "Reference" "R13"
+		(property "Reference" "R14"
 			(at 292.1 109.474 90)
 			(effects
 				(font
@@ -19912,6 +20430,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C23345"
+			(at 292.1 109.474 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a7458adb-1ad6-4c82-aeb9-8f21ee723a31")
 		)
@@ -19921,7 +20448,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R13")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -19983,6 +20510,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10A105KB8NNNC"
 			(at 191.77 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C15849"
+			(at 194.31 67.3162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20189,8 +20725,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 242.57 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 242.57 191.262 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20329,6 +20874,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C233715"
+			(at 187.96 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "148a9b7e-ea17-4af2-a65e-7a5a392e7dac")
 		)
@@ -20365,7 +20919,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3.3k"
+		(property "Value" "3.9k"
 			(at 316.992 44.45 0)
 			(effects
 				(font
@@ -20394,6 +20948,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 314.96 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C23018"
+			(at 316.992 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20537,8 +21100,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 281.94 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 279.4 171.4562 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20751,6 +21323,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10B223KB8NNNC"
 			(at 325.12 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C21122"
+			(at 327.66 67.3162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21096,8 +21677,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 149.86 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 148.082 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21175,8 +21765,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 210.82 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 208.28 104.1462 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21389,6 +21988,15 @@
 		)
 		(property "Manufacturer_Part_Number" "STM32F401RCTx"
 			(at 147.32 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C74524"
+			(at 163.83 225.552 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21651,6 +22259,15 @@
 		)
 		(property "Manufacturer_Part_Number" "TSA016A2518A"
 			(at 242.57 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C2888427"
+			(at 242.57 175.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22000,6 +22617,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C6186"
+			(at 300.99 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "f7e489c2-fbf0-4ddf-8aa9-b50f629baf3b")
 		)
@@ -22070,8 +22696,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "0603B103K500NT"
+		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
 			(at 133.35 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1589"
+			(at 133.35 38.862 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22103,7 +22738,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e753e080-36dd-412d-8f61-cc30320407b9")
-		(property "Reference" "R15"
+		(property "Reference" "R16"
 			(at 318.77 157.226 90)
 			(effects
 				(font
@@ -22146,6 +22781,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C23162"
+			(at 318.77 157.226 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "84a91509-e56c-4670-8b30-d262a3b4d7a7")
 		)
@@ -22155,7 +22799,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R15")
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -22418,6 +23062,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C70381"
+			(at 254 88.646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "3e81646f-6d65-4ca2-ba48-8040ff948f9a")
 		)
@@ -22490,6 +23143,15 @@
 		)
 		(property "Manufacturer_Part_Number" "CL10B223KB8NNNC"
 			(at 325.12 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C21122"
+			(at 327.66 41.9162 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22576,6 +23238,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C23630"
+			(at 279.4 40.6462 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "7f905da0-56d2-4b28-938d-7624facae8bc")
 		)
@@ -22653,6 +23324,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C916424"
+			(at 242.57 88.646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0208c7c1-8e2b-47cd-abbf-e01be9bcce5e")
 		)
@@ -22688,7 +23368,7 @@
 				)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "1.2M"
 			(at 102.87 51.816 90)
 			(effects
 				(font
@@ -22696,7 +23376,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 102.87 54.61 0)
 			(effects
 				(font
@@ -22716,6 +23396,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 102.87 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C22107"
+			(at 102.87 49.276 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22813,7 +23502,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f5b5e730-fb3d-4ba9-b918-e7d0a9503f45")
-		(property "Reference" "R9"
+		(property "Reference" "R10"
 			(at 316.992 67.31 0)
 			(effects
 				(font
@@ -22858,6 +23547,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C21190"
+			(at 316.992 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "22d96398-8f8a-4e16-8749-8494d61f70f7")
 		)
@@ -22867,7 +23565,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R9")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -23075,7 +23773,7 @@
 	)
 	(symbol
 		(lib_id "power:VBUS")
-		(at 302.26 63.5 90)
+		(at 300.99 63.5 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -23083,7 +23781,7 @@
 		(dnp no)
 		(uuid "f7b9becb-5f62-4ef1-abfe-7c8a1cc959fc")
 		(property "Reference" "#PWR014"
-			(at 306.07 63.5 0)
+			(at 304.8 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23092,7 +23790,7 @@
 			)
 		)
 		(property "Value" "VBUS"
-			(at 295.91 63.5 90)
+			(at 294.64 63.5 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23100,7 +23798,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 302.26 63.5 0)
+			(at 300.99 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23109,7 +23807,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 302.26 63.5 0)
+			(at 300.99 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23118,7 +23816,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VBUS\""
-			(at 302.26 63.5 0)
+			(at 300.99 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23147,7 +23845,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fa2bd67f-7cf4-4437-a8c1-4eac922a24d3")
-		(property "Reference" "R19"
+		(property "Reference" "R20"
 			(at 284.734 203.454 0)
 			(effects
 				(font
@@ -23192,6 +23890,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 284.734 203.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "3b50d5ac-3663-484a-8d65-3f793227e735")
 		)
@@ -23201,7 +23908,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R19")
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -23262,8 +23969,17 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104"
+		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
 			(at 290.83 232.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C346191"
+			(at 288.29 231.1462 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23340,6 +24056,15 @@
 		)
 		(property "Manufacturer_Part_Number" "L01Z600S05"
 			(at 243.84 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C5780557"
+			(at 243.84 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23440,7 +24165,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fd877aa8-95cb-4804-8c16-e883b89e17db")
-		(property "Reference" "R22"
+		(property "Reference" "R23"
 			(at 242.062 205.74 90)
 			(effects
 				(font
@@ -23485,6 +24210,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C25804"
+			(at 242.062 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "893054bc-474a-443a-aee6-fab4269e185e")
 		)
@@ -23494,7 +24228,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "R22")
+					(reference "R23")
 					(unit 1)
 				)
 			)
