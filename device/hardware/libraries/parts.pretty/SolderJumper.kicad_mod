@@ -1,0 +1,177 @@
+(footprint "SolderJumper"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "SMD Solder Jumper, 1x1.5mm Pads, 0.3mm gap, bridged with 1 copper strip")
+	(tags "net tie solder jumper bridged")
+	(property "Reference" "JP1"
+		(at 0 -1.33 0)
+		(layer "F.SilkS")
+		(uuid "804bea87-c2e8-4b69-a11e-704dc7f46066")
+		(effects
+			(font
+				(size 0.6 0.6)
+				(thickness 0.1)
+				(bold yes)
+			)
+		)
+	)
+	(property "Value" "Jumper_2_Small_Bridged"
+		(at 0 1.9 0)
+		(layer "F.Fab")
+		(uuid "f7e4b912-ba28-4585-88d2-3c1fcd8e2800")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a1400010-7e94-4f01-a253-c02fd9f83499")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "849c855a-9a44-43f8-a8bc-5d70c871b704")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Jumper, 2-pole, small symbol, bridged"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "da7164a5-649b-4cdb-b671-1234b323375b")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(zone_connect 1)
+	(attr exclude_from_pos_files)
+	(net_tie_pad_groups "1, 2")
+	(fp_poly
+		(pts
+			(xy -0.42 -0.3) (xy 0.41 -0.3) (xy 0.41 0.3) (xy -0.42 0.3)
+		)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill solid)
+		(layer "F.Cu")
+		(uuid "557bb160-1ddb-406a-b965-30d6ee837494")
+	)
+	(fp_line
+		(start -1.04 -0.65)
+		(end 1.05 -0.65)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7823e2ef-4d41-4d6a-9df4-c7969b834021")
+	)
+	(fp_line
+		(start -1.04 0.65)
+		(end -1.04 -0.65)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "08d3c4de-b120-46c7-acc4-1ca5ebb63d9f")
+	)
+	(fp_line
+		(start 1.05 -0.65)
+		(end 1.05 0.65)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "f3a626f1-365d-47fc-97b0-95708f32edfb")
+	)
+	(fp_line
+		(start 1.05 0.65)
+		(end -1.04 0.65)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "bf80248a-c2d6-464a-b408-f2bcde1c83a8")
+	)
+	(fp_line
+		(start -1.22 -0.83)
+		(end -1.22 0.83)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "1bbe1d67-aab6-42f4-8364-ff1a12110896")
+	)
+	(fp_line
+		(start -1.22 -0.83)
+		(end 1.23 -0.83)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f22f35bd-0d95-4090-8542-1efae2468ef0")
+	)
+	(fp_line
+		(start 1.23 0.83)
+		(end -1.22 0.83)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "ffc9f80a-803b-42f3-b30e-a0a3b875b0a1")
+	)
+	(fp_line
+		(start 1.23 0.83)
+		(end 1.23 -0.83)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "37614e4c-290d-48df-934f-81aaa7da7bf2")
+	)
+	(pad "1" smd rect
+		(at -0.65 0)
+		(size 0.5 1)
+		(layers "F.Cu" "F.Mask")
+		(uuid "aaac7c8d-f96e-4e18-bad8-9a647aa71d93")
+	)
+	(pad "2" smd rect
+		(at 0.65 0)
+		(size 0.5 1)
+		(layers "F.Cu" "F.Mask")
+		(uuid "fd8afb55-35e3-49f3-85cc-b9429641521b")
+	)
+)

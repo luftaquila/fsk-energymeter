@@ -63,7 +63,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 int _write(int file, uint8_t *ptr, int len) {
-  HAL_UART_Transmit(&huart1, (uint8_t *)ptr, (uint16_t)len, 30);
+  HAL_UART_Transmit(&huart6, (uint8_t *)ptr, (uint16_t)len, 30);
   return (len);
 }
 
@@ -108,14 +108,14 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART1_UART_Init();
   MX_ADC1_Init();
   MX_CRC_Init();
   MX_RTC_Init();
-  MX_SPI1_Init();
   MX_TIM5_Init();
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
+  MX_SPI2_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
   GPIO_InitTypeDef GPIO_InitStruct;
 

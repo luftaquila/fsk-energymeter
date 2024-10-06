@@ -63,11 +63,11 @@ void Error_Handler(void);
 #define ADC_HALL_GPIO_Port GPIOA
 #define ADC_LV_Pin GPIO_PIN_1
 #define ADC_LV_GPIO_Port GPIOA
-#define SPI1_ADC_INT_Pin GPIO_PIN_3
-#define SPI1_ADC_INT_GPIO_Port GPIOA
-#define SPI1_ADC_INT_EXTI_IRQn EXTI3_IRQn
-#define SPI1_CS_Pin GPIO_PIN_4
-#define SPI1_CS_GPIO_Port GPIOA
+#define SPI2_INT_Pin GPIO_PIN_10
+#define SPI2_INT_GPIO_Port GPIOB
+#define SPI2_INT_EXTI_IRQn EXTI15_10_IRQn
+#define SPI2_CS_Pin GPIO_PIN_12
+#define SPI2_CS_GPIO_Port GPIOB
 #define USB_DETECT_Pin GPIO_PIN_10
 #define USB_DETECT_GPIO_Port GPIOA
 

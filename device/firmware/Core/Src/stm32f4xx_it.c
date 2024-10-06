@@ -57,7 +57,6 @@
 
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
-extern SD_HandleTypeDef hsd;
 extern TIM_HandleTypeDef htim5;
 /* USER CODE BEGIN EV */
 
@@ -202,20 +201,6 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles EXTI line3 interrupt.
-  */
-void EXTI3_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI3_IRQn 0 */
-
-  /* USER CODE END EXTI3_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(SPI1_ADC_INT_Pin);
-  /* USER CODE BEGIN EXTI3_IRQn 1 */
-
-  /* USER CODE END EXTI3_IRQn 1 */
-}
-
-/**
   * @brief This function handles ADC1 global interrupt.
   */
 void ADC_IRQHandler(void)
@@ -230,17 +215,17 @@ void ADC_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles SDIO global interrupt.
+  * @brief This function handles EXTI line[15:10] interrupts.
   */
-void SDIO_IRQHandler(void)
+void EXTI15_10_IRQHandler(void)
 {
-  /* USER CODE BEGIN SDIO_IRQn 0 */
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
 
-  /* USER CODE END SDIO_IRQn 0 */
-  HAL_SD_IRQHandler(&hsd);
-  /* USER CODE BEGIN SDIO_IRQn 1 */
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(SPI2_INT_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
 
-  /* USER CODE END SDIO_IRQn 1 */
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /**
@@ -267,7 +252,7 @@ void OTG_FS_IRQHandler(void)
 
   #ifdef DISABLED
   /* USER CODE END OTG_FS_IRQn 0 */
-  HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
+  HAL_PCD_IRQHandler();
   /* USER CODE BEGIN OTG_FS_IRQn 1 */
   #endif /* ifdef DISABLED */
   /* USER CODE END OTG_FS_IRQn 1 */
