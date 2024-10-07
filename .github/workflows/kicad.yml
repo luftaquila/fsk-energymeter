@@ -1,4 +1,4 @@
-name: Build schematic images
+name: Build PCB
 
 on:
   push:
@@ -8,8 +8,7 @@ on:
   workflow_dispatch:
   
 jobs:
-  build-image:
-    name: export KiCAD images
+  build-pcb:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +20,21 @@ jobs:
           packages: kicad imagemagick
           version: 1.0
 
-      - name: generate images
+      - name: Test schematic ERC and PCB DRC
+        run: |
+          cd device/hardware
+          kicad-cli sch erc -o fsk-energymeter-erc.rpt --severity-error --severity-warning --exit-code-violations fsk-energymeter.kicad_sch
+          # skip DRC due to symbol library error. will be fixed in the future
+          # kicad-cli pcb drc -o fsk-energymeter-drc.rpt --schematic-parity --severity-error --severity-warning --exit-code-violations fsk-energymeter.kicad_pcb
+
+      - if: ${{ failure() }}
+        run: |
+          echo "##### ERC REPORT #####"
+          cat device/hardware/fsk-energymeter-erc.rpt
+          echo "##### DRC REPORT #####"
+          cat device/hardware/fsk-energymeter-drc.rpt
+
+      - name: Build PCB schematic, artwork and 3d models
         run: |
           npm i -g svgexport
           mkdir -p kicad
@@ -36,6 +49,8 @@ jobs:
           convert kicad/fsk-energymeter-artwork-transparent.png -trim -bordercolor transparent -border 100x100 kicad/fsk-energymeter-artwork-transparent.png
           svgexport kicad/fsk-energymeter-artwork.svg kicad/fsk-energymeter-artwork.png 8000: "svg{background:#001023;}"
           convert kicad/fsk-energymeter-artwork.png -trim -bordercolor "#001023" -border 100x100 kicad/fsk-energymeter-artwork.png
+          kicad-cli pcb export step -o kicad/fsk-energymeter-3d.stp --include-tracks device/hardware/fsk-energymeter.kicad_pcb
+          kicad-cli pcb export vrml -o kicad/fsk-energymeter-3d.wrl device/hardware/fsk-energymeter.kicad_pcb
 
       - uses: actions/upload-artifact@v4
         with:
