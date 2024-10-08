@@ -20,10 +20,10 @@
 #include "main.h"
 #include "adc.h"
 #include "crc.h"
+#include "dma.h"
 #include "fatfs.h"
 #include "rtc.h"
 #include "sdio.h"
-#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -108,13 +108,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_CRC_Init();
   MX_RTC_Init();
   MX_TIM5_Init();
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
-  MX_SPI2_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   GPIO_InitTypeDef GPIO_InitStruct;
