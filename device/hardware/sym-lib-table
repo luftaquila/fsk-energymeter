@@ -1,6 +1,7 @@
 (sym_lib_table
   (version 7)
   (lib (name "parts")(type "KiCad")(uri "${KIPRJMOD}/libraries/parts.kicad_sym")(options "")(descr ""))
+  (lib (name "Amplifier_Operational")(type "KiCad")(uri "${KICAD8_SYMBOL_DIR}/Amplifier_Operational.kicad_sym")(options "")(descr "General operational amplifiers"))
   (lib (name "Connector_Generic")(type "KiCad")(uri "${KICAD8_SYMBOL_DIR}/Connector_Generic.kicad_sym")(options "")(descr "Generic connector symbols"))
   (lib (name "Device")(type "KiCad")(uri "${KICAD8_SYMBOL_DIR}/Device.kicad_sym")(options "")(descr "Generic symbols for common devices"))
   (lib (name "Diode")(type "KiCad")(uri "${KICAD8_SYMBOL_DIR}/Diode.kicad_sym")(options "")(descr "Diodes"))

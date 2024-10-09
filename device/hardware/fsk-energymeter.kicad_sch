@@ -7387,12 +7387,6 @@
 		(uuid "6f826064-ddd9-4336-8d2e-fe90e00ba69c")
 	)
 	(junction
-		(at 204.47 46.99)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "72c96110-f278-41fa-b093-e1148dc18e7d")
-	)
-	(junction
 		(at 201.93 104.14)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7621,6 +7615,12 @@
 		(uuid "e066204e-d123-4b04-a410-4ee944dd2211")
 	)
 	(junction
+		(at 204.47 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e9d2ad94-3327-4488-a215-8bfe355ff298")
+	)
+	(junction
 		(at 210.82 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7693,16 +7693,8 @@
 		(uuid "24d89268-767e-4d72-ab52-083950a864c8")
 	)
 	(no_connect
-		(at 168.91 148.59)
-		(uuid "25533a76-15bd-4ae8-8c8b-af2ffe006b30")
-	)
-	(no_connect
 		(at 168.91 194.31)
 		(uuid "2713f295-19a5-4ce0-8060-29d699ce768b")
-	)
-	(no_connect
-		(at 168.91 151.13)
-		(uuid "29c0583c-15a4-4b48-b701-2046a397313b")
 	)
 	(no_connect
 		(at 168.91 207.01)
@@ -7749,6 +7741,18 @@
 		(uuid "5ccb4231-693c-49d9-b3bf-de857f468576")
 	)
 	(no_connect
+		(at 168.91 140.97)
+		(uuid "5fc285c4-587e-42bc-836a-fec3ad77375f")
+	)
+	(no_connect
+		(at 168.91 138.43)
+		(uuid "682cb35b-9d99-47e7-b097-ab6c361c7f42")
+	)
+	(no_connect
+		(at 168.91 146.05)
+		(uuid "6c4cdfbe-678a-41fa-b039-8ba56c3d88e4")
+	)
+	(no_connect
 		(at 350.52 147.32)
 		(uuid "7277b2e7-e782-4396-aa5c-3d962d98988f")
 	)
@@ -7781,8 +7785,8 @@
 		(uuid "bd4df325-840d-4052-a6d7-c239ae8d7bee")
 	)
 	(no_connect
-		(at 168.91 156.21)
-		(uuid "bec61d3c-a5f1-4198-bfad-ee7270361193")
+		(at 168.91 143.51)
+		(uuid "d74c4bd0-fe79-4024-a994-caae171d8d90")
 	)
 	(no_connect
 		(at 135.89 171.45)
@@ -7795,10 +7799,6 @@
 	(no_connect
 		(at 135.89 176.53)
 		(uuid "e1733afe-1972-4072-a6d4-2fd59f16fa21")
-	)
-	(no_connect
-		(at 168.91 153.67)
-		(uuid "e52f289b-2f72-48b6-976a-98d7ddba1a52")
 	)
 	(no_connect
 		(at 168.91 186.69)
@@ -7821,16 +7821,6 @@
 			(type default)
 		)
 		(uuid "00482cb5-200a-41b4-8c31-1850da8a351b")
-	)
-	(wire
-		(pts
-			(xy 168.91 138.43) (xy 187.96 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "005d313c-a79d-4e5e-bbd7-558ee2e6bca4")
 	)
 	(wire
 		(pts
@@ -8334,7 +8324,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 46.99) (xy 210.82 49.53)
+			(xy 210.82 45.72) (xy 210.82 48.26)
 		)
 		(stroke
 			(width 0)
@@ -8674,6 +8664,16 @@
 	)
 	(wire
 		(pts
+			(xy 168.91 148.59) (xy 187.96 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b8e6304-777c-4dd2-b44c-ff98e46f5335")
+	)
+	(wire
+		(pts
 			(xy 151.13 224.79) (xy 151.13 227.33)
 		)
 		(stroke
@@ -8752,6 +8752,16 @@
 		)
 		(uuid "412d6e77-8491-44dd-9872-9ec217aa9eef")
 	)
+	(wire
+		(pts
+			(xy 168.91 156.21) (xy 187.96 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "434c065e-225b-44d7-9afd-cf55d0bf8204")
+	)
 	(polyline
 		(pts
 			(xy 251.46 125.73) (xy 298.45 125.73)
@@ -8794,7 +8804,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 54.61) (xy 210.82 55.88)
+			(xy 210.82 53.34) (xy 210.82 55.88)
 		)
 		(stroke
 			(width 0)
@@ -9552,6 +9562,16 @@
 		)
 		(uuid "74ab623f-1f15-4ac3-8378-9c59592595a1")
 	)
+	(wire
+		(pts
+			(xy 168.91 153.67) (xy 187.96 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "75bfee91-a937-497f-8a1d-4b85818efae9")
+	)
 	(polyline
 		(pts
 			(xy 251.46 21.59) (xy 251.46 82.55)
@@ -9634,7 +9654,7 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 49.53) (xy 204.47 46.99)
+			(xy 204.47 45.72) (xy 204.47 48.26)
 		)
 		(stroke
 			(width 0)
@@ -9814,16 +9834,6 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 143.51) (xy 187.96 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "83fa49db-cb13-44ae-9b8f-e7243ded2257")
-	)
-	(wire
-		(pts
 			(xy 267.97 58.42) (xy 273.05 58.42)
 		)
 		(stroke
@@ -9874,7 +9884,7 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 54.61) (xy 204.47 55.88)
+			(xy 204.47 53.34) (xy 204.47 55.88)
 		)
 		(stroke
 			(width 0)
@@ -10424,6 +10434,16 @@
 	)
 	(wire
 		(pts
+			(xy 168.91 151.13) (xy 187.96 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab6723a2-6d82-4031-ba3c-4fd87401478c")
+	)
+	(wire
+		(pts
 			(xy 328.93 111.76) (xy 328.93 115.57)
 		)
 		(stroke
@@ -10604,7 +10624,7 @@
 	)
 	(wire
 		(pts
-			(xy 204.47 46.99) (xy 210.82 46.99)
+			(xy 204.47 45.72) (xy 210.82 45.72)
 		)
 		(stroke
 			(width 0)
@@ -10804,16 +10824,6 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 146.05) (xy 187.96 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c33c9385-19b5-472d-bad3-c4f76b6f3182")
-	)
-	(wire
-		(pts
 			(xy 110.49 67.31) (xy 113.03 67.31)
 		)
 		(stroke
@@ -10861,16 +10871,6 @@
 			(type dash)
 		)
 		(uuid "c8b0ce60-478a-4db3-bc09-75c99080553f")
-	)
-	(wire
-		(pts
-			(xy 168.91 140.97) (xy 187.96 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ca43619a-43c6-4ec3-a1f7-b8f6a1ac0f55")
 	)
 	(wire
 		(pts
@@ -11314,7 +11314,7 @@
 	)
 	(wire
 		(pts
-			(xy 200.66 46.99) (xy 204.47 46.99)
+			(xy 200.66 45.72) (xy 204.47 45.72)
 		)
 		(stroke
 			(width 0)
@@ -12004,28 +12004,6 @@
 		)
 		(uuid "291bd659-5fa8-4c73-a28f-3d5256b9f2f2")
 	)
-	(label "ADC_LV_VOLTAGE"
-		(at 187.96 146.05 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "2c43c310-c91d-4758-8d7e-ba539c554b29")
-	)
-	(label "ADC_HV_CURRENT"
-		(at 187.96 140.97 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "31d65e55-9f86-49d4-90ea-97f6702bbab1")
-	)
 	(label "SDIO_D2"
 		(at 289.56 213.36 0)
 		(fields_autoplaced yes)
@@ -12072,6 +12050,17 @@
 		)
 		(uuid "3879897e-06b3-4d20-af18-1e0b559f231a")
 	)
+	(label "ADC_LV_VOLTAGE"
+		(at 187.96 148.59 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "392c2fa6-a9cd-4fbf-a83b-3be75a4f2a25")
+	)
 	(label "SDIO_D1"
 		(at 116.84 189.23 0)
 		(fields_autoplaced yes)
@@ -12106,17 +12095,6 @@
 			(justify left bottom)
 		)
 		(uuid "4d25ec47-a199-49c7-8e9e-d4b50f877633")
-	)
-	(label "ADC_5V_REF"
-		(at 187.96 143.51 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "510dc987-e7a2-492c-9b3a-32531e18e99e")
 	)
 	(label "SDIO_D0"
 		(at 116.84 186.69 0)
@@ -12189,8 +12167,8 @@
 		)
 		(uuid "62c4714b-9268-42b6-90fb-e3663d517718")
 	)
-	(label "ADC_HV_VOLTAGE"
-		(at 187.96 138.43 180)
+	(label "ADC_HV_CURRENT"
+		(at 187.96 153.67 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -12198,7 +12176,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "74c81851-8880-49a8-b327-ac67ef8df777")
+		(uuid "6f4e96b3-35bf-4d6e-b868-eb2ca5c65343")
 	)
 	(label "ADC_LV_VOLTAGE"
 		(at 326.39 82.55 180)
@@ -12232,6 +12210,17 @@
 			(justify right bottom)
 		)
 		(uuid "7c648c81-7f0b-49a5-aa16-bd86375d0aa4")
+	)
+	(label "ADC_HV_VOLTAGE"
+		(at 187.96 156.21 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7f31c2f3-aba2-4aa5-8039-3fef4d944e37")
 	)
 	(label "OUTN"
 		(at 158.75 67.31 180)
@@ -12415,6 +12404,17 @@
 			(justify left bottom)
 		)
 		(uuid "e6a6567d-f9e7-4093-b734-597b7db69f4a")
+	)
+	(label "ADC_5V_REF"
+		(at 187.96 151.13 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "eabcdbd7-db57-4c84-a368-873fb0de2ca0")
 	)
 	(label "USB_DETECT"
 		(at 187.96 163.83 180)
@@ -14077,7 +14077,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 163.83 71.12 0)
 			(effects
 				(font
@@ -14104,7 +14104,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B102KB8NNNC"
+		(property "Manufacturer_Part_Number" "CL31B102KGFNNNE"
 			(at 163.83 71.12 0)
 			(effects
 				(font
@@ -14113,7 +14113,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1588"
+		(property "LCSC" "C35216"
 			(at 159.766 69.85 0)
 			(effects
 				(font
@@ -14402,7 +14402,7 @@
 	)
 	(symbol
 		(lib_id "power:Earth")
-		(at 200.66 46.99 270)
+		(at 200.66 45.72 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14411,7 +14411,7 @@
 		(fields_autoplaced yes)
 		(uuid "2060c0fc-4c0d-4fd7-8cdc-7b22041a5b68")
 		(property "Reference" "#PWR04"
-			(at 194.31 46.99 0)
+			(at 194.31 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14420,7 +14420,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 196.85 46.9899 90)
+			(at 196.85 45.7199 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14429,7 +14429,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 200.66 46.99 0)
+			(at 200.66 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14438,7 +14438,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 200.66 46.99 0)
+			(at 200.66 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14447,7 +14447,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"Earth\""
-			(at 200.66 46.99 0)
+			(at 200.66 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14594,6 +14594,127 @@
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
 					(reference "#PWR074")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Amplifier_Operational:LM324")
+		(at 344.17 60.96 0)
+		(unit 4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2433cb5f-b0d1-48d3-bc4e-4098bb060dfc")
+		(property "Reference" "U1"
+			(at 347.726 54.356 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LM324DR"
+			(at 347.726 56.896 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm"
+			(at 342.9 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf"
+			(at 345.44 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low-Power, Quad-Operational Amplifiers, DIP-14/SOIC-14/SSOP-14"
+			(at 344.17 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C7943"
+			(at 344.17 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "LM324DR"
+			(at 344.17 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "10"
+			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fe0")
+		)
+		(pin "4"
+			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d8d")
+		)
+		(pin "11"
+			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d7")
+		)
+		(pin "13"
+			(uuid "6ab14bea-1835-421f-a5cb-ad8c6645fa03")
+		)
+		(pin "12"
+			(uuid "7917a42a-4a11-40d4-802a-f2a120b24aa9")
+		)
+		(pin "14"
+			(uuid "7033088c-175c-4134-ac04-553b3a6a3449")
+		)
+		(pin "8"
+			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f559")
+		)
+		(pin "9"
+			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d009")
+		)
+		(pin "1"
+			(uuid "c5b1c7ad-0d3a-44c3-b45d-2781f79a1aa4")
+		)
+		(pin "2"
+			(uuid "250bcf3b-44ae-4cf1-9e9b-d0805cdceae5")
+		)
+		(pin "3"
+			(uuid "d612a6af-31de-4d4b-9f55-edade354e47c")
+		)
+		(pin "5"
+			(uuid "a258ea22-972e-4454-a568-aaef8549d409")
+		)
+		(pin "6"
+			(uuid "df3ea5be-3da1-454b-a4d5-f7ccd7754741")
+		)
+		(pin "7"
+			(uuid "0dd566bf-3e36-48cd-b19d-0548ce62b7fd")
+		)
+		(instances
+			(project "fsk-energymeter"
+				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
+					(reference "U1")
+					(unit 4)
 				)
 			)
 		)
@@ -16584,15 +16705,15 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 210.82 52.07 0)
+		(at 210.82 50.8 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "52ed77c4-0a76-4f42-b6ce-84dba96ef62a")
-		(property "Reference" "C6"
-			(at 210.82 42.164 0)
+		(property "Reference" "C5"
+			(at 210.82 40.894 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16600,7 +16721,7 @@
 			)
 		)
 		(property "Value" "330pF"
-			(at 210.82 44.704 0)
+			(at 210.82 43.434 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16608,7 +16729,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 210.82 52.07 0)
+			(at 210.82 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16617,7 +16738,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 210.82 52.07 0)
+			(at 210.82 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16626,7 +16747,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 210.82 52.07 0)
+			(at 210.82 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16635,7 +16756,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "CL10C331JB8NNNC"
-			(at 210.82 52.07 0)
+			(at 210.82 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16644,7 +16765,7 @@
 			)
 		)
 		(property "LCSC" "C1664"
-			(at 213.36 50.8062 0)
+			(at 213.36 49.5362 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16661,7 +16782,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "C6")
+					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -21115,37 +21236,37 @@
 			)
 		)
 		(pin "10"
-			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fdc")
+			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fdd")
 		)
 		(pin "4"
-			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d89")
+			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d8a")
 		)
 		(pin "11"
-			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d3")
+			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d4")
 		)
 		(pin "13"
-			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838ea")
+			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838eb")
 		)
 		(pin "12"
-			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe4")
+			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe5")
 		)
 		(pin "14"
-			(uuid "bc84f182-83ca-4d82-90d5-d432a418f262")
+			(uuid "bc84f182-83ca-4d82-90d5-d432a418f263")
 		)
 		(pin "8"
-			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f555")
+			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f556")
 		)
 		(pin "9"
-			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d005")
+			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d006")
 		)
 		(pin "1"
-			(uuid "c5b1c7ad-0d3a-44c3-b45d-2781f79a1aa1")
+			(uuid "c5b1c7ad-0d3a-44c3-b45d-2781f79a1aa2")
 		)
 		(pin "2"
-			(uuid "250bcf3b-44ae-4cf1-9e9b-d0805cdceae2")
+			(uuid "250bcf3b-44ae-4cf1-9e9b-d0805cdceae3")
 		)
 		(pin "3"
-			(uuid "d612a6af-31de-4d4b-9f55-edade354e479")
+			(uuid "d612a6af-31de-4d4b-9f55-edade354e47a")
 		)
 		(pin "5"
 			(uuid "a258ea22-972e-4454-a568-aaef8549d406")
@@ -21779,7 +21900,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 168.91 71.12 0)
 			(effects
 				(font
@@ -21806,7 +21927,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10A105KB8NNNC"
+		(property "Manufacturer_Part_Number" "CL31B105KBHNNNE"
 			(at 168.91 71.12 0)
 			(effects
 				(font
@@ -21815,7 +21936,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C15849"
+		(property "LCSC" "C1848"
 			(at 172.974 69.85 0)
 			(effects
 				(font
@@ -21921,127 +22042,6 @@
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
 					(reference "C28")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Amplifier_Operational:LM324")
-		(at 299.72 82.55 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b9c09955-96c4-4e55-9aee-e527c72778da")
-		(property "Reference" "U1"
-			(at 303.276 75.438 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LM324DR"
-			(at 303.276 77.978 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm"
-			(at 298.45 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf"
-			(at 300.99 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Low-Power, Quad-Operational Amplifiers, DIP-14/SOIC-14/SSOP-14"
-			(at 299.72 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C7943"
-			(at 299.72 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "LM324DR"
-			(at 299.72 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "10"
-			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fdc")
-		)
-		(pin "4"
-			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d89")
-		)
-		(pin "11"
-			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d3")
-		)
-		(pin "13"
-			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838ea")
-		)
-		(pin "12"
-			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe4")
-		)
-		(pin "14"
-			(uuid "bc84f182-83ca-4d82-90d5-d432a418f262")
-		)
-		(pin "8"
-			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f555")
-		)
-		(pin "9"
-			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d005")
-		)
-		(pin "1"
-			(uuid "969db3e1-ef90-45fb-92d6-fb4a307dae87")
-		)
-		(pin "2"
-			(uuid "6bab5336-c641-4041-9d14-53bca529e408")
-		)
-		(pin "3"
-			(uuid "3e24e06d-aa04-4203-8dbe-ca0519f4bc42")
-		)
-		(pin "5"
-			(uuid "a258ea22-972e-4454-a568-aaef8549d406")
-		)
-		(pin "6"
-			(uuid "df3ea5be-3da1-454b-a4d5-f7ccd775473e")
-		)
-		(pin "7"
-			(uuid "0dd566bf-3e36-48cd-b19d-0548ce62b7fa")
-		)
-		(instances
-			(project "fsk-energymeter"
-				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "U1")
 					(unit 1)
 				)
 			)
@@ -22193,6 +22193,127 @@
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
 					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Amplifier_Operational:LM324")
+		(at 299.72 82.55 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bd78221b-86e4-4c82-aadc-926733b37621")
+		(property "Reference" "U1"
+			(at 303.276 75.438 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LM324DR"
+			(at 303.276 77.978 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm"
+			(at 298.45 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf"
+			(at 300.99 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low-Power, Quad-Operational Amplifiers, DIP-14/SOIC-14/SSOP-14"
+			(at 299.72 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C7943"
+			(at 299.72 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "LM324DR"
+			(at 299.72 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "10"
+			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fde")
+		)
+		(pin "4"
+			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d8b")
+		)
+		(pin "11"
+			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d5")
+		)
+		(pin "13"
+			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838ec")
+		)
+		(pin "12"
+			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe6")
+		)
+		(pin "14"
+			(uuid "bc84f182-83ca-4d82-90d5-d432a418f264")
+		)
+		(pin "8"
+			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f557")
+		)
+		(pin "9"
+			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d007")
+		)
+		(pin "1"
+			(uuid "3bcce6c8-d518-4ccc-b42c-cf0bf043d7b0")
+		)
+		(pin "2"
+			(uuid "73a9395f-9507-436c-a1e7-e5b0134c88ee")
+		)
+		(pin "3"
+			(uuid "8766a577-c359-4e6e-ad42-8917e9e3d6b8")
+		)
+		(pin "5"
+			(uuid "a258ea22-972e-4454-a568-aaef8549d407")
+		)
+		(pin "6"
+			(uuid "df3ea5be-3da1-454b-a4d5-f7ccd775473f")
+		)
+		(pin "7"
+			(uuid "0dd566bf-3e36-48cd-b19d-0548ce62b7fb")
+		)
+		(instances
+			(project "fsk-energymeter"
+				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
+					(reference "U1")
 					(unit 1)
 				)
 			)
@@ -22619,7 +22740,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c5ba261c-a4c2-47b8-b874-4e91723ef942")
-		(property "Reference" "C5"
+		(property "Reference" "C6"
 			(at 158.75 46.228 90)
 			(effects
 				(font
@@ -22689,7 +22810,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "C5")
+					(reference "C6")
 					(unit 1)
 				)
 			)
@@ -25051,7 +25172,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 204.47 52.07 0)
+		(at 204.47 50.8 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -25059,7 +25180,7 @@
 		(dnp no)
 		(uuid "e9b6636a-2a9b-4ba9-824c-8054dd65fa38")
 		(property "Reference" "R4"
-			(at 204.47 42.164 0)
+			(at 204.47 40.894 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25067,7 +25188,7 @@
 			)
 		)
 		(property "Value" "3.3k"
-			(at 204.47 44.704 0)
+			(at 204.47 43.434 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25075,7 +25196,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 204.47 52.07 0)
+			(at 204.47 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25084,7 +25205,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 204.47 52.07 0)
+			(at 204.47 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25093,7 +25214,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 204.47 52.07 0)
+			(at 204.47 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25102,7 +25223,7 @@
 			)
 		)
 		(property "LCSC" "C22978"
-			(at 206.502 50.8 0)
+			(at 206.502 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25281,173 +25402,52 @@
 			)
 		)
 		(pin "10"
-			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fdc")
+			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fdf")
 		)
 		(pin "4"
-			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d89")
+			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d8c")
 		)
 		(pin "11"
-			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d3")
+			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d6")
 		)
 		(pin "13"
-			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838ea")
+			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838ed")
 		)
 		(pin "12"
-			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe4")
+			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe7")
 		)
 		(pin "14"
-			(uuid "bc84f182-83ca-4d82-90d5-d432a418f262")
+			(uuid "bc84f182-83ca-4d82-90d5-d432a418f265")
 		)
 		(pin "8"
-			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f555")
+			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f558")
 		)
 		(pin "9"
-			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d005")
+			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d008")
 		)
 		(pin "1"
-			(uuid "c5b1c7ad-0d3a-44c3-b45d-2781f79a1aa1")
+			(uuid "c5b1c7ad-0d3a-44c3-b45d-2781f79a1aa3")
 		)
 		(pin "2"
-			(uuid "250bcf3b-44ae-4cf1-9e9b-d0805cdceae2")
+			(uuid "250bcf3b-44ae-4cf1-9e9b-d0805cdceae4")
 		)
 		(pin "3"
-			(uuid "d612a6af-31de-4d4b-9f55-edade354e479")
+			(uuid "d612a6af-31de-4d4b-9f55-edade354e47b")
 		)
 		(pin "5"
-			(uuid "a258ea22-972e-4454-a568-aaef8549d406")
+			(uuid "a258ea22-972e-4454-a568-aaef8549d408")
 		)
 		(pin "6"
-			(uuid "df3ea5be-3da1-454b-a4d5-f7ccd775473e")
+			(uuid "df3ea5be-3da1-454b-a4d5-f7ccd7754740")
 		)
 		(pin "7"
-			(uuid "0dd566bf-3e36-48cd-b19d-0548ce62b7fa")
+			(uuid "0dd566bf-3e36-48cd-b19d-0548ce62b7fc")
 		)
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
 					(reference "U1")
 					(unit 3)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Amplifier_Operational:LM324")
-		(at 344.17 60.96 0)
-		(unit 4)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e9f2fac6-7c55-48b7-b160-dd6ead05a7e6")
-		(property "Reference" "U1"
-			(at 347.726 54.356 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LM324DR"
-			(at 347.726 56.896 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm"
-			(at 342.9 58.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf"
-			(at 345.44 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Low-Power, Quad-Operational Amplifiers, DIP-14/SOIC-14/SSOP-14"
-			(at 344.17 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C7943"
-			(at 344.17 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "LM324DR"
-			(at 344.17 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "10"
-			(uuid "8b8b8972-bd9a-4911-a815-a3645d6d1fdc")
-		)
-		(pin "4"
-			(uuid "d4398699-67ec-4ff1-827a-cf0dca6b4d89")
-		)
-		(pin "11"
-			(uuid "38daeecc-3348-437d-bd9c-5c3a477d74d3")
-		)
-		(pin "13"
-			(uuid "f5bcf759-ced3-431a-b3fa-88282bb838ea")
-		)
-		(pin "12"
-			(uuid "94ba581f-f81a-46a4-ace8-70e02bd4bbe4")
-		)
-		(pin "14"
-			(uuid "bc84f182-83ca-4d82-90d5-d432a418f262")
-		)
-		(pin "8"
-			(uuid "d59bf643-bc85-43e9-ab6a-9dc582d4f555")
-		)
-		(pin "9"
-			(uuid "fbc2ea00-4d1a-47b1-98ef-1f1ebbc4d005")
-		)
-		(pin "1"
-			(uuid "c5b1c7ad-0d3a-44c3-b45d-2781f79a1aa1")
-		)
-		(pin "2"
-			(uuid "250bcf3b-44ae-4cf1-9e9b-d0805cdceae2")
-		)
-		(pin "3"
-			(uuid "d612a6af-31de-4d4b-9f55-edade354e479")
-		)
-		(pin "5"
-			(uuid "a258ea22-972e-4454-a568-aaef8549d406")
-		)
-		(pin "6"
-			(uuid "df3ea5be-3da1-454b-a4d5-f7ccd775473e")
-		)
-		(pin "7"
-			(uuid "0dd566bf-3e36-48cd-b19d-0548ce62b7fa")
-		)
-		(instances
-			(project ""
-				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "U1")
-					(unit 4)
 				)
 			)
 		)

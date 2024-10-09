@@ -59,14 +59,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_13
 #define LED_GPIO_Port GPIOC
-#define ADC_HV_VOLTAGE_Pin GPIO_PIN_0
-#define ADC_HV_VOLTAGE_GPIO_Port GPIOA
-#define ADC_HV_CURRENT_Pin GPIO_PIN_1
-#define ADC_HV_CURRENT_GPIO_Port GPIOA
-#define ADC_5V_REF_Pin GPIO_PIN_2
-#define ADC_5V_REF_GPIO_Port GPIOA
-#define ADC_LV_VOLTAGE_Pin GPIO_PIN_3
+#define ADC_LV_VOLTAGE_Pin GPIO_PIN_4
 #define ADC_LV_VOLTAGE_GPIO_Port GPIOA
+#define ADC_5V_REF_Pin GPIO_PIN_5
+#define ADC_5V_REF_GPIO_Port GPIOA
+#define ADC_HV_CURRENT_Pin GPIO_PIN_6
+#define ADC_HV_CURRENT_GPIO_Port GPIOA
+#define ADC_HV_VOLTAGE_Pin GPIO_PIN_7
+#define ADC_HV_VOLTAGE_GPIO_Port GPIOA
 #define USB_DETECT_Pin GPIO_PIN_10
 #define USB_DETECT_GPIO_Port GPIOA
 
