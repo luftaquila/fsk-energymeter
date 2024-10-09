@@ -4316,6 +4316,193 @@
 				)
 			)
 		)
+		(symbol "parts:39-29-1028"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 16.51 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "39-29-1028"
+				(at 16.51 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "39-29-102Y"
+				(at 16.51 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.molex.com/pdm_docs/sd/039291027_sd.pdf"
+				(at 16.51 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "2 way dual row right angle header Molex MINI-FIT JR. Series, Series Number 5569, 4.2mm Pitch 2 Way 2 Row Right Angle PCB Header, Solder Termination, 9A"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Height" "10"
+				(at 16.51 -394.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "538-39-29-1028"
+				(at 16.51 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Molex/39-29-1028?qs=QtQX4uD3c2VgEsweZSbUcw%3D%3D"
+				(at 16.51 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "Molex"
+				(at 16.51 -694.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "39-29-1028"
+				(at 16.51 -794.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(symbol "39-29-1028_1_1"
+				(rectangle
+					(start 5.08 2.54)
+					(end 15.24 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 20.32 0 180)
+					(length 5.08)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 20.32 -2.54 180)
+					(length 5.08)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "parts:AMC3311QDWER"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -7393,7 +7580,7 @@
 		(uuid "7363e734-f4eb-4279-8291-2a049a2cb6a1")
 	)
 	(junction
-		(at 73.66 97.79)
+		(at 71.12 100.33)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "74f18b5c-e0b4-44a6-b425-681c97337b93")
@@ -7537,7 +7724,7 @@
 		(uuid "bf739091-e6d6-40f7-b864-9be5394e5217")
 	)
 	(junction
-		(at 121.92 106.68)
+		(at 125.73 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c20fbfba-4e96-4790-acfa-0781531f4a31")
@@ -7591,7 +7778,7 @@
 		(uuid "db9fa5fa-f3be-4fb4-9cb8-2902f73e9bb5")
 	)
 	(junction
-		(at 121.92 91.44)
+		(at 125.73 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dbdbbb85-6902-460a-8023-cd9b442f3efd")
@@ -7627,7 +7814,7 @@
 		(uuid "edaf1d7f-af17-407f-b6a3-395dd91f41b0")
 	)
 	(junction
-		(at 73.66 102.87)
+		(at 71.12 102.87)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f3eea73f-3259-4798-af73-a061a49da1f2")
@@ -7717,6 +7904,10 @@
 		(uuid "31aff8dd-0e1a-43fd-afcf-79b9eb3c1154")
 	)
 	(no_connect
+		(at 92.71 102.87)
+		(uuid "37a7469b-9b07-4676-804b-4485a8d2e93d")
+	)
+	(no_connect
 		(at 317.5 142.24)
 		(uuid "395c96a9-f508-4751-9bf9-ec4efe7ba5e0")
 	)
@@ -7801,6 +7992,10 @@
 		(uuid "e1733afe-1972-4072-a6d4-2fd59f16fa21")
 	)
 	(no_connect
+		(at 92.71 100.33)
+		(uuid "e55bf4d5-e189-44aa-98b4-74a0f9c5c6e2")
+	)
+	(no_connect
 		(at 168.91 186.69)
 		(uuid "eecec1e3-adef-4c09-82b6-7971f7a49e22")
 	)
@@ -7809,7 +8004,7 @@
 		(uuid "f0fb9acd-1e21-4c07-b1ab-373e936a76b4")
 	)
 	(no_connect
-		(at 114.3 99.06)
+		(at 118.11 99.06)
 		(uuid "fbd437bf-04c1-40b9-ac79-d4b5a344b3d6")
 	)
 	(wire
@@ -8144,7 +8339,7 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 99.06) (xy 129.54 99.06)
+			(xy 143.51 99.06) (xy 133.35 99.06)
 		)
 		(stroke
 			(width 0)
@@ -8164,7 +8359,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 104.14) (xy 73.66 102.87)
+			(xy 71.12 104.14) (xy 71.12 102.87)
 		)
 		(stroke
 			(width 0)
@@ -8344,7 +8539,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 91.44) (xy 121.92 91.44)
+			(xy 114.3 91.44) (xy 125.73 91.44)
 		)
 		(stroke
 			(width 0)
@@ -8544,7 +8739,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 102.87) (xy 66.04 102.87)
+			(xy 71.12 102.87) (xy 72.39 102.87)
 		)
 		(stroke
 			(width 0)
@@ -8894,7 +9089,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 101.6) (xy 110.49 106.68)
+			(xy 114.3 101.6) (xy 114.3 106.68)
 		)
 		(stroke
 			(width 0)
@@ -8924,7 +9119,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 97.79) (xy 73.66 97.79)
+			(xy 69.85 100.33) (xy 71.12 100.33)
 		)
 		(stroke
 			(width 0)
@@ -9084,7 +9279,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 102.87) (xy 73.66 102.87)
+			(xy 69.85 102.87) (xy 71.12 102.87)
 		)
 		(stroke
 			(width 0)
@@ -9824,7 +10019,7 @@
 	)
 	(polyline
 		(pts
-			(xy 146.05 114.3) (xy 91.44 114.3)
+			(xy 146.05 114.3) (xy 96.52 114.3)
 		)
 		(stroke
 			(width 0.127)
@@ -9914,7 +10109,7 @@
 	)
 	(polyline
 		(pts
-			(xy 91.44 114.3) (xy 91.44 82.55)
+			(xy 96.52 114.3) (xy 96.52 82.55)
 		)
 		(stroke
 			(width 0.127)
@@ -10214,7 +10409,7 @@
 	)
 	(polyline
 		(pts
-			(xy 91.44 114.3) (xy 54.61 114.3)
+			(xy 96.52 114.3) (xy 54.61 114.3)
 		)
 		(stroke
 			(width 0.127)
@@ -10414,7 +10609,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 96.52) (xy 110.49 91.44)
+			(xy 114.3 96.52) (xy 114.3 91.44)
 		)
 		(stroke
 			(width 0)
@@ -10464,7 +10659,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 97.79) (xy 73.66 96.52)
+			(xy 71.12 100.33) (xy 71.12 99.06)
 		)
 		(stroke
 			(width 0)
@@ -11234,7 +11429,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 106.68) (xy 121.92 106.68)
+			(xy 114.3 106.68) (xy 125.73 106.68)
 		)
 		(stroke
 			(width 0)
@@ -11614,7 +11809,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 97.79) (xy 66.04 97.79)
+			(xy 71.12 100.33) (xy 72.39 100.33)
 		)
 		(stroke
 			(width 0)
@@ -11866,7 +12061,7 @@
 	)
 	(text "25 MHz OSCILLATOR"
 		(exclude_from_sim no)
-		(at 104.902 86.614 0)
+		(at 108.712 86.614 0)
 		(effects
 			(font
 				(size 1.397 1.397)
@@ -12201,7 +12396,7 @@
 		(uuid "7b15dd1b-92d8-4acf-87e5-c1035741ea7f")
 	)
 	(label "OSC_CLK"
-		(at 139.7 99.06 180)
+		(at 143.51 99.06 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -12809,7 +13004,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 342.9 184.15 0)
 			(effects
 				(font
@@ -12818,7 +13013,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 340.36 182.8862 0)
 			(effects
 				(font
@@ -12896,7 +13091,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 270.51 115.57 0)
 			(effects
 				(font
@@ -12905,7 +13100,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 273.05 114.3062 0)
 			(effects
 				(font
@@ -12996,7 +13191,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 110.49 99.06 0)
+		(at 114.3 99.06 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -13005,7 +13200,7 @@
 		(dnp no)
 		(uuid "0afff099-2db2-47ed-97b0-99fa0cd5d2ed")
 		(property "Reference" "C17"
-			(at 107.95 97.7962 0)
+			(at 111.76 97.7962 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13014,7 +13209,7 @@
 			)
 		)
 		(property "Value" "10nF"
-			(at 107.95 100.3362 0)
+			(at 111.76 100.3362 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13023,7 +13218,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 110.49 99.06 0)
+			(at 114.3 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13032,7 +13227,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 110.49 99.06 0)
+			(at 114.3 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13041,7 +13236,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 110.49 99.06 0)
+			(at 114.3 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13050,7 +13245,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "CL10B103KB8NNNC"
-			(at 110.49 99.06 0)
+			(at 114.3 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13058,8 +13253,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1589"
-			(at 107.95 97.7962 0)
+		(property "LCSC" "C57112"
+			(at 111.76 97.7962 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13314,7 +13509,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0c83554e-4740-47d7-995a-bc3f577227c7")
-		(property "Reference" "H4"
+		(property "Reference" "H2"
 			(at 262.89 227.584 0)
 			(effects
 				(font
@@ -13363,7 +13558,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H4")
+					(reference "H2")
 					(unit 1)
 				)
 			)
@@ -13531,7 +13726,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1459d59c-8bd5-4ec8-87da-85602c45e5a1")
-		(property "Reference" "J1"
+		(property "Reference" "J2"
 			(at 347.98 105.41 0)
 			(effects
 				(font
@@ -13653,7 +13848,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "J1")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -13964,7 +14159,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "182753ae-0830-4942-a932-31edd8024afa")
-		(property "Reference" "J2"
+		(property "Reference" "J3"
 			(at 272.034 131.572 0)
 			(effects
 				(font
@@ -14043,7 +14238,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "J2")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -14113,7 +14308,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C35216"
+		(property "LCSC" "C9196"
 			(at 159.766 69.85 0)
 			(effects
 				(font
@@ -14213,7 +14408,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1c7a8ee4-98c4-48d7-8c00-071e5534d733")
-		(property "Reference" "H3"
+		(property "Reference" "H1"
 			(at 257.81 227.584 0)
 			(effects
 				(font
@@ -14262,7 +14457,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H3")
+					(reference "H1")
 					(unit 1)
 				)
 			)
@@ -14469,7 +14664,7 @@
 	)
 	(symbol
 		(lib_id "power:Earth")
-		(at 121.92 106.68 0)
+		(at 125.73 106.68 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14477,7 +14672,7 @@
 		(dnp no)
 		(uuid "20a9433c-e98f-4faa-9915-8b4a81cd8246")
 		(property "Reference" "#PWR037"
-			(at 121.92 113.03 0)
+			(at 125.73 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14486,7 +14681,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 121.92 110.998 0)
+			(at 125.73 110.998 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14494,7 +14689,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 121.92 106.68 0)
+			(at 125.73 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14503,7 +14698,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 121.92 106.68 0)
+			(at 125.73 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14512,7 +14707,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"Earth\""
-			(at 121.92 106.68 0)
+			(at 125.73 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14650,7 +14845,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C7943"
+		(property "LCSC" "C71035"
 			(at 344.17 60.96 0)
 			(effects
 				(font
@@ -14774,7 +14969,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 191.77 100.33 0)
 			(effects
 				(font
@@ -14783,7 +14978,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 189.992 99.06 0)
 			(effects
 				(font
@@ -14809,7 +15004,8 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 74.93 97.79 270)
+		(at 69.85 100.33 90)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14817,7 +15013,7 @@
 		(dnp no)
 		(uuid "260ad49c-2a02-453e-996b-d301e5b07768")
 		(property "Reference" "#FLG01"
-			(at 76.835 97.79 0)
+			(at 67.945 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14826,7 +15022,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 78.74 97.7899 90)
+			(at 66.04 100.3299 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14835,7 +15031,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 74.93 97.79 0)
+			(at 69.85 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14844,7 +15040,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 74.93 97.79 0)
+			(at 69.85 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14853,7 +15049,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 74.93 97.79 0)
+			(at 69.85 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15157,7 +15353,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1589"
+		(property "LCSC" "C57112"
 			(at 314.9663 133.35 0)
 			(effects
 				(font
@@ -15268,7 +15464,7 @@
 	)
 	(symbol
 		(lib_id "Oscillator:ASV-xxxMHz")
-		(at 121.92 99.06 0)
+		(at 125.73 99.06 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15276,7 +15472,7 @@
 		(dnp no)
 		(uuid "33a51c8f-7c96-4611-8113-36fe60c73307")
 		(property "Reference" "X1"
-			(at 117.348 108.712 0)
+			(at 121.158 108.712 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15284,7 +15480,7 @@
 			)
 		)
 		(property "Value" "DSC1001CI2-025.0000"
-			(at 107.442 111.506 0)
+			(at 111.252 111.506 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15292,7 +15488,7 @@
 			)
 		)
 		(property "Footprint" "parts:DSC1001CI20250000"
-			(at 139.7 107.95 0)
+			(at 143.51 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15301,7 +15497,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.abracon.com/Oscillators/ASV.pdf"
-			(at 119.38 99.06 0)
+			(at 123.19 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15310,7 +15506,7 @@
 			)
 		)
 		(property "Description" "3.3V HCMOS SMD Crystal Clock Oscillator, Abracon"
-			(at 121.92 99.06 0)
+			(at 125.73 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15319,7 +15515,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "DSC1001CI2-025.0000T"
-			(at 121.92 99.06 0)
+			(at 125.73 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15328,7 +15524,7 @@
 			)
 		)
 		(property "LCSC" "C611667"
-			(at 117.348 108.712 0)
+			(at 121.158 108.712 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16171,7 +16367,8 @@
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
-		(at 74.93 102.87 270)
+		(at 69.85 102.87 90)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16179,7 +16376,7 @@
 		(dnp no)
 		(uuid "47478c35-3c10-4b5c-b858-27f50db7dfbe")
 		(property "Reference" "#FLG02"
-			(at 76.835 102.87 0)
+			(at 67.945 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16188,7 +16385,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 78.74 102.8699 90)
+			(at 66.04 102.8699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16197,7 +16394,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 74.93 102.87 0)
+			(at 69.85 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16206,7 +16403,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 74.93 102.87 0)
+			(at 69.85 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16215,7 +16412,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 74.93 102.87 0)
+			(at 69.85 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16679,7 +16876,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C73142"
+		(property "LCSC" "C1740"
 			(at 270.51 60.9662 0)
 			(effects
 				(font
@@ -17211,15 +17408,16 @@
 	)
 	(symbol
 		(lib_id "power:VDC")
-		(at 73.66 96.52 0)
+		(at 71.12 99.06 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "56e349ce-2d97-4e21-ba4b-f0c90c5c3f49")
-		(property "Reference" "#PWR031"
-			(at 73.66 100.33 0)
+		(property "Reference" "#PWR032"
+			(at 71.12 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17228,7 +17426,7 @@
 			)
 		)
 		(property "Value" "HV+"
-			(at 73.66 92.456 0)
+			(at 71.12 94.996 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17236,7 +17434,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 73.66 96.52 0)
+			(at 71.12 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17245,7 +17443,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 96.52 0)
+			(at 71.12 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17254,7 +17452,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VDC\""
-			(at 73.66 96.52 0)
+			(at 71.12 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17268,7 +17466,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "#PWR031")
+					(reference "#PWR032")
 					(unit 1)
 				)
 			)
@@ -18024,7 +18222,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 182.88 100.33 0)
 			(effects
 				(font
@@ -18033,7 +18231,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 181.102 99.06 0)
 			(effects
 				(font
@@ -18942,7 +19140,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C7943"
+		(property "LCSC" "C71035"
 			(at 300.99 34.29 0)
 			(effects
 				(font
@@ -19514,7 +19712,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 165.1 100.33 0)
 			(effects
 				(font
@@ -19523,7 +19721,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 163.322 99.06 0)
 			(effects
 				(font
@@ -19622,7 +19820,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "820dfde5-0e54-4e75-b2d2-af8094cfbba4")
-		(property "Reference" "H5"
+		(property "Reference" "H3"
 			(at 267.97 227.584 0)
 			(effects
 				(font
@@ -19671,7 +19869,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H5")
+					(reference "H3")
 					(unit 1)
 				)
 			)
@@ -20749,6 +20947,140 @@
 		)
 	)
 	(symbol
+		(lib_id "parts:39-29-1028")
+		(at 72.39 100.33 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "96e70de1-b763-45ff-b057-1c1d677e3e74")
+		(property "Reference" "J1"
+			(at 82.55 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "39291028"
+			(at 82.55 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "parts:39-29-102Y"
+			(at 88.9 195.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.molex.com/pdm_docs/sd/039291027_sd.pdf"
+			(at 88.9 295.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 way dual row right angle header Molex MINI-FIT JR. Series, Series Number 5569, 4.2mm Pitch 2 Way 2 Row Right Angle PCB Header, Solder Termination, 9A"
+			(at 72.39 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "10"
+			(at 88.9 495.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "538-39-29-1028"
+			(at 88.9 595.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Molex/39-29-1028?qs=QtQX4uD3c2VgEsweZSbUcw%3D%3D"
+			(at 88.9 695.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Molex"
+			(at 88.9 795.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "39-29-1028"
+			(at 88.9 895.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C505060"
+			(at 82.55 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "a5ca9662-2a38-4b41-a67f-df1e8dc8c16b")
+		)
+		(pin "3"
+			(uuid "15865c75-5e38-4e36-88be-df843095d7a1")
+		)
+		(pin "1"
+			(uuid "88a6dd90-c0b2-49be-9c6d-b6797827c0f1")
+		)
+		(pin "4"
+			(uuid "4af71416-73c3-44c4-b4e0-49088c26f031")
+		)
+		(instances
+			(project ""
+				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small_US")
 		(at 300.99 208.28 0)
 		(unit 1)
@@ -20893,7 +21225,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 121.92 91.44 0)
+		(at 125.73 91.44 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -20902,7 +21234,7 @@
 		(fields_autoplaced yes)
 		(uuid "9f8bb16c-185d-45b5-b98f-ef79be641b45")
 		(property "Reference" "#PWR029"
-			(at 121.92 95.25 0)
+			(at 125.73 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20911,7 +21243,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 121.92 86.3988 0)
+			(at 125.73 86.3988 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20919,7 +21251,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 121.92 91.44 0)
+			(at 125.73 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20928,7 +21260,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 121.92 91.44 0)
+			(at 125.73 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20937,7 +21269,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 121.92 91.44 0)
+			(at 125.73 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21217,7 +21549,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C7943"
+		(property "LCSC" "C71035"
 			(at 347.98 83.82 0)
 			(effects
 				(font
@@ -21406,7 +21738,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 226.06 104.14 0)
 			(effects
 				(font
@@ -21415,7 +21747,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 223.52 106.934 0)
 			(effects
 				(font
@@ -21441,7 +21773,8 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 73.66 104.14 0)
+		(at 71.12 104.14 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -21449,7 +21782,7 @@
 		(dnp no)
 		(uuid "ae929c52-ab18-46e3-9424-c37b6af601f1")
 		(property "Reference" "#PWR033"
-			(at 73.66 110.49 0)
+			(at 71.12 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21458,7 +21791,7 @@
 			)
 		)
 		(property "Value" "HV-"
-			(at 73.66 108.458 0)
+			(at 71.12 108.458 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21466,7 +21799,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 73.66 104.14 0)
+			(at 71.12 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21475,7 +21808,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 104.14 0)
+			(at 71.12 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21484,7 +21817,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 73.66 104.14 0)
+			(at 71.12 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -21632,7 +21965,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C965804"
+		(property "LCSC" "C2286"
 			(at 273.558 166.116 0)
 			(effects
 				(font
@@ -22023,7 +22356,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1961042"
+		(property "LCSC" "C87110"
 			(at 361.95 146.0562 0)
 			(effects
 				(font
@@ -22250,7 +22583,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C7943"
+		(property "LCSC" "C71035"
 			(at 299.72 82.55 0)
 			(effects
 				(font
@@ -22329,7 +22662,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bdb5c028-5778-4f43-817e-0415841b5efc")
-		(property "Reference" "J3"
+		(property "Reference" "J4"
 			(at 347.345 201.93 0)
 			(effects
 				(font
@@ -22432,7 +22765,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "J3")
+					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -22632,7 +22965,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 105.41 57.15 0)
 			(effects
 				(font
@@ -22641,7 +22974,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 105.4163 50.8 0)
 			(effects
 				(font
@@ -22783,7 +23116,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 158.75 52.07 0)
 			(effects
 				(font
@@ -22792,7 +23125,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 158.7563 45.72 0)
 			(effects
 				(font
@@ -22868,7 +23201,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 270.51 194.31 0)
 			(effects
 				(font
@@ -22877,7 +23210,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 270.51 197.612 0)
 			(effects
 				(font
@@ -23099,7 +23432,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 309.88 184.15 0)
 			(effects
 				(font
@@ -23108,7 +23441,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 307.34 182.8862 0)
 			(effects
 				(font
@@ -23418,7 +23751,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "39k"
+		(property "Value" "20k"
 			(at 324.612 63.5 0)
 			(effects
 				(font
@@ -23454,7 +23787,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C23153"
+		(property "LCSC" "C4184"
 			(at 328.422 60.96 0)
 			(effects
 				(font
@@ -23487,7 +23820,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d0e18a28-bc00-4ec3-bfb3-b60f4315f9d8")
-		(property "Reference" "H6"
+		(property "Reference" "H4"
 			(at 273.05 227.584 0)
 			(effects
 				(font
@@ -23539,7 +23872,7 @@
 		(instances
 			(project ""
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H6")
+					(reference "H4")
 					(unit 1)
 				)
 			)
@@ -23666,7 +23999,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 173.99 100.33 0)
 			(effects
 				(font
@@ -23675,7 +24008,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 172.212 99.06 0)
 			(effects
 				(font
@@ -23829,7 +24162,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1589"
+		(property "LCSC" "C57112"
 			(at 233.68 102.8762 0)
 			(effects
 				(font
@@ -23996,7 +24329,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d9d5bf6e-2368-46e9-b790-4dc5452eafc0")
-		(property "Reference" "#PWR032"
+		(property "Reference" "#PWR031"
 			(at 226.06 96.52 0)
 			(effects
 				(font
@@ -24047,7 +24380,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "#PWR032")
+					(reference "#PWR031")
 					(unit 1)
 				)
 			)
@@ -24610,71 +24943,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 63.5 102.87 90)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "e1ce9b34-6f22-4ac9-97b0-e3012a50890f")
-		(property "Reference" "H2"
-			(at 61.976 106.426 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "HV-"
-			(at 62.738 106.426 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_2.5mm_Pad_TopBottom"
-			(at 63.5 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 63.5 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole with connection"
-			(at 63.5 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6fd5bce9-400c-405a-a94e-671e0af675fd")
-		)
-		(instances
-			(project "fsk-energymeter"
-				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:Earth")
 		(at 313.69 64.77 0)
 		(mirror y)
@@ -25041,71 +25309,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 63.5 97.79 90)
-		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(uuid "e88339d5-03c1-4167-b374-9cf9e3f006c9")
-		(property "Reference" "H1"
-			(at 62.23 94.488 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "HV+"
-			(at 62.738 94.488 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_2.5mm_Pad_TopBottom"
-			(at 63.5 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 63.5 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole with connection"
-			(at 63.5 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1a98aa2c-7224-48ed-8390-3cb7957f0f52")
-		)
-		(instances
-			(project ""
-				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:Earth")
 		(at 309.88 156.21 0)
 		(unit 1)
@@ -25383,7 +25586,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C7943"
+		(property "LCSC" "C71035"
 			(at 335.28 36.83 0)
 			(effects
 				(font
@@ -25678,7 +25881,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 90.17 48.26 0)
 			(effects
 				(font
@@ -25687,7 +25890,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 90.1763 41.91 0)
 			(effects
 				(font
@@ -25773,7 +25976,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C916424"
+		(property "LCSC" "C37704"
 			(at 270.51 98.806 0)
 			(effects
 				(font
@@ -25959,7 +26162,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f5ccf8ac-e343-4547-b676-2c9a17bfb52a")
-		(property "Reference" "H7"
+		(property "Reference" "H5"
 			(at 278.13 227.584 0)
 			(effects
 				(font
@@ -26011,7 +26214,7 @@
 		(instances
 			(project "fsk-energymeter"
 				(path "/36f6abe2-9082-4b93-b7f3-1e44a43d11e7"
-					(reference "H7")
+					(reference "H5")
 					(unit 1)
 				)
 			)
@@ -26349,7 +26552,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "CL10B104KB8NFNC"
+		(property "Manufacturer_Part_Number" "CC0603KRX7R9BB104 "
 			(at 318.77 234.95 0)
 			(effects
 				(font
@@ -26358,7 +26561,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C346191"
+		(property "LCSC" "C14663"
 			(at 316.23 233.6862 0)
 			(effects
 				(font
@@ -26502,6 +26705,15 @@
 		)
 		(property "Manufacturer_Part_Number" "L01Z600S05"
 			(at 270.51 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C5780557"
+			(at 270.51 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
