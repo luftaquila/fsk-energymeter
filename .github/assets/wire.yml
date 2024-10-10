@@ -1,0 +1,79 @@
+# pip install wireviz
+# wireviz wire.yml -f p
+
+connectors:
+  ENERGY-METER LV:
+    type: TE T4111402051-000
+    subtype: male
+    show_pincount: False
+    pinlabels: [D-, D+, 5V, VIN, GND]
+    image:
+      src: ./lv-mate.png
+      width: 200
+
+  ENERGY-METER HV:
+    type: MOLEX 5557-02
+    subtype: male
+    show_pincount: False
+    pinlabels: [HV+, HV-]
+    image:
+      src: ./hv-mate.png
+      width: 200
+
+  VEHICLE LV:
+    type: wire
+    show_pincount: False
+    pinlabels: [LV, GND]
+
+  VEHICLE HV:
+    type: wire
+    show_pincount: False
+    pinlabels: [HV+, HV-]
+
+  USB:
+    type: USB Type A
+    subtype: male
+    show_pincount: False
+    pinlabels: [5V, D-, D+, GND]
+    image:
+      src: ./usb.png
+      width: 200
+
+cables:
+  DRIVE CABLE:
+    category: bundle
+    gauge: 22 AWG
+    show_equiv: True
+    colors: [RD, BK]
+
+  DATA CABLE:
+    category: bundle
+    gauge: 22 AWG
+    show_equiv: True
+    colors: [WH, GN, RD, BK]
+
+  HV CABLE:
+    category: bundle
+    gauge: 22 AWG
+    show_equiv: True
+    colors: [OG, OG]
+
+connections:
+  -
+    - ENERGY-METER LV: [VIN, GND]
+    - DRIVE CABLE: [1-2]
+    - VEHICLE LV: [1-2]
+
+  -
+    - ENERGY-METER LV: [D-, D+, 5V, GND]
+    - DATA CABLE: [1-4]
+    - USB: [D-, D+, 5V, GND]
+
+  -
+    - ENERGY-METER HV: [HV+, HV-]
+    - HV CABLE: [1-2]
+    - VEHICLE HV: [1-2]
+
+options:
+  fontname: Consolas
+  color_mode: FULL
