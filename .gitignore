@@ -95,7 +95,6 @@ fp-info-cache
 
 # Exported BOM files
 *.xml
-*.csv
 
 ### KiCad Patch ###
 rescue-backup/
