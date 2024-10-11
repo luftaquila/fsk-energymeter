@@ -107,7 +107,10 @@ Middlewares/Third_Party/FatFs/src/ff_gen_drv.c \
 Middlewares/Third_Party/FatFs/src/option/syscall.c \
 Middlewares/Third_Party/FatFs/src/option/ccsbcs.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c \
-Core/Src/dma.c
+Core/Src/dma.c \
+Core/Src/energymeter.c \
+Core/Src/energymeter_usb.c \
+Core/Src/energymeter_record.c
 
 # ASM sources
 ASM_SOURCES =  \
