@@ -21,7 +21,6 @@
 #include "adc.h"
 #include "crc.h"
 #include "dma.h"
-#include "energymeter.h"
 #include "fatfs.h"
 #include "rtc.h"
 #include "sdio.h"
@@ -31,7 +30,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "energymeter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

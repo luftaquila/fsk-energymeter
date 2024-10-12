@@ -67,8 +67,6 @@ void Error_Handler(void);
 #define ADC_HV_CURRENT_GPIO_Port GPIOA
 #define ADC_HV_VOLTAGE_Pin GPIO_PIN_7
 #define ADC_HV_VOLTAGE_GPIO_Port GPIOA
-#define USB_DETECT_Pin GPIO_PIN_10
-#define USB_DETECT_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
