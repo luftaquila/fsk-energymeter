@@ -8,12 +8,11 @@
 #include "rtc.h"
 #include "energymeter.h"
 
-extern uint32_t uid[];
+uint32_t uid[3]; // device unique 96-bit UID
+uint32_t mode;   // module operation mode
 
-extern uint32_t mode;
-
-extern uint32_t adc_flag;
-extern uint32_t adc[];
+uint32_t adc_flag; // adc conversion flag
+uint32_t adc[6];   // adc conversion buffer
 
 char filename[60];
 
@@ -26,6 +25,7 @@ void energymeter_init(void) {
   // read LV voltage to determine the mode
   HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
   while (adc_flag != TRUE);
+  adc_flag = FALSE;
 
   // if LV < 3.3V, that means the VBUS is not present and is powered by USB
   // LV voltage devider is 1/10. 12-bit ADC value 409 at approx. 0.33V
@@ -50,13 +50,4 @@ void energymeter_init(void) {
 
     energymeter_record(filename, boot);
   }
-}
-
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-  // TODO: calibration
-  float vref = 3.3 * VREFIN_CAL / adc[ADC_VREFINT];
-  (void) vref;
-
-  adc[ADC_TEMP] = (uint16_t)(((110.0 - 30) * (adc[ADC_TEMP] - TS_CAL1) / (TS_CAL2 - TS_CAL1) + 30) * 100);
-  adc_flag = TRUE;
 }

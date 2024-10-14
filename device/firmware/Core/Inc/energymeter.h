@@ -52,6 +52,8 @@ enum {
   LOG_TYPE_CNT
 };
 
+#define LOG_MAGIC 0xAA;
+
 typedef struct {
   uint16_t hv_voltage;
   uint16_t hv_current;

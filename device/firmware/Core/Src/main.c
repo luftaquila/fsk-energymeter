@@ -51,14 +51,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint32_t uid[3]; // device unique 96-bit UID
-
-uint32_t mode; // module operation mode
 uint32_t error_status; // module error status
-
-uint32_t adc_flag; // adc conversion flag
-uint32_t adc[6]; // adc conversion buffer
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
