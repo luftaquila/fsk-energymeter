@@ -1,6 +1,5 @@
 /* energymeter common functions */
 
-#include <stdint.h>
 #include <stdio.h>
 
 #include "main.h"
@@ -22,6 +21,8 @@ void energymeter_init(void) {
   uid[1] = HAL_GetUIDw1();
   uid[2] = HAL_GetUIDw2();
 
+  DEBUG_MSG("UID : %04lX-%04lX-%04lX\n", uid[0], uid[1], uid[2]);
+
   // read LV voltage to determine the mode
   HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
   while (adc_flag != TRUE);
@@ -30,9 +31,12 @@ void energymeter_init(void) {
   // if LV < 5V, that means the VBUS is not present and is powered by USB
   // so let's check LV < 3.3V. value is in 0.01 V unit
   if (adc[ADC_LV_VOLTAGE] < 330) {
+    DEBUG_MSG("MODE: USB\n");
     mode = EEM_MODE_USB;
+
     energymeter_usb();
   } else {
+    DEBUG_MSG("MODE: RECORD\n");
     mode = EEM_MODE_RECORD;
 
     // read boot time from RTC
@@ -47,6 +51,8 @@ void energymeter_init(void) {
 
     sprintf(filename, "%04lX%04lX%04lX-20%02d-%02d-%02d %02d-%02d-%02d.log", uid[0], uid[1], uid[2],
             date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds);
+
+    DEBUG_MSG("LOG : %s\n", filename);
 
     energymeter_record(filename, boot);
   }

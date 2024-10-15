@@ -2,7 +2,6 @@
 #define ENERGYMETER_H
 
 #include "main.h"
-#include <stdint.h>
 
 /******************************************************************************
  * basic definitions
@@ -17,6 +16,15 @@
 
 #define VOLUME_LABEL "FSK-EEM"
 
+
+/******************************************************************************
+ * debug output
+ *****************************************************************************/
+#ifdef DEBUG
+#define DEBUG_MSG(...) printf(__VA_ARGS__)
+#else /* DEBUG */
+#define DEBUG_MSG(...)
+#endif /* DEBUG */
 
 /******************************************************************************
  * module operation mode
@@ -36,7 +44,6 @@ enum {
 extern uint32_t error_status;
 
 enum {
-  EEM_ERR_INVALID_ID,
   EEM_ERR_SD_CARD,
   EEM_ERR_HARDFAULT,
   EEM_ERR_CNT
@@ -55,10 +62,10 @@ enum {
 #define LOG_MAGIC 0xAA;
 
 typedef struct {
-  uint16_t hv_voltage;
-  uint16_t hv_current;
-  uint16_t lv_voltage;
-  uint16_t temperature;
+  uint16_t hv_voltage;  // 0.01 V
+  uint16_t hv_current;  // 0.01 A
+  uint16_t lv_voltage;  // 0.01 V
+  uint16_t temperature; // 0.01 °C
 } __attribute__((packed, aligned(sizeof(uint32_t)))) log_record_t;
 
 typedef struct {
