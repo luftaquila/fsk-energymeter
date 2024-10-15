@@ -22,6 +22,14 @@ void energymeter_usb(void) {
   /* Configure USB FS GPIOs */
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
+  /* Pull down PA12 USB_DP for 5ms to force trigger bus enumeration on the host */
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_Delay(5);
+
   /* Configure USB D+ D- Pins */
   GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
   GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
