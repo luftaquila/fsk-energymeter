@@ -59,13 +59,13 @@ typedef struct {
   uint16_t hv_current;
   uint16_t lv_voltage;
   uint16_t temperature;
-} __attribute__((packed)) log_record_t;
+} __attribute__((packed, aligned(sizeof(uint32_t)))) log_record_t;
 
 typedef struct {
   uint8_t type;    // event type
   uint8_t id;      // event ID
   uint8_t data[6]; // additional data fields
-} __attribute__((packed)) log_event_t;
+} __attribute__((packed, aligned(sizeof(uint32_t)))) log_event_t;
 
 typedef struct {
   uint8_t magic;      // log packet magic sequence
@@ -76,7 +76,7 @@ typedef struct {
     log_record_t record;
     log_event_t event;
   } packet;
-} __attribute__((packed)) log_t;
+} __attribute__((packed, aligned(sizeof(uint32_t)))) log_t;
 
 
 /******************************************************************************
