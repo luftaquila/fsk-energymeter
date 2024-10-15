@@ -27,9 +27,9 @@ void energymeter_init(void) {
   while (adc_flag != TRUE);
   adc_flag = FALSE;
 
-  // if LV < 3.3V, that means the VBUS is not present and is powered by USB
-  // LV voltage devider is 1/10. 12-bit ADC value 409 at approx. 0.33V
-  if (adc[ADC_LV_VOLTAGE] < 410) {
+  // if LV < 5V, that means the VBUS is not present and is powered by USB
+  // so let's check LV < 3.3V. value is in 0.01 V unit
+  if (adc[ADC_LV_VOLTAGE] < 330) {
     mode = EEM_MODE_USB;
     energymeter_usb();
   } else {
