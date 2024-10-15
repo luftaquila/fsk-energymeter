@@ -11,8 +11,8 @@
 uint32_t uid[3]; // device unique 96-bit UID
 uint32_t mode;   // module operation mode
 
-uint32_t adc_flag; // adc conversion flag
-uint32_t adc[6];   // adc conversion buffer
+extern uint32_t adc_flag;
+extern uint32_t adc[];
 
 char filename[60];
 

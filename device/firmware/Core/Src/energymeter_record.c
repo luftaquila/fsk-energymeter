@@ -9,8 +9,9 @@ uint32_t timer_flag; // 10 ms timer flag
 uint32_t sync_flag;  // 1000 ms timer flag
 uint32_t tim_cnt;    // 1000 ms counter
 
-extern uint32_t adc_flag;
-extern uint32_t adc[];
+uint32_t adc_flag;        // adc conversion flag
+uint32_t adc[ADC_CH_CNT]; // adc conversion buffer
+float adc_mv[ADC_CH_CNT]; // adc mV calc buffer
 
 void energymeter_record(char *filename, uint32_t boot) {
   FATFS fat;
@@ -85,10 +86,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 // ADC conversion callback
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-  // TODO: calibration
-  float vref = 3.3 * VREFIN_CAL / adc[ADC_VREFINT];
-  (void) vref;
+  // Vref calculation
+  adc_mv[ADC_VREFINT] = (float)VREFINT_CAL_VREF * (float)(*VREFINT_CAL_ADDR) / (float)adc[ADC_VREFINT];
 
-  adc[ADC_TEMP] = (uint16_t)(((110.0 - 30) * (adc[ADC_TEMP] - TS_CAL1) / (TS_CAL2 - TS_CAL1) + 30) * 100);
+  // ADC channel voltage calculation
+  adc_mv[ADC_LV_VOLTAGE] = adc_mv[ADC_VREFINT] * (float)adc[ADC_LV_VOLTAGE] / (float)((1 << ADC_RES) - 1);
+  adc_mv[ADC_5V_REF] = adc_mv[ADC_VREFINT] * (float)adc[ADC_5V_REF] / (float)((1 << ADC_RES) - 1);
+  adc_mv[ADC_HV_CURRENT] = adc_mv[ADC_VREFINT] * (float)adc[ADC_HV_CURRENT] / (float)((1 << ADC_RES) - 1);
+  adc_mv[ADC_HV_VOLTAGE] = adc_mv[ADC_VREFINT] * (float)adc[ADC_HV_VOLTAGE] / (float)((1 << ADC_RES) - 1);
+
+  // actual value calculation
+  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f);       // 0.01V
+  adc[ADC_HV_CURRENT] = (uint16_t)((adc_mv[ADC_HV_CURRENT] - adc_mv[ADC_5V_REF]) / 0.0025f / 10.0f); // 0.01A
+  adc[ADC_HV_VOLTAGE] = (uint16_t)(adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f);       // 0.01V
+
+  // temperature calculation
+  adc[ADC_TEMP] = (uint16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f); // 0.01'C
+
   adc_flag = TRUE;
 }

@@ -82,13 +82,6 @@ typedef struct {
 /******************************************************************************
  * ADC temperature calibration values and channels
  *****************************************************************************/
-// STM32F401xB STM32F401xC datasheet Table 73. Temperature sensor calibration values
-#define TS_CAL1 *((uint16_t *)0x1FFF7A2C)
-#define TS_CAL2 *((uint16_t *)0x1FFF7A2E)
-
-// STM32F401xB STM32F401xC datasheet Table 76. Internal reference voltage calibration values
-#define VREFIN_CAL *((uint16_t *)0x1FFF7A2A)
-
 enum {
   ADC_LV_VOLTAGE,
   ADC_5V_REF,
@@ -98,6 +91,10 @@ enum {
   ADC_VREFINT,
   ADC_CH_CNT
 };
+
+#define VOLTAGE_DIVIDER_RATIO_LV    10.0f
+#define VOLTAGE_DIVIDER_RATIO_HV    200.0f
+#define VOLTAGE_DIVIDER_RATIO_5VREF 2.0f
 
 #define ADC_RES 12 // ADC bit resolution
 
