@@ -58,7 +58,8 @@ void energymeter_record(char *filename, uint32_t boot) {
       ret = f_write(&file, &log, sizeof(log_t), &written);
 
       if (ret != FR_OK || written != sizeof(log_t)) {
-        // todo: sd write error handling
+        error_status = EEM_ERR_SD_CARD;
+        Error_Handler();
       }
 
       adc_flag = FALSE;

@@ -30,6 +30,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include "energymeter.h"
 /* USER CODE END Includes */
 
@@ -51,7 +52,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint32_t error_status; // module error status
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -166,7 +167,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+uint32_t error_status; // module error status
 /* USER CODE END 4 */
 
 /**
@@ -179,9 +180,14 @@ void Error_Handler(void)
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
 
-  while (TRUE) {
+  DEBUG_MSG("!!! ERROR !!!\nCODE: %lu\n", error_status);
 
+  while (TRUE) {
+    HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+    HAL_Delay(100 * (1 << error_status));
   }
+
+  NVIC_SystemReset(); // reset? or not?
   /* USER CODE END Error_Handler_Debug */
 }
 

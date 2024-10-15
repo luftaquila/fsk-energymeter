@@ -44,8 +44,9 @@ enum {
 extern uint32_t error_status;
 
 enum {
-  EEM_ERR_SD_CARD,
+  EEM_ERR_UNKNOWN,
   EEM_ERR_HARDFAULT,
+  EEM_ERR_SD_CARD,
   EEM_ERR_CNT
 };
 

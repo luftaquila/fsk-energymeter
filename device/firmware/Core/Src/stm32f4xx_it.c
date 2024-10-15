@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "tusb.h"
+#include "energymeter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,7 +64,7 @@ extern DMA_HandleTypeDef hdma_sdio_tx;
 extern SD_HandleTypeDef hsd;
 extern TIM_HandleTypeDef htim5;
 /* USER CODE BEGIN EV */
-
+extern uint32_t error_status;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -90,7 +91,8 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+  error_status = EEM_ERR_HARDFAULT;
+  Error_Handler();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
