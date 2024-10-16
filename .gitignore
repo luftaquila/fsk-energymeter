@@ -1,3 +1,6 @@
+# objdump
+*.dmp
+
 # KiCAD
 \#auto_saved_files#
 *.lck

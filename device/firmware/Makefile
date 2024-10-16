@@ -208,6 +208,10 @@ LIBS = -lc -lm -lnosys
 LIBDIR = 
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
+ifeq ($(DEBUG), 1)
+LDFLAGS += -u _printf_float
+endif
+
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
 
@@ -267,5 +271,27 @@ debug:
 #######################################
 program:
 	make && openocd -f fsk-energymeter.cfg
+
+#######################################
+# attach
+#######################################
+attach:
+	openocd -f interface/stlink.cfg -f target/stm32f4x.cfg
+
+#######################################
+# gdb
+#######################################
+gdb:
+	arm-none-eabi-gdb -x debug.gdb
+
+#######################################
+# dump
+#######################################
+dump:
+ifdef GCC_PATH
+	$(GCC_PATH)/$(PREFIX)objdump -dS ./build/firmware.elf > output.dmp
+else
+	$(PREFIX)objdump -dS ./build/firmware.elf > output.dmp
+endif
 
 # *** EOF ***
