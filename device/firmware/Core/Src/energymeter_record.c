@@ -4,8 +4,11 @@
 #include "diskio.h"
 #include "adc.h"
 #include "crc.h"
+#include "tim.h"
 #include "main.h"
 #include "energymeter.h"
+
+extern uint32_t error_status;
 
 uint32_t timer_flag; // 10 ms timer flag
 uint32_t sync_flag;  // 1000 ms timer flag
@@ -22,6 +25,7 @@ void energymeter_record(char *filename, uint32_t boot) {
   FRESULT ret = f_mount(&fat, "", 0);
 
   if (ret != FR_OK) {
+    error_status = EEM_ERR_SD_CARD;
     Error_Handler();
   }
 
@@ -30,6 +34,7 @@ void energymeter_record(char *filename, uint32_t boot) {
   ret = f_open(&file, filename, FA_OPEN_APPEND | FA_WRITE);
 
   if (ret != FR_OK) {
+    error_status = EEM_ERR_SD_CARD;
     Error_Handler();
   }
 
@@ -38,6 +43,8 @@ void energymeter_record(char *filename, uint32_t boot) {
   log.magic = LOG_MAGIC;
 
   UINT written;
+
+  HAL_TIM_Base_Start_IT(&htim5); // start 10 ms timer
 
   while (TRUE) {
     // 10 ms timer
@@ -55,20 +62,17 @@ void energymeter_record(char *filename, uint32_t boot) {
       log.checksum = 0;
       log.checksum = HAL_CRC_Calculate(&hcrc, (uint32_t *)&log, sizeof(log_t) / sizeof(uint32_t)) & 0xFFFF;
 
+      // won't handle error; better keep retrying on failure
       ret = f_write(&file, &log, sizeof(log_t), &written);
-
-      if (ret != FR_OK || written != sizeof(log_t)) {
-        error_status = EEM_ERR_SD_CARD;
-        Error_Handler();
-      }
 
       adc_flag = FALSE;
       timer_flag = FALSE;
     }
 
-    // 1000 ms timer
+    // 100 ms timer
     if (sync_flag) {
-      f_sync(&file);
+      // won't handle error; better keep retrying on failure
+      f_sync(&file); // typically take 4 ms; worst 10 ms once in 2~3 seconds
       sync_flag = FALSE;
 
       HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin); // LED indicator
@@ -80,8 +84,8 @@ void energymeter_record(char *filename, uint32_t boot) {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   timer_flag = TRUE;
 
-  // 1000 ms elapsed
-  if (++tim_cnt >= 100) {
+  // 100 ms elapsed
+  if (++tim_cnt >= 10) {
     sync_flag = TRUE;
     tim_cnt = 0;
   }
@@ -108,9 +112,15 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
 
   adc_flag = TRUE;
 
-  DEBUG_MSG("[%8lu] Vref: %.2f V\n%*cLV  : %.2f V\n%*cHV  : %.2f V / %.2f A\n%*cTEMP: %.2f °C\n",
-            HAL_GetTick(), adc_mv[ADC_VREFINT] / 1000.0f,
-            11, ' ', adc[ADC_LV_VOLTAGE] / 100.0f,
-            11, ' ', adc[ADC_HV_VOLTAGE] / 100.0f, adc[ADC_HV_CURRENT] / 100.0f,
-            11, ' ', adc[ADC_TEMP] / 100.0f);
+  #ifdef DISABLED
+  #ifdef DEBUG
+  if (tim_cnt == 0) {
+    DEBUG_MSG("[%8lu] Vref: %.2f V\n%*cLV  : %.2f V\n%*cHV  : %.2f V / %.2f A\n%*cTEMP: %.2f °C\n",
+              HAL_GetTick(), adc_mv[ADC_VREFINT] / 1000.0f,
+              11, ' ', adc[ADC_LV_VOLTAGE] / 100.0f,
+              11, ' ', adc[ADC_HV_VOLTAGE] / 100.0f, adc[ADC_HV_CURRENT] / 100.0f,
+              11, ' ', adc[ADC_TEMP] / 100.0f);
+  }
+  #endif
+  #endif
 }
