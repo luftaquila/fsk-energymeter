@@ -49,8 +49,9 @@ void energymeter_init(void) {
     // read current timestamp;
     uint32_t boot = HAL_GetTick();
 
-    sprintf(filename, "%08lX%08lX%08lX-20%02d-%02d-%02d %02d-%02d-%02d.log", uid[0], uid[1], uid[2],
-            date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds);
+    sprintf(filename, "20%02d-%02d-%02d-%02d-%02d-%02d %08lX-%08lX-%08lX.log",
+            date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds,
+            uid[0], uid[1], uid[2]);
 
     DEBUG_MSG("LOG : %s\n", filename);
 
