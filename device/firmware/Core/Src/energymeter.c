@@ -13,7 +13,7 @@ uint32_t mode;   // module operation mode
 extern uint32_t adc_flag;
 extern uint32_t adc[];
 
-char filename[60];
+char filename[128];
 
 void energymeter_init(void) {
   // read 96-bit device UID
@@ -21,7 +21,7 @@ void energymeter_init(void) {
   uid[1] = HAL_GetUIDw1();
   uid[2] = HAL_GetUIDw2();
 
-  DEBUG_MSG("UID : %04lX-%04lX-%04lX\n", uid[0], uid[1], uid[2]);
+  DEBUG_MSG("UID : %08lX-%08lX-%08lX\n", uid[0], uid[1], uid[2]);
 
   // read LV voltage to determine the mode
   HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
@@ -49,7 +49,7 @@ void energymeter_init(void) {
     // read current timestamp;
     uint32_t boot = HAL_GetTick();
 
-    sprintf(filename, "%04lX%04lX%04lX-20%02d-%02d-%02d %02d-%02d-%02d.log", uid[0], uid[1], uid[2],
+    sprintf(filename, "%08lX%08lX%08lX-20%02d-%02d-%02d %02d-%02d-%02d.log", uid[0], uid[1], uid[2],
             date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds);
 
     DEBUG_MSG("LOG : %s\n", filename);
