@@ -6,7 +6,7 @@ connectors:
     type: TE T4111402051-000
     subtype: male
     show_pincount: False
-    pinlabels: [D-, D+, 5V, VIN, GND]
+    pinlabels: [D-, D+, 5VOUT, VIN, GND]
     image:
       src: ./lv-mate.png
       width: 200
@@ -65,7 +65,7 @@ connections:
     - VEHICLE LV: [1-2]
 
   -
-    - ENERGY-METER LV: [D-, D+, 5V, GND]
+    - ENERGY-METER LV: [D-, D+, VIN, GND]
     - DATA CABLE: [1-4]
     - USB: [D-, D+, 5V, GND]
 

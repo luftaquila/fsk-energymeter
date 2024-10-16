@@ -16,6 +16,9 @@ extern uint32_t adc[];
 char filename[128];
 
 void energymeter_init(void) {
+  // wait for enough VBUS voltage to judge the mode
+  HAL_Delay(300);
+
   // read 96-bit device UID
   uid[0] = HAL_GetUIDw0();
   uid[1] = HAL_GetUIDw1();
@@ -28,9 +31,8 @@ void energymeter_init(void) {
   while (adc_flag != TRUE);
   adc_flag = FALSE;
 
-  // if LV < 5V, that means the VBUS is not present and is powered by USB
-  // so let's check LV < 3.3V. value is in 0.01 V unit
-  if (adc[ADC_LV_VOLTAGE] < 330) {
+  // if LV < 6V, the VBUS is not present and is powered by USB
+  if (adc[ADC_LV_VOLTAGE] < 600) { // 0.01 V unit
     DEBUG_MSG("MODE: USB\n");
     mode = EEM_MODE_USB;
 
