@@ -14,9 +14,9 @@ uint32_t timer_flag; // 10 ms timer flag
 uint32_t sync_flag;  // 1000 ms timer flag
 uint32_t tim_cnt;    // 1000 ms counter
 
-uint32_t adc_flag;        // adc conversion flag
-uint32_t adc[ADC_CH_CNT]; // adc conversion buffer
-float adc_mv[ADC_CH_CNT]; // adc mV calc buffer
+volatile uint32_t adc_flag; // adc conversion flag
+uint32_t adc[ADC_CH_CNT];   // adc conversion buffer
+float adc_mv[ADC_CH_CNT];   // adc mV calc buffer
 
 void energymeter_record(char *filename, uint32_t boot) {
   FATFS fat;

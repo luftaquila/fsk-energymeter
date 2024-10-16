@@ -10,7 +10,7 @@
 uint32_t uid[3]; // device unique 96-bit UID
 uint32_t mode;   // module operation mode
 
-extern uint32_t adc_flag;
+extern volatile uint32_t adc_flag;
 extern uint32_t adc[];
 
 char filename[128];
