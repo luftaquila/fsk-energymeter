@@ -14,8 +14,6 @@
 #define BIT_TOGGLE(target, pos) ((target) ^=  (1 << (pos)))
 #define BIT_CHECK(target, pos)  ((target) &   (1 << (pos)))
 
-#define VOLUME_LABEL "FSK-EEM"
-
 
 /******************************************************************************
  * debug output
@@ -113,5 +111,10 @@ enum {
 void energymeter_init(void);
 void energymeter_usb(void);
 void energymeter_record(char *filename, uint32_t boot);
+
+/******************************************************************************
+ * TinyUSB function prototypes
+ *****************************************************************************/
+void cdc_task(void);
 
 #endif /* ENERGYMETER_H */
