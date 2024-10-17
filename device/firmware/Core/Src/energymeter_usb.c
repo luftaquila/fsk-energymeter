@@ -63,6 +63,8 @@ void energymeter_usb(void) {
     Error_Handler();
   }
 
+  f_setlabel("FSK-EEM");
+
   tusb_init();
 
   while (TRUE) {
