@@ -64,7 +64,7 @@ enum {
 
 typedef struct {
   uint16_t hv_voltage;  // 0.01 V
-  uint16_t hv_current;  // 0.01 A
+  uint16_t hv_current;  // 0.1 A, signed
   uint16_t lv_voltage;  // 0.01 V
   uint16_t temperature; // 0.01 °C
 } __attribute__((packed, aligned(sizeof(uint32_t)))) log_record_t;

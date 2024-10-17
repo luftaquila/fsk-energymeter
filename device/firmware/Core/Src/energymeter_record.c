@@ -103,16 +103,16 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   adc_mv[ADC_HV_VOLTAGE] = adc_mv[ADC_VREFINT] * (float)adc[ADC_HV_VOLTAGE] / (float)((1 << ADC_RES) - 1);
 
   // actual value calculation
-  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f);       // 0.01 V
-  adc[ADC_HV_CURRENT] = (uint16_t)((adc_mv[ADC_HV_CURRENT] - adc_mv[ADC_5V_REF]) / 0.0025f / 10.0f); // 0.01 A
-  adc[ADC_HV_VOLTAGE] = (uint16_t)(adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f);       // 0.01 V
+  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f); // 0.01 V
+  adc[ADC_HV_CURRENT] = (uint16_t)((adc_mv[ADC_HV_CURRENT] - adc_mv[ADC_5V_REF]) * 4.0f);      // 0.1 A, signed. (* 4 = / 1500 * 600 * 10)
+  adc[ADC_HV_VOLTAGE] = (uint16_t)(adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f); // 0.01 V
 
   // temperature calculation
   adc[ADC_TEMP] = (uint16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f); // 0.01 °C
 
   adc_flag = TRUE;
 
-  #ifdef DISABLED
+  // #ifdef DISABLED
   #ifdef DEBUG
   if (tim_cnt == 0) {
     DEBUG_MSG("[%8lu] Vref: %.2f V\n%*cLV  : %.2f V\n%*cHV  : %.2f V / %.2f A\n%*cTEMP: %.2f °C\n",
@@ -122,5 +122,5 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
               11, ' ', adc[ADC_TEMP] / 100.0f);
   }
   #endif
-  #endif
+  // #endif
 }

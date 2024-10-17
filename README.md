@@ -16,9 +16,9 @@
 | Supply voltage<sup>1</sup> | 6 | 15 | 28 | V |
 | Power consumption | | 0.5 | 1 | W |
 | HV bus voltage | 0 | | 600 | V |
-| HV bus voltage resolution | | 0.48 | 0.24 | V |
+| HV bus voltage resolution | | 0.24 | | V |
 | HV bus current | -750 | | 750 | A |
-| HV bus current resolution | | 1.28 | 0.64 | A |
+| HV bus current resolution | | 0.64 | | A |
 | Operational temperature | -10 | | 80 | °C |
 | IP rating | | IP 20 | | |
 | Startup time |  | 300 | | ms |
