@@ -1,17 +1,20 @@
+#include "ff.h"
+#include "diskio.h"
 #include "tusb.h"
+#include "bsp_driver_sd.h"
 #include "energymeter.h"
 
 /******************************************************************************
  * USB mode function
  *****************************************************************************/
 void energymeter_usb(void) {
-  // init USB_OTG_FS for TinyUSB
+  /* init USB_OTG_FS for TinyUSB */
   GPIO_InitTypeDef GPIO_InitStruct;
 
-  /* Configure USB FS GPIOs */
+  // Configure USB FS GPIOs
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
-  /* Pull down PA12 USB_DP for 5ms to force trigger bus enumeration on the host */
+  // Pull down PA12 USB_DP for 5ms to force trigger bus enumeration on the host
   GPIO_InitStruct.Pin = GPIO_PIN_12;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -19,7 +22,7 @@ void energymeter_usb(void) {
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
   HAL_Delay(5);
 
-  /* Configure USB D+ D- Pins */
+  // Configure USB D+ D- Pins
   GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
   GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -27,13 +30,13 @@ void energymeter_usb(void) {
   GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /* Configure VBUS Pin */
+  // Configure VBUS Pin
   GPIO_InitStruct.Pin = GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /* ID Pin */
+  // ID Pin
   GPIO_InitStruct.Pin = GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -48,6 +51,17 @@ void energymeter_usb(void) {
   USB_OTG_FS->GCCFG |= USB_OTG_GCCFG_NOVBUSSENS;
   USB_OTG_FS->GCCFG &= ~USB_OTG_GCCFG_VBUSBSEN;
   USB_OTG_FS->GCCFG &= ~USB_OTG_GCCFG_VBUSASEN;
+
+  /* prepare FAT filesystem */
+  FATFS fat;
+
+  disk_initialize((BYTE) 0);
+  FRESULT ret = f_mount(&fat, "", 0);
+
+  if (ret != FR_OK) {
+    error_status = EEM_ERR_SD_CARD;
+    Error_Handler();
+  }
 
   tusb_init();
 
@@ -259,6 +273,14 @@ void tud_cdc_rx_cb(uint8_t itf) {
 /******************************************************************************
  * USB MSC callbacks
  *****************************************************************************/
+#if defined(SDMMC_DATATIMEOUT)
+  #define SD_TIMEOUT SDMMC_DATATIMEOUT
+#elif defined(SD_DATATIMEOUT)
+  #define SD_TIMEOUT SD_DATATIMEOUT
+#else
+  #define SD_TIMEOUT 30 * 1000
+#endif
+
 // whether host does safe-eject
 static bool ejected = false;
 
@@ -269,7 +291,7 @@ void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16
 
   const char vid[] = "FSK-EEM";
   const char pid[] = "Record Storage";
-  const char rev[] = "1.0.0";
+  const char rev[] = "1.0";
 
   memcpy(vendor_id  , vid, strlen(vid));
   memcpy(product_id , pid, strlen(pid));
@@ -295,9 +317,11 @@ bool tud_msc_test_unit_ready_cb(uint8_t lun) {
 void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size) {
   (void) lun;
 
-  // TODO
-  *block_count = DISK_BLOCK_NUM;
-  *block_size  = DISK_BLOCK_SIZE;
+  BSP_SD_CardInfo card;
+  BSP_SD_GetCardInfo(&card);
+
+  *block_count = card.LogBlockNbr - 1;
+  *block_size  = card.LogBlockSize;
 }
 
 // invoked when received Start Stop Unit command
@@ -322,15 +346,21 @@ bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, boo
 // invoked when received READ10 command.
 // Copy disk's data to buffer (up to bufsize) and return number of copied bytes.
 int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize) {
-  (void) lun;
+  BSP_SD_CardInfo card;
+  BSP_SD_GetCardInfo(&card);
 
-  // TODO
+  if (lba >= card.LogBlockNbr) {
+    return -1;
+  }
 
-  // out of ramdisk
-  if ( lba >= DISK_BLOCK_NUM ) return -1;
+  (void) offset; // should be 0 when MSC buffer is larger than a block size
 
-  uint8_t const* addr = msc_disk[lba] + offset;
-  memcpy(buffer, addr, bufsize);
+  if (BSP_SD_ReadBlocks(buffer, lba, bufsize >> 9, SD_TIMEOUT) != MSD_OK) { // divide by 512 to get block count
+    return -1;
+  }
+
+  /* wait until the read operation is finished */
+  while(BSP_SD_GetCardState()!= MSD_OK);
 
   return (int32_t) bufsize;
 }
@@ -347,7 +377,7 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   (void) lba;
   (void) offset;
   (void) buffer;
-  return (int32_t) bufsize; // read-only
+  return (int32_t) -1; // read-only
 }
 
 // invoked when received an SCSI command not in built-in list below
