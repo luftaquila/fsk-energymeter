@@ -3,17 +3,18 @@
 ![](.github/assets/3d.png)
 
 ## Features
-* Records HV bus voltage and current, LV voltage and ambient(CPU) temperature
+
+* Records HV bus voltage and current, LV voltage and ambient (CPU) temperature
 * 100 Hz data sampling rate
-* Internal real-time clock for precise data analysis
-* Easy access to saved data via USB Mass Storage
-* Data visualization through web/native multi-platform application
+* Easy data extraction via USB Mass Storage interface
+* Provides record timing data with internal real-time clock
+* Data visualizer tool available on both web and desktop applications
 
 ## Specifications
 
 | | MIN | TYP | MAX | UNIT |
 |:-:|:-:|:-:|:-:|:-:|
-| Supply voltage<sup>1</sup> | 6 | 15 | 28 | V |
+| Supply voltage<sup>1</sup> | 6 | | 28 | V |
 | Power consumption | | 0.5 | 1 | W |
 | HV bus voltage | 0 | | 600 | V |
 | HV bus voltage resolution | | 0.24 | | V |
@@ -55,7 +56,7 @@
 [device/hardware/jlcpcb/production_files/](https://github.com/luftaquila/fsk-energymeter/tree/main/device/hardware/jlcpcb/production_files) directory includes gerber, BOM and CPL files for the JLCPCB PCBA(SMT) order.
 
 > [!TIP]
-> Exclude through-hole components(HV and LV connector, debug pin header and `L01Z600S05` Hall sensor) from the SMT assembly list. Purchase these parts from the global suppliers and solder it yourself to purchase them cheaper and reduce the setup fee.
+> Exclude through-hole components (HV and LV connector, debug pin header and `L01Z600S05` Hall sensor) from the SMT assembly list. Purchase these parts from the global suppliers and solder it yourself to purchase them cheaper and reduce the setup fee.
 
 ### Firmware
 
@@ -66,6 +67,7 @@ You may use [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32c
 Take a look at the OpenOCD script [device/firmware/fsk-energymeter.cfg](https://github.com/luftaquila/fsk-energymeter/blob/main/device/firmware/fsk-energymeter.cfg) if you are using OpenOCD.
 
 ## LICENSE
+
 ```
 "THE BEERWARE LICENSE" (Revision 42):
 LUFT-AQUILA wrote this project. As long as you retain this notice,
