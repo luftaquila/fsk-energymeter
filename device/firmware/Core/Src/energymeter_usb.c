@@ -1,4 +1,5 @@
 #include "ff.h"
+#include "rtc.h"
 #include "diskio.h"
 #include "tusb.h"
 #include "bsp_driver_sd.h"
@@ -63,7 +64,7 @@ void energymeter_usb(void) {
     Error_Handler();
   }
 
-  f_setlabel("FSK-EEM");
+  f_setlabel(MSC_VOLUME_LABEL);
 
   tusb_init();
 
@@ -245,19 +246,78 @@ void tud_resume_cb(void) {
  * USB CDC task and callbacks
  *****************************************************************************/
 void cdc_task(void) {
-  if (tud_cdc_available()) {
-    // read data
-    char buf[64];
-    uint32_t count = tud_cdc_read(buf, sizeof(buf));
-    (void) count;
-
-    // Echo back
-    // Note: Skip echo by commenting out write() and write_flush()
-    // for throughput test e.g
-    //    $ dd if=/dev/zero of=/dev/ttyACM0 count=10000
-    tud_cdc_write(buf, count);
-    tud_cdc_write_flush();
+  if (!tud_cdc_available()) {
+    return;
   }
+
+  usb_cmd_t rcv;
+  usb_res_t res;
+  res.magic = USB_RES_MAGIC;
+
+  // cmd from host is smaller than the CDC buffer; data should be at the beginning
+  uint32_t count = tud_cdc_read(&rcv, sizeof(rcv));
+  tud_cdc_read_flush(); // flush unread data
+
+  if (rcv.magic == USB_CMD_MAGIC && count == sizeof(usb_cmd_t)) {
+    switch (rcv.cmd) {
+      case USB_CMD_RTC: {
+        RTC_DateTypeDef date;
+        RTC_TimeTypeDef time;
+
+        date.Year = rcv.data[0];
+        date.Month = rcv.data[1]; // should be hex encoded
+        date.Date = rcv.data[2];
+        time.Hours = rcv.data[3];
+        time.Minutes = rcv.data[4];
+        time.Seconds = rcv.data[5];
+
+        date.WeekDay = 0; // will be automatically calculated
+
+        if (HAL_RTC_SetTime(&hrtc, &time, FORMAT_BIN) != HAL_OK) {
+          res.res = USB_RES_ERR_UNKNOWN;
+          break;
+        }
+
+        if (HAL_RTC_SetDate(&hrtc, &date, FORMAT_BIN) != HAL_OK) {
+          res.res = USB_RES_ERR_UNKNOWN;
+          break;
+        }
+
+        res.res = USB_RES_OK;
+        break;
+      }
+
+      case USB_CMD_DEL: {
+        FRESULT ret;
+
+        DIR dir;
+        FILINFO finfo;
+
+        if (f_findfirst(&dir, &finfo, "", "*.log") != FR_OK) {
+          res.res = USB_RES_ERR_UNKNOWN;
+          break;
+        }
+
+        do {
+          f_unlink(finfo.fname);
+          ret = f_findnext(&dir, &finfo);
+        } while (ret == FR_OK && finfo.fname[0]);
+
+        res.res = USB_RES_OK;
+        break;
+      }
+
+      default:
+        res.res = USB_RES_ERR_INVALID;
+        break;
+    }
+  } else {
+    res.res = USB_RES_ERR_INVALID;
+  }
+
+  tud_cdc_write(&res, sizeof(res));
+  tud_cdc_write_flush();
+  return;
 }
 
 // device CDC line state changed callback. e.g connected/disconnected

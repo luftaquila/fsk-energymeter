@@ -24,6 +24,7 @@
 #define DEBUG_MSG(...)
 #endif /* DEBUG */
 
+
 /******************************************************************************
  * module operation mode
  *****************************************************************************/
@@ -58,7 +59,7 @@ enum {
   LOG_TYPE_CNT
 };
 
-#define LOG_MAGIC 0xAA;
+#define LOG_MAGIC 0xAA
 
 typedef struct {
   uint16_t hv_voltage;  // 0.01 V
@@ -103,6 +104,39 @@ enum {
 #define VOLTAGE_DIVIDER_RATIO_5VREF 2.0f
 
 #define ADC_RES 12 // ADC bit resolution
+
+
+/******************************************************************************
+ * TinyUSB definitions
+ *****************************************************************************/
+#define MSC_VOLUME_LABEL "FSK-EEM"
+
+#define USB_CMD_MAGIC 0xBB
+#define USB_RES_MAGIC 0xCC
+
+enum {
+  USB_CMD_RTC,
+  USB_CMD_DEL,
+  USB_CMD_CNT,
+};
+
+typedef struct {
+  uint8_t magic;
+  uint8_t cmd;
+  uint8_t data[6];
+} usb_cmd_t;
+
+enum {
+  USB_RES_OK,
+  USB_RES_ERR_UNKNOWN,
+  USB_RES_ERR_INVALID,
+};
+
+typedef struct {
+  uint8_t magic;
+  uint8_t res;
+  uint8_t data[2];
+} usb_res_t;
 
 
 /******************************************************************************

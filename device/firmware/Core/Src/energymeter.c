@@ -1,10 +1,10 @@
 /* energymeter common functions */
-
 #include <stdio.h>
 
-#include "main.h"
+#include "ff.h"
 #include "adc.h"
 #include "rtc.h"
+#include "main.h"
 #include "energymeter.h"
 
 uint32_t uid[3]; // device unique 96-bit UID
@@ -13,7 +13,7 @@ uint32_t mode;   // module operation mode
 extern volatile uint32_t adc_flag;
 extern uint32_t adc[];
 
-char filename[128];
+char filename[_MAX_LFN + 1];
 
 void energymeter_init(void) {
   // wait for enough VBUS voltage to judge the mode
