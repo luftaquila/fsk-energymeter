@@ -63,7 +63,7 @@ void energymeter_usb(void) {
     Error_Handler();
   }
 
-  f_setlabel("FSK-EEM");
+  f_setlabel(MSC_VOLUME_LABEL);
 
   tusb_init();
 
@@ -245,19 +245,36 @@ void tud_resume_cb(void) {
  * USB CDC task and callbacks
  *****************************************************************************/
 void cdc_task(void) {
-  if (tud_cdc_available()) {
-    // read data
-    char buf[64];
-    uint32_t count = tud_cdc_read(buf, sizeof(buf));
-    (void) count;
-
-    // Echo back
-    // Note: Skip echo by commenting out write() and write_flush()
-    // for throughput test e.g
-    //    $ dd if=/dev/zero of=/dev/ttyACM0 count=10000
-    tud_cdc_write(buf, count);
-    tud_cdc_write_flush();
+  if (!tud_cdc_available()) {
+    return;
   }
+
+  usb_cmd_t rcv;
+
+  // cmd from host is smaller than CDC buffer; cmd will be always at the beginning of the buffer
+  uint32_t count = tud_cdc_read(&rcv, sizeof(rcv));
+  tud_cdc_read_flush(); // flush unread data
+
+  if (rcv.magic == USB_CMD_MAGIC && count == sizeof(usb_cmd_t)) {
+    switch (rcv.cmd) {
+      case USB_CMD_RTC: {
+        break;
+      }
+
+      case USB_CMD_DEL: {
+        break;
+      }
+
+      default:
+        tud_cdc_write_str("UNKNOWN\r\n");
+        break;
+    }
+  } else {
+    tud_cdc_write_str("INVALID\r\n");
+  }
+
+  tud_cdc_write_flush();
+  return;
 }
 
 // device CDC line state changed callback. e.g connected/disconnected
