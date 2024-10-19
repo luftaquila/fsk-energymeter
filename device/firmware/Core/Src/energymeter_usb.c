@@ -5,6 +5,8 @@
 #include "bsp_driver_sd.h"
 #include "energymeter.h"
 
+extern uint32_t uid[];
+
 /******************************************************************************
  * USB mode function
  *****************************************************************************/
@@ -260,6 +262,12 @@ void cdc_task(void) {
 
   if (rcv.magic == USB_CMD_MAGIC && count == sizeof(usb_cmd_t)) {
     switch (rcv.cmd) {
+      case USB_CMD_HELLO: {
+        tud_cdc_write(uid, 12); // 96-bit UID
+        tud_cdc_write_flush();
+        return;
+      }
+
       case USB_CMD_RTC: {
         RTC_DateTypeDef date;
         RTC_TimeTypeDef time;

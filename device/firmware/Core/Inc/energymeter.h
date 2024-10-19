@@ -115,6 +115,7 @@ enum {
 #define USB_RES_MAGIC 0xCC
 
 enum {
+  USB_CMD_HELLO,
   USB_CMD_RTC,
   USB_CMD_DEL,
   USB_CMD_CNT,

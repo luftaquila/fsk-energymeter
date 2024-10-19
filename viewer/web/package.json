@@ -1,0 +1,26 @@
+{
+  "name": "fsk-energymeter",
+  "version": "1.0.0",
+  "main": "script.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luftaquila/fsk-energymeter.git"
+  },
+  "author": "LUFT-AQUILA",
+  "license": "Beerware",
+  "bugs": {
+    "url": "https://github.com/luftaquila/fsk-energymeter/issues"
+  },
+  "homepage": "https://github.com/luftaquila/fsk-energymeter#readme",
+  "description": "",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "notyf": "^3.10.0"
+  }
+}

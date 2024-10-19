@@ -1,0 +1,162 @@
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('assets/fonts/DepartureMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  position: absolute;
+  font-family: "Departure Mono", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+}
+
+.root-container {
+  display: flex;
+  margin-left: 80px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+div.container {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: column;
+}
+
+div.container i.fw {
+  margin-right: 1rem;
+}
+
+div.container .btn i.fw {
+  margin-right: 0.5rem;
+}
+
+div.container article {
+  margin-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+div.container div {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+input#file {
+  width: 40rem;
+  font-family: "Departure Mono";
+}
+
+.disabled {
+  opacity: 50%;
+  pointer-events: none;
+}
+
+/*******************************************************************************
+* html default style patch
+*******************************************************************************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/*******************************************************************************
+* notyf toast width
+*******************************************************************************/
+.notyf__toast {
+  min-width: 400px;
+  max-width: 600px;
+}
+
+/*******************************************************************************
+* sidebar configurations
+*******************************************************************************/
+.sidebar-navigation {
+  position: fixed;
+  min-width: 80px;
+  min-height: 100vh;
+  background-color: #313443;
+  z-index: 99999;
+}
+
+.sidebar-navigation ul {
+  position: fixed;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: white;
+}
+
+.sidebar-navigation ul li {
+  width: 80px;
+  padding: 28px 0;
+  cursor: pointer;
+  transition: all ease-out 120ms;
+}
+
+.sidebar-navigation ul li i {
+  display: block;
+  font-size: 24px;
+  transition: all ease 450ms;
+}
+
+.sidebar-navigation ul li .tooltip {
+  display: inline-block;
+  position: absolute;
+  width: max-content;
+  background-color: #313443;
+  padding: 8px 15px;
+  border-radius: 3px;
+  margin-top: -26px;
+  left: 90px;
+  opacity: 0;
+  visibility: hidden;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-navigation ul li .tooltip:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -4px;
+  top: 10px;
+  transform: rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background-color: inherit;
+}
+
+.sidebar-navigation ul li:hover {
+  background-color: #22252E;
+}
+
+.sidebar-navigation ul li:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sidebar-navigation ul li.active {
+  background-color: #22252E;
+}
+
+.sidebar-navigation ul li.active i {
+  color: #98D7EC;
+}
