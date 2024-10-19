@@ -8,10 +8,12 @@ on:
 jobs:
   build-firmware:
     uses: ./.github/workflows/firmware.yml
-  build-native:
-    uses: ./.github/workflows/native.yml
   build-pcb:
     uses: ./.github/workflows/kicad.yml
+  build-native:
+    uses: ./.github/workflows/native.yml
+  deploy-web:
+    uses: ./.github/workflows/web.yml
   release:
     name: release
     runs-on: ubuntu-latest

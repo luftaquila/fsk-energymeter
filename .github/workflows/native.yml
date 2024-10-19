@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'viewer/native/**'
+      - 'viewer/web/**'
   workflow_call:
   workflow_dispatch:
  
