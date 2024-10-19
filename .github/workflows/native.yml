@@ -3,7 +3,7 @@ name: Build desktop application
 on:
   push:
     paths:
-      - 'native/**'
+      - 'viewer/native/**'
   workflow_call:
   workflow_dispatch:
  
@@ -17,7 +17,7 @@ jobs:
       with:
         node-version: 20
         cache: npm
-        cache-dependency-path: native/package-lock.json
+        cache-dependency-path: viewer/native/package-lock.json
     - name: make
       run: |
         cd native
@@ -26,7 +26,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: build.fsk-energymeter-windows-x64
-        path: native/src-tauri/target/release/fsk-energymeter.exe
+        path: viewer/native/src-tauri/target/release/fsk-energymeter.exe
 
   build-macos:
     name: Build macOS
@@ -37,7 +37,7 @@ jobs:
       with:
         node-version: 20
         cache: npm
-        cache-dependency-path: native/package-lock.json
+        cache-dependency-path: viewer/native/package-lock.json
     - name: make
       run: |
         cd native
@@ -46,7 +46,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: build.fsk-energymeter-macos-arm64
-        path: native/src-tauri/target/release/bundle/macos
+        path: viewer/native/src-tauri/target/release/bundle/macos
 
   build-linux:
     name: Build Linux
@@ -57,15 +57,15 @@ jobs:
       with:
         node-version: 20
         cache: npm
-        cache-dependency-path: native/package-lock.json
+        cache-dependency-path: viewer/native/package-lock.json
     - name: make
       run: |
         sudo apt-get update
         sudo apt-get install -y libudev-dev libdbus-1-dev libwebkit2gtk-4.1-dev libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
-        cd native
+        cd viewer/native
         npm ci
         npm run tauri build
     - uses: actions/upload-artifact@v4
       with:
         name: build.fsk-energymeter-linux-x64
-        path: native/src-tauri/target/release/bundle/appimage/fsk-energymeter*.AppImage
+        path: viewer/native/src-tauri/target/release/bundle/appimage/fsk-energymeter*.AppImage

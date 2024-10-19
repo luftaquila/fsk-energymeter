@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>FSK-EEM Data Viewer</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lib/btn.css" />
+  <link rel="stylesheet" href="lib/uplot/dist/uPlot.min.css" />
+</head>
+
+<body>
+  <nav class="sidebar-navigation">
+    <ul>
+      <li id="viewer" class="nav-mode active">
+        <i class="fa fw fa-rocket"></i>
+        <span class="tooltip">Data viewer</span>
+      </li>
+      <li id="config" class="nav-mode">
+        <i class="fa fw fa-flag-checkered"></i>
+        <span class="tooltip">Device config</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="root-container">
+    <div id="container-viewer" class="container">
+      <h1>💾 Data Viewer</h1>
+
+      <article>
+        <h2>
+          <i class="fa fw fa-cash-register"></i>컨트롤러
+          <span class="controller-id"></span>
+        </h2>
+        <div>
+          <div class="controller-status-color" style="color: orange">
+            <i class="fa fw fa-circle-info"></i><span class="controller-status">연결 대기</span>
+          </div>
+          <div>
+            <span class="connect btn red"><i class="fab fw fa-usb"></i>컨트롤러 연결</span>
+            <span class="reset active-connect btn orange disabled"><i class="fa fw fa-arrow-rotate-right"></i>리셋</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div id="container-config" class="container">
+      <h1>📡 Device config</h1>
+
+      <article>
+      </article>
+    </div>
+  </div>
+</body>
+
+<script src="script.js"></script>
+<script src="lib/uplot/dist/uPlot.iife.min.js"></script>
+
+</html>
