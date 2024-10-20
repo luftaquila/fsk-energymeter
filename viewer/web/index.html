@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="lib/uplot/dist/uPlot.min.css" />
   <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
   <link rel="stylesheet" href="node_modules/notyf/notyf.min.css" />
-
 </head>
 
 <body>
@@ -26,7 +25,15 @@
         <i class="fa fw fa-gear"></i>
         <span class="tooltip">Device configuration</span>
       </li>
-      <li style="position: fixed; bottom: 0;"> 
+    </ul>
+    <ul style="position: fixed; bottom: 0;">
+      <li style="height: 30px; padding: 25px 0px;">
+        <a href="https://dnf.luftaquila.io/c/analytics" target="_blank">
+          <img src="assets/dnf.svg" alt="DNF SVG" style="width: 30px;" />
+          <span class="tooltip" style="margin-top: 0px;">DNF Forum (Support / Discussions)</span>
+        </a>
+      </li>
+      <li>
         <a href="https://github.com/luftaquila/fsk-energymeter" target="_blank">
           <i class="fab fw fa-github"></i>
           <span class="tooltip">luftaquila/fsk-energymeter</span>
@@ -43,23 +50,46 @@
         <h2><i class="fa fw fa-file-import"></i>File Management</h2>
 
         <div>
-          <input type="file" id="file" accept=".log">
-        </div>
-
-        <div>
           STATUS: <span id="status">No file loaded</span>
         </div>
 
         <div style="display: flex; gap: 1rem;">
-          <span id="export-json" class="btn small green disabled"><i class="fas fw fa-file-code"></i>Export JSON</span>
-          <span id="export-csv" class="btn small green disabled"><i class="fas fw fa-file-csv"></i>Export CSV</span>
+          <label for="file">
+            <span class="btn small green"><i class="fas fw fa-file"></i>Select File</span>
+          </label>
+          <input type="file" id="file" accept=".log, .json, .csv">
+          <span id="export-json" class="btn small blue disabled"><i class="fas fw fa-file-code"></i>Export JSON</span>
+          <span id="export-csv" class="btn small blue disabled"><i class="fas fw fa-file-csv"></i>Export CSV</span>
         </div>
       </article>
 
       <article>
         <h2><i class="fa fw fa-chart-line"></i>Graph Viewer</h2>
 
-        <div> </div>
+        <div>
+          <table>
+            <tr>
+              <td>Logs</td>
+              <td> : </td>
+              <td id="log-cnt">N/A</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td> : </td>
+              <td id="log-duration">N/A</td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="chart"></div>
+
+        <div style="margin-top: 2rem; text-align: center; font-size: .8rem; color: #333;">
+          <i class="fas fa-fw fa-info-circle"></i> drag or scroll to zoom in/out
+        </div>
+
+        <div style="text-align: center;">
+          <span id="image" class="btn purple small"><i class="fas fw fa-file-image"></i>Save As Image</span>
+        </div>
       </article>
     </div>
 
@@ -90,7 +120,8 @@
   </div>
 </body>
 
-<script src="script.js"></script>
 <script src="lib/uplot/dist/uPlot.iife.min.js"></script>
+<script src="lib/uplot_plugins.js"></script>
+<script src="script.js"></script>
 
 </html>

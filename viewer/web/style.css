@@ -34,7 +34,6 @@ a {
 
 div.container {
   display: flex;
-  width: 100%;
   padding: 1rem;
   flex-direction: column;
 }
@@ -52,14 +51,30 @@ div.container article {
   margin-bottom: 1.5rem;
 }
 
-div.container div {
+div.container article:last-child {
+  margin-bottom: 0px;
+}
+
+div.container > div, article > div {
   margin-left: 2rem;
   margin-bottom: 1rem;
 }
 
 input#file {
-  width: 40rem;
-  font-family: "Departure Mono";
+  display: none;
+}
+
+div#chart>div {
+  margin: 0px;
+}
+
+.u-legend.u-inline .u-value {
+  width: 50px;
+  text-align: left;
+}
+
+.u-legend.u-inline .u-series:first-child .u-value {
+  width: 100px;
 }
 
 .disabled {
