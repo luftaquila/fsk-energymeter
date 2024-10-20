@@ -19,6 +19,32 @@ function setup() {
 
   });
 
+  /* serial command fucntions**************************************************/
+  document.getElementById("connect").addEventListener("click", e => {
+
+  });
+
+  document.getElementById("cmd-rtc").addEventListener("click", e => {
+
+  });
+
+  document.getElementById("cmd-del").addEventListener("click", e => {
+
+  });
+
+  /* converted file exporters *************************************************/
+  document.getElementById("export-json").addEventListener("click", e => {
+
+  });
+
+  document.getElementById("export-csv").addEventListener("click", e => {
+
+  });
+
+  document.getElementById("export-image").addEventListener("click", e => {
+    downloadImage(uplot, filename);
+  });
+
   /* draw chart ***************************************************************/
   init_chart();
 }

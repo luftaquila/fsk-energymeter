@@ -230,3 +230,69 @@ function touchZoomPlugin(opts) {
     }
   };
 }
+
+function downloadImage(uplot, filename) {
+  let pxRatio = devicePixelRatio;
+  let rect = uplot.root.getBoundingClientRect();
+  let rect2 = uplot.ctx.canvas.getBoundingClientRect();
+  let htmlContent = uplot.root.outerHTML;
+
+  //NOTE: Use correct index here to address uPlot stylesheet. Needs to be in a separate resource for this to work.
+  let uPlotCssRules = [...document.styleSheets].find(x => x.href.includes("uplot")).cssRules;
+  let cssContent = "";
+
+  for (let { cssText } of uPlotCssRules) {
+    cssContent += `${cssText} `;
+  }
+
+  let width = Math.ceil(rect.width * pxRatio);
+  let height = Math.ceil(rect.height * pxRatio);
+  let viewBox = `0 0 ${Math.ceil(rect.width)} ${Math.ceil(rect.height)}`;
+
+  let svgText = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${viewBox}">
+        <style>
+            body { margin: 0; padding: 0; }
+            ${cssContent}
+        </style>
+        <foreignObject width="100%" height="100%">
+            <body xmlns="http://www.w3.org/1999/xhtml">${htmlContent}</body>
+        </foreignObject>
+    </svg>
+  `;
+
+  let can = document.createElement('canvas');
+  let ctx = can.getContext('2d');
+
+  can.width = width;
+  can.height = height;
+  can.style.width = Math.ceil(rect.width) + "px";
+  can.style.height = Math.ceil(rect.height) + "px";
+
+  let img = new Image();
+
+  img.crossOrigin = "anonymous";
+  img.onload = () => {
+    /* Once the SVG image is loaded in the img element,
+     * we can start drawing on the canvas and download the file afterwards */
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, can.width, can.height);
+    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(uplot.ctx.canvas, 0, (rect2.top - rect.top) * pxRatio);
+    var a = document.createElement('a');
+    a.href = can.toDataURL();
+    a.download = filename + ".png";
+    a.click();
+  };
+
+  let blob = new Blob([svgText], {type: 'image/svg+xml;charset=utf-8'});
+  
+  /* Using blob.toDataURL() taints the img element due to a bug in Chrome, see
+   * https://stackoverflow.com/questions/50824012/why-does-this-svg-holding-blob-url-taint-the-canvas-in-chrome 
+   * The workaround here converts the blob to a DataURL which avoids the bug. */
+  let reader = new FileReader();
+  reader.readAsDataURL(blob);
+  reader.onload = function(e) {
+    img.src = e.target.result;
+  }
+}
