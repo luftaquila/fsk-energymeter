@@ -1,6 +1,8 @@
 setup();
 
 function setup() {
+  notyf = new Notyf({ ripple: false, duration: 3500 });
+  init_chart();
 
   /* navigation sidebar handler ***********************************************/
   document.querySelectorAll('.nav-mode').forEach(elem => {
@@ -112,16 +114,104 @@ function setup() {
   });
 
   /* serial command funcntions**************************************************/
-  document.getElementById("connect").addEventListener("click", e => {
+  document.getElementById("connect").addEventListener("click", async e => {
+    if (!("serial" in navigator)) {
+      return notyf.error("Web Serial API not supported.");
+    }
 
+    port = await navigator.serial.requestPort({
+      filters: [{
+        usbVendorId: USB_CDC_VID,
+        usbProductId: USB_CDC_PID,
+      }]
+    });
+
+    // device disconnect event handler
+    port.addEventListener("disconnect", e => {
+      document.getElementById("device").innerText = "UNKNOWN";
+      document.getElementById("connect").classList.remove('green', 'disabled');
+      document.getElementById("connect").classList.add('orange');
+      document.getElementById("cmd-rtc").classList.add('disabled');
+      document.getElementById("cmd-del").classList.add('disabled');
+
+      notyf.error("Device disconnected");
+    });
+
+    try {
+      await port.open({ baudRate: 115200 });
+    } catch (e) {
+      return notyf.error(`Connection failed: ${e}`);
+    }
+
+    let res = await transceive(new Uint8Array([USB_CMD_MAGIC, USB_CMD.indexOf("USB_CMD_HELLO"), ...new Array(6).fill(0)]), LEN_DEVICE_UID);
+
+    if (!res) {
+      return notyf.error("Failed to identify the device");
+    }
+
+    let uid = [];
+    uid[0] = to_uint(32, res, 0);
+    uid[1] = to_uint(32, res, 4);
+    uid[2] = to_uint(32, res, 8);
+
+    document.getElementById("device").innerText = uid.map(x => x.toString(16).toUpperCase().padStart(8, '0')).join('-');
+    document.getElementById("connect").classList.remove('orange');
+    document.getElementById("connect").classList.add('green', 'disabled');
+    document.getElementById("cmd-rtc").classList.remove('disabled');
+    document.getElementById("cmd-del").classList.remove('disabled');
+
+    notyf.success("Device connected");
   });
 
-  document.getElementById("cmd-rtc").addEventListener("click", e => {
+  document.getElementById("cmd-rtc").addEventListener("click", async e => {
+    let datetime = [
+      new Date().getFullYear() - 2000,
+      Number(`0x${new Date().getMonth() + 1}`),
+      new Date().getDate(),
+      new Date().getHours(),
+      new Date().getMinutes(),
+      new Date().getSeconds()
+    ];
 
+    let res = await transceive(new Uint8Array([USB_CMD_MAGIC, USB_CMD.indexOf("USB_CMD_RTC"), ...datetime]), LEN_DEVICE_RES);
+
+    if (!res) {
+      console.log(res);
+      return notyf.error("Failed to command the device");
+    }
+
+    if (res[USB_RES_POS_MAGIC] !== USB_RES_MAGIC) {
+      console.log(res);
+      return notyf.error("Device response error");
+    }
+
+    if (res[USB_RES_POS_RES] !== USB_RES.indexOf("USB_RES_OK")) {
+      console.log(res);
+      return notyf.Error("RTC sync command failed");
+    }
+
+    notyf.success("Device RTC synchronized");
   });
 
-  document.getElementById("cmd-del").addEventListener("click", e => {
+  document.getElementById("cmd-del").addEventListener("click", async e => {
+    let res = await transceive(new Uint8Array([USB_CMD_MAGIC, USB_CMD.indexOf("USB_CMD_DEL"), ...new Array(6).fill(0)]), LEN_DEVICE_RES);
 
+    if (!res) {
+      console.log(res);
+      return notyf.error("Failed to command the device");
+    }
+
+    if (res[USB_RES_POS_MAGIC] !== USB_RES_MAGIC) {
+      console.log(res);
+      return notyf.error("Device response error");
+    }
+
+    if (res[USB_RES_POS_RES] !== USB_RES.indexOf("USB_RES_OK")) {
+      console.log(res);
+      return notyf.Error("Delete command failed");
+    }
+
+    notyf.success("Device log files deleted");
   });
 
   /* converted file exporters *************************************************/
@@ -162,11 +252,10 @@ function setup() {
   document.getElementById("export-image").addEventListener("click", e => {
     downloadImage(uplot, filename);
   });
-
-  /* draw chart ***************************************************************/
-  init_chart();
 }
 
+
+/* draw chart *****************************************************************/
 function init_chart() {
   uplot = new uPlot({
     width: 900,
@@ -246,6 +335,56 @@ function init_chart() {
   }, null, document.getElementById("chart"));
 }
 
+
+/* transmit query to device and return response *******************************/
+async function transceive(query, bytes) {
+  let reader;
+  let writer;
+
+  try {
+    writer = port.writable.getWriter();
+    await writer.write(query);
+    writer.releaseLock();
+  } catch (e) {
+    writer.releaseLock();
+    notyf.error(`Failed to query device: ${e}`);
+    return false;
+  }
+
+  reader = port.readable.getReader();
+
+  let received = [];
+
+  try {
+    while (port && port.readable) {
+      const { value, done } = await Promise.race([
+        reader.read(),
+        new Promise((_, reject) => setTimeout(reject, 1000, new Error("Response Timeout")))
+      ]);
+
+      if (done) {
+        break;
+      }
+
+      if (value) {
+        received = [...received, ...Array.from(value)];
+
+        if (received.length >= bytes) {
+          break;
+        }
+      }
+    }
+  } catch (e) {
+    reader.releaseLock();
+    notyf.error(`Failed to receive response: ${e}`);
+    return false;
+  }
+
+  reader.releaseLock();
+  return received;
+}
+
+
 /* utility functions **********************************************************/
 function ms_to_human_time(ms) {
   let seconds = (ms / 1000).toFixed(1);
@@ -265,6 +404,7 @@ function download(content, fileName, contentType) {
     a.download = fileName;
     a.click();
 }
+
 
 /* new Date().format() ********************************************************/
 var dateFormat = function () {

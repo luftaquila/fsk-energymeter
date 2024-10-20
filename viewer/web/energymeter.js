@@ -16,6 +16,9 @@ const LOG_POS_EVENT_TYPE = 8;
 const LOG_POS_EVENT_ID = 9;
 const LOG_POS_EVENT_DATA = 10;
 
+const USB_CDC_VID = 0x1999;
+const USB_CDC_PID = 0x0503;
+
 const USB_CMD_MAGIC = 0xBB;
 const USB_RES_MAGIC = 0xCC;
 
@@ -31,6 +34,13 @@ const USB_RES = [
   "USB_RES_ERR_UNKNOWN",
   "USB_RES_ERR_INVALID",
 ];
+
+const LEN_DEVICE_UID = 12;
+const LEN_DEVICE_RES = 4;
+
+const USB_RES_POS_MAGIC = 0;
+const USB_RES_POS_RES = 1;
+const USB_RES_POS_DATA = 2;
 
 
 function parse(data, date) {
