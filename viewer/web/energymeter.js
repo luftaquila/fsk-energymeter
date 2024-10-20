@@ -33,7 +33,7 @@ const USB_RES = [
 ];
 
 
-function parse(data) {
+function parse(data, date) {
   let logs = {
     ok: 0,
     error: 0,
@@ -63,15 +63,15 @@ function parse(data) {
     let log = {
       raw: data.slice(i, i + LOG_SIZE),
       type: LOG_TYPE[to_uint(8, data, i + LOG_POS_TYPE)],
-      timestamp: to_uint(32, data, i + LOG_POS_TIMESTAMP),
+      timestamp: date + to_uint(32, data, i + LOG_POS_TIMESTAMP),
     };
 
     switch (log.type) {
       case "LOG_TYPE_RECORD": {
         log.record = {
-          hv_voltage: to_uint(16, data, i + LOG_POS_RECORD_HV_VOLTAGE) / 100, // 0.01 V
-          hv_current: to_int(16, data, i + LOG_POS_RECORD_HV_CURRENT) / 10, // 0.1 A, signed
-          lv_voltage: to_uint(16, data, i + LOG_POS_RECORD_LV_VOLTAGE) / 100, // 0.01 V
+          hv_voltage: to_uint(16, data, i + LOG_POS_RECORD_HV_VOLTAGE) / 100,  // 0.01 V
+          hv_current: to_int(16, data, i + LOG_POS_RECORD_HV_CURRENT) / 10,    // 0.1 A, signed
+          lv_voltage: to_uint(16, data, i + LOG_POS_RECORD_LV_VOLTAGE) / 100,  // 0.01 V
           temperature: to_int(16, data, i + LOG_POS_RECORD_TEMPERATURE) / 100, // 0.01 °C
         };
         break;
@@ -105,12 +105,16 @@ function parse(data) {
       processed[0].push(log.timestamp);
       processed[1].push(log.record.hv_voltage);
       processed[2].push(log.record.hv_current);
-      processed[3].push(log.record.lv_voltage);
-      processed[4].push(log.record.temperature);
+      processed[3].push(log.record.hv_voltage * log.record.hv_current / 1000);
+      processed[4].push(log.record.lv_voltage);
+      processed[5].push(log.record.temperature);
     };
   }
 
-  return processed;
+  return {
+    logs: logs,
+    processed: processed
+  };
 }
 
 /* utility functions***********************************************************/
