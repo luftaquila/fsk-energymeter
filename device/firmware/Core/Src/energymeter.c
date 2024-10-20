@@ -48,15 +48,12 @@ void energymeter_init(void) {
     HAL_RTC_GetTime(&hrtc, &time, FORMAT_BIN);
     HAL_RTC_GetDate(&hrtc, &date, FORMAT_BIN);
 
-    // read current timestamp;
-    uint32_t boot = HAL_GetTick();
-
     sprintf(filename, "20%02d-%02d-%02d-%02d-%02d-%02d %08lX-%08lX-%08lX.log",
             date.Year, date.Month, date.Date, time.Hours, time.Minutes, time.Seconds,
             uid[0], uid[1], uid[2]);
 
     DEBUG_MSG("LOG : %s\n", filename);
 
-    energymeter_record(filename, boot);
+    energymeter_record(filename);
   }
 }

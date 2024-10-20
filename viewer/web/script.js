@@ -16,10 +16,44 @@ function setup() {
 
   /* file select event handler ************************************************/
   document.getElementById("file").addEventListener("change", e => {
+    let file = e.target.files[0];
+
+    document.getElementById("status").innerText = "Processing data...";
+
+    if (file) {
+      let reader = new FileReader();
+      ext = file.name.split('.').pop();
+      filename = file.name.replace(`.${ext}`, '');
+
+      switch (ext) {
+        case 'log': {
+          reader.readAsArrayBuffer(file);
+          reader.onload = e => {
+            let data = new Uint8Array(e.target.result);
+            uplot.setData(parse(data));
+            document.getElementById("status").innerText = `${filename}.${ext} loaded`;
+          };
+          break;
+        }
+
+        // json and csv
+        default: {
+          reader.readAsText(file);
+          reader.onload = e => {
+            let data = e.target.result;
+
+            console.log(data, filename, ext);
+          };
+          break;
+        }
+      }
+
+
+    }
 
   });
 
-  /* serial command fucntions**************************************************/
+  /* serial command funcntions**************************************************/
   document.getElementById("connect").addEventListener("click", e => {
 
   });

@@ -53,13 +53,13 @@ enum {
 /******************************************************************************
  * log types and formats
  *****************************************************************************/
+#define LOG_MAGIC 0xAA
+
 enum {
   LOG_TYPE_RECORD, // 100 Hz report
   LOG_TYPE_EVENT,  // instant event
   LOG_TYPE_CNT
 };
-
-#define LOG_MAGIC 0xAA
 
 typedef struct {
   uint16_t hv_voltage;  // 0.01 V
@@ -77,7 +77,7 @@ typedef struct {
 typedef struct {
   uint8_t magic;      // log packet magic sequence
   uint8_t type;       // log type
-  uint16_t checksum;  // CRC checksum
+  uint16_t checksum;  // checksum
   uint32_t timestamp; // ms elapsed since boot
   union {
     log_record_t record;
@@ -145,7 +145,7 @@ typedef struct {
  *****************************************************************************/
 void energymeter_init(void);
 void energymeter_usb(void);
-void energymeter_record(char *filename, uint32_t boot);
+void energymeter_record(char *filename);
 
 /******************************************************************************
  * TinyUSB function prototypes

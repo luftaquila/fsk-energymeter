@@ -3,7 +3,6 @@
 #include "ff.h"
 #include "diskio.h"
 #include "adc.h"
-#include "crc.h"
 #include "tim.h"
 #include "main.h"
 #include "energymeter.h"
@@ -18,7 +17,7 @@ volatile uint32_t adc_flag; // adc conversion flag
 uint32_t adc[ADC_CH_CNT];   // adc conversion buffer
 float adc_mv[ADC_CH_CNT];   // adc mV calc buffer
 
-void energymeter_record(char *filename, uint32_t boot) {
+void energymeter_record(char *filename) {
   FATFS fat;
 
   disk_initialize((BYTE) 0);
@@ -52,15 +51,22 @@ void energymeter_record(char *filename, uint32_t boot) {
       HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
       while (adc_flag != TRUE); // poll until ADC conv done; nothing to do
 
-      log.timestamp = HAL_GetTick() - boot;
+      log.timestamp = HAL_GetTick(); // boot sequence may take ~500ms; take granted for the error
       log.packet.record.hv_voltage = adc[ADC_HV_VOLTAGE];
       log.packet.record.hv_current = adc[ADC_HV_CURRENT];
       log.packet.record.lv_voltage = adc[ADC_LV_VOLTAGE];
       log.packet.record.temperature = adc[ADC_TEMP];
 
-      // take lower 16 bit of the CRC32
+      // checksum calculation
       log.checksum = 0;
-      log.checksum = HAL_CRC_Calculate(&hcrc, (uint32_t *)&log, sizeof(log_t) / sizeof(uint32_t)) & 0xFFFF;
+      log.checksum += *(uint16_t *)&log;
+      log.checksum += *((uint16_t *)&log + 2);
+      log.checksum += *((uint16_t *)&log + 3);
+      log.checksum += *((uint16_t *)&log + 4);
+      log.checksum += *((uint16_t *)&log + 5);
+      log.checksum += *((uint16_t *)&log + 6);
+      log.checksum += *((uint16_t *)&log + 7);
+      log.checksum = ~log.checksum;
 
       // won't handle error; better keep retrying on failure
       ret = f_write(&file, &log, sizeof(log_t), &written);
