@@ -14810,7 +14810,7 @@
 				)
 			)
 		)
-		(property "Value" "LM324DR"
+		(property "Value" "LMV324AIDR"
 			(at 347.726 56.896 0)
 			(effects
 				(font
@@ -14845,7 +14845,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C71035"
+		(property "LCSC" "C484732"
 			(at 344.17 60.96 0)
 			(effects
 				(font
@@ -16154,7 +16154,7 @@
 				)
 			)
 		)
-		(property "Value" "TLV9001IDBVR"
+		(property "Value" "TLV9001UIDBVR"
 			(at 228.6 54.102 0)
 			(effects
 				(font
@@ -16189,7 +16189,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C398363"
+		(property "LCSC" "C544301"
 			(at 218.44 58.42 0)
 			(effects
 				(font
@@ -19105,7 +19105,7 @@
 				)
 			)
 		)
-		(property "Value" "LM324DR"
+		(property "Value" "LMV324AIDR"
 			(at 304.8 30.226 0)
 			(effects
 				(font
@@ -19140,7 +19140,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C71035"
+		(property "LCSC" "C484732"
 			(at 300.99 34.29 0)
 			(effects
 				(font
@@ -21514,7 +21514,7 @@
 				)
 			)
 		)
-		(property "Value" "LM324DR"
+		(property "Value" "LMV324AIDR"
 			(at 347.98 87.122 90)
 			(effects
 				(font
@@ -21549,7 +21549,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C71035"
+		(property "LCSC" "C484732"
 			(at 347.98 83.82 0)
 			(effects
 				(font
@@ -22548,7 +22548,7 @@
 				)
 			)
 		)
-		(property "Value" "LM324DR"
+		(property "Value" "LMV324AIDR"
 			(at 303.276 77.978 0)
 			(effects
 				(font
@@ -22583,7 +22583,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C71035"
+		(property "LCSC" "C484732"
 			(at 299.72 82.55 0)
 			(effects
 				(font
@@ -25551,7 +25551,7 @@
 				)
 			)
 		)
-		(property "Value" "LM324DR"
+		(property "Value" "LMV324AIDR"
 			(at 338.836 32.512 0)
 			(effects
 				(font
@@ -25586,7 +25586,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C71035"
+		(property "LCSC" "C484732"
 			(at 335.28 36.83 0)
 			(effects
 				(font
