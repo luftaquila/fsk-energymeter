@@ -51,7 +51,32 @@
 
 ## Usage
 
-TODO
+There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is powered, it measures the LV supply voltage and decide the mode.
+
+### Record mode
+If VIN >= 6V, the device enters the Record mode.
+
+The device will measure HV voltage, HV current, LV voltage and the CPU temperature every 10 ms and save it to the file.
+
+### USB mode
+If VIN < 6V, the device enters the USB mode.
+
+When mounted, after ~20 seconds(see [Troubleshootings](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#1-fsk-eem-usb-mass-storage-took-too-much-time-to-be-mounted-on-the-pc)), FSK-EEM USB Mass Storage will appear on the host PC.
+
+The recorded log files are stored in the drive like a standard USB memory stick.
+
+> [!NOTE]
+> The drive is read-only. You cannot edit or delete the log files in the explorer.
+
+#### FSK-EEM Viewer
+
+* To parse the record, open the record file in the FSK-EEM Viewer.
+* To delete the records, click the `Delete` button in the Device Configuration tab.
+* To sync the device clock with the host PC, click the `Sync RTC` button in the Device Configuration tab.
+
+> [!IMPORTANT]
+> The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.<br>
+> Do not edit the filename of the *.log file. JSON or CSV files are not affected.
 
 ## DIY
 
@@ -141,7 +166,7 @@ make debug    # debug build
 ## Troubleshootings
 
 #### 1. FSK-EEM USB Mass Storage took too much time to be mounted on the PC
-FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s. When you plug the FSK-EEM to your PC, the host(PC) will try to load the FAT table of the SD Card into its memory. Since the FAT32's FAT table is around 8 MB in size, it will take ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost. The RTC sync or record delete functions will work immediately regardless of this limit.
+FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s. When you plug the FSK-EEM to your PC, the host(PC) will try to load the FAT table of the SDMMC into its memory. Since the FAT32's FAT table is around 8 MB in size, it will take ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost. The RTC sync or record delete functions will work immediately regardless of this limit.
 
 ## LICENSE
 
