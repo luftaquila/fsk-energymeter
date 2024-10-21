@@ -68,15 +68,20 @@ The recorded log files are stored in the drive like a standard USB memory stick.
 > [!NOTE]
 > The drive is read-only. You cannot edit or delete the log files in the explorer.
 
+> [!IMPORTANT]
+> The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.<br>
+> Do not edit the filename of the *.log file. JSON or CSV files are not affected.
+
 #### FSK-EEM Viewer
+
+Download the latest FSK-EEM Viewer from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).
+
+> [!IMPORTANT]
+> In MacOS, follow the guide in the release page to set the permission properly before open the executable.
 
 * To parse the record, open the record file in the FSK-EEM Viewer.
 * To delete the records, click the `Delete` button in the Device Configuration tab.
 * To sync the device clock with the host PC, click the `Sync RTC` button in the Device Configuration tab.
-
-> [!IMPORTANT]
-> The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.<br>
-> Do not edit the filename of the *.log file. JSON or CSV files are not affected.
 
 ## DIY
 

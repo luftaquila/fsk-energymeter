@@ -2,18 +2,17 @@
   "$schema": "https://schema.tauri.app/config/2.0.0",
   "productName": "fsk-energymeter",
   "version": "0.1.0",
-  "identifier": "fsk-energymeter.luftaquila.io",
+  "identifier": "luftaquila.fsk-energymeter",
   "build": {
-    "frontendDist": "../src"
+    "frontendDist": ["../../web", "../../web/node_modules"]
   },
   "app": {
     "withGlobalTauri": true,
     "windows": [
       {
         "title": "fsk-energymeter",
-        "width": 800,
-        "height": 600
-        
+        "width": 1100,
+        "height": 1200
       }
     ],
     "security": {
