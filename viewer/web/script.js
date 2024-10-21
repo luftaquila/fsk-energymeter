@@ -25,6 +25,10 @@ function setup() {
       ext = file.name.split('.').pop();
       filename = file.name.replace(`.${ext}`, '');
 
+      if (!/^\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}/.test(filename)) {
+        return notyf.error("*.log file should contain the timestamp in the filename");
+      }
+
       document.getElementById("file-selected").innerText = "Processing data...";
 
       switch (ext) {
@@ -133,6 +137,8 @@ function setup() {
       document.getElementById("connect").classList.add('orange');
       document.getElementById("cmd-rtc").classList.add('disabled');
       document.getElementById("cmd-del").classList.add('disabled');
+      document.getElementById("cmd-del-unlock").classList.add('disabled');
+      document.getElementById("cmd-del-unlock").innerHTML = `<i class="fas fw fa-lock"></i>Unlock`;
 
       notyf.error("Device disconnected");
     });
@@ -158,7 +164,7 @@ function setup() {
     document.getElementById("connect").classList.remove('orange');
     document.getElementById("connect").classList.add('green', 'disabled');
     document.getElementById("cmd-rtc").classList.remove('disabled');
-    document.getElementById("cmd-del").classList.remove('disabled');
+    document.getElementById("cmd-del-unlock").classList.remove('disabled');
 
     notyf.success("Device connected");
   });
@@ -191,6 +197,22 @@ function setup() {
     }
 
     notyf.success("Device RTC synchronized");
+  });
+
+  document.getElementById("cmd-del-unlock").addEventListener("click", e => {
+    switch (e.target.innerText) {
+      case "Unlock": {
+        document.getElementById("cmd-del").classList.remove('disabled');
+        document.getElementById("cmd-del-unlock").innerHTML = `<i class="fas fw fa-lock-open"></i>Lock`;
+        break;
+      }
+
+      case "Lock": {
+        document.getElementById("cmd-del").classList.add('disabled');
+        document.getElementById("cmd-del-unlock").innerHTML = `<i class="fas fw fa-lock"></i>Unlock`;
+        break;
+      }
+    }
   });
 
   document.getElementById("cmd-del").addEventListener("click", async e => {
