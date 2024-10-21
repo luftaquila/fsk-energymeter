@@ -6,8 +6,8 @@
 
 * Records HV bus voltage and current, LV voltage and ambient (CPU) temperature
 * 100 Hz data sampling rate
-* Easy data extraction via USB Mass Storage interface
-* Provides record timing data with internal real-time clock
+* Mounted as USB Mass Storage to PC when extracting records
+* Records with real world time using internal RTC
 * Data visualizer tool available on both web and desktop applications
 
 ## Specifications
@@ -49,6 +49,10 @@
 
 ![](.github/assets/wire.png)
 
+## Usage
+
+TODO
+
 ## DIY
 
 ### Hardware
@@ -65,6 +69,79 @@ Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](
 You may use [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) or [OpenOCD for Windows](https://gnutoolchains.com/arm-eabi/openocd/) to upload an ELF file.
 
 Take a look at the OpenOCD script [device/firmware/fsk-energymeter.cfg](https://github.com/luftaquila/fsk-energymeter/blob/main/device/firmware/fsk-energymeter.cfg) if you are using OpenOCD.
+
+## Development
+
+### Firmware
+
+#### Prerequisites
+
+1. Make sure following executables are in the `$PATH`.
+    * arm-none-eabi-gcc
+    * openocd
+    * make
+
+* Common
+    * [Arm GNU Toolchain (**AArch32 bare-metal target (arm-none-eabi)**)](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+* Windows
+    * [OpenOCD for Windows](https://gnutoolchains.com/arm-eabi/openocd/)
+    * [Make for Windows](https://gnuwin32.sourceforge.net/packages/make.htm)
+* MacOS
+    ```sh
+    brew install make openocd
+    ```
+* Linux
+    ```sh
+    sudo apt-get install build-essential openocd
+    ```
+
+2. Clone repository
+    ```sh
+    git clone https://github.com/luftaquila/fsk-energymeter.git --recursive
+    ```
+
+#### Build and upload
+
+```sh
+cd fsk-energymeter/device/firmware
+make program  # release build
+make debug    # debug build
+```
+
+### Viewer
+
+#### Prerequisites
+
+1. [Node.js](https://nodejs.org/en/download/package-manager) >= v20
+2. [Rust](https://www.rust-lang.org/tools/install) >= 1.81.0
+3. Clone the repository and install dependencies
+    ```sh
+    git clone https://github.com/luftaquila/fsk-energymeter.git --recursive
+    cd fsk-energymeter/viewer/web
+    npm install
+    cd ../native
+    npm install
+    ```
+
+#### Build and run
+
+* Web
+    ```sh 
+    cd fsk-energymeter/viewer/web
+    python -m http.server 80  # open http://localhost
+    ```
+
+* Native
+    ```sh
+    cd fsk-energymeter/viewer/native
+    npm run tauri dev    # run
+    npm run tauri build  # build executables
+    ```
+
+## Troubleshootings
+
+#### 1. FSK-EEM USB Mass Storage took too much time to be mounted on the PC
+FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s. When you plug the FSK-EEM to your PC, the host(PC) will try to load the FAT table of the SD Card into its memory. Since the FAT32's FAT table is around 8 MB in size, it will take ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost. The RTC sync or record delete functions will work immediately regardless of this limit.
 
 ## LICENSE
 
