@@ -41,11 +41,9 @@ jobs:
           body: |
             ## Note
             ### Firmwares
-            Use [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) to upload the firmware to the device and set the device IDs.  
+            Use [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) to upload the firmware to the device.
 
-            All devices must have their ID in the flash memeory. Ensure that the value `0xBADACAFE` is stored at the memory address 0x0803FF00 and device ID at 0x0803FF04.
-
-            ### Desktop Application
+            ### FSK-EEM Viewer
 
             In MacOS, run the following command before open the installed `fsk-energymeter` for the first time.\
             Unless, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
@@ -55,3 +53,5 @@ jobs:
             xattr -c fsk-energymeter.app
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
+
+            Currently, the Device Configuration tab of the FSK-EEM Viewer is not supported in the MacOS due to a lack of WebSerial API.

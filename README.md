@@ -77,7 +77,8 @@ The recorded log files are stored in the drive like a standard USB memory stick.
 Download the latest FSK-EEM Viewer from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).
 
 > [!IMPORTANT]
-> In MacOS, follow the guide in the release page to set the permission properly before open the executable.
+> In MacOS, follow the guide in the release page to set the permission properly before open the executable.<br>
+> Also, the Device Configuration tab is not supported in the MacOS due to a lack of WebSerial API.
 
 * To parse the record, open the record file in the FSK-EEM Viewer.
 * To delete the records, click the `Delete` button in the Device Configuration tab.
