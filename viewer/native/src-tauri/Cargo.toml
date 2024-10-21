@@ -1,8 +1,10 @@
 [package]
 name = "fsk-energymeter"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+version = "1.0.0"
+license = "Beerware"
+description = "Formula Student Korea Electric Energy Meter"
+authors = ["luftaquila <mail@luftaquila.io>"]
+repository = "https://github.com/luftaquila/fsk-energymeter"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
