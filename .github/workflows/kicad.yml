@@ -51,6 +51,7 @@ jobs:
           convert kicad/fsk-energymeter-artwork.png -trim -bordercolor "#001023" -border 100x100 kicad/fsk-energymeter-artwork.png
           kicad-cli pcb export step -o kicad/fsk-energymeter-3d.stp --include-tracks device/hardware/fsk-energymeter.kicad_pcb
           kicad-cli pcb export vrml -o kicad/fsk-energymeter-3d.wrl device/hardware/fsk-energymeter.kicad_pcb
+          cp -r device/hardware/jlcpcb/production_files kicad/gerbers
 
       - uses: actions/upload-artifact@v4
         with:
