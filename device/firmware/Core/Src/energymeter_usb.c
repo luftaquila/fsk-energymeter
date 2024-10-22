@@ -263,7 +263,23 @@ void cdc_task(void) {
   if (rcv.magic == USB_CMD_MAGIC && count == sizeof(usb_cmd_t)) {
     switch (rcv.cmd) {
       case USB_CMD_HELLO: {
+        RTC_DateTypeDef date;
+        RTC_TimeTypeDef time;
+
+        HAL_RTC_GetTime(&hrtc, &time, FORMAT_BIN);
+        HAL_RTC_GetDate(&hrtc, &date, FORMAT_BIN);
+
+        uint8_t data[6] = {
+          date.Year,
+          date.Month,
+          date.Date,
+          time.Hours,
+          time.Minutes,
+          time.Seconds
+        };
+
         tud_cdc_write(uid, 12); // 96-bit UID
+        tud_cdc_write(data, 6); // current time
         tud_cdc_write_flush();
         return;
       }

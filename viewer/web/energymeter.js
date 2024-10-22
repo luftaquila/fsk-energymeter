@@ -35,7 +35,7 @@ const USB_RES = [
   "USB_RES_ERR_INVALID",
 ];
 
-const LEN_DEVICE_UID = 12;
+const LEN_DEVICE_HELLO = 18;
 const LEN_DEVICE_RES = 4;
 
 const USB_RES_POS_MAGIC = 0;
