@@ -276,7 +276,7 @@ function downloadImage(uplot, filename) {
   let htmlContent = uplot.root.outerHTML;
 
   //NOTE: Use correct index here to address uPlot stylesheet. Needs to be in a separate resource for this to work.
-  let uPlotCssRules = [...document.styleSheets].find(x => x.href.includes("uplot")).cssRules;
+  let uPlotCssRules = [...document.styleSheets].find(x => x.href && x.href.includes("uplot")).cssRules;
   let cssContent = "";
 
   for (let { cssText } of uPlotCssRules) {
