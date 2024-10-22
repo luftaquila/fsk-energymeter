@@ -22,11 +22,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
       - run: |
-          zip -r fsk-energymeter-firmware-${{ github.ref_name }}.zip firmware
+          zip -r fsk-energymeter-firmware-${{ github.ref_name }}.zip fsk-energymeter-firmware
           (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-macos-arm64-${{ github.ref_name }}.app.zip .)
           mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-windows-x64-${{ github.ref_name }}.exe
           mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-linux-x64-${{ github.ref_name }}.AppImage
-          zip -r fsk-energymeter-pcb-${{ github.ref_name }}.zip kicad
+          zip -r fsk-energymeter-pcb-${{ github.ref_name }}.zip fsk-energymeter-pcb
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
@@ -39,13 +39,22 @@ jobs:
           commit: ${{ github.sha }}
           tag: ${{ github.ref_name }}
           body: |
-            ## Note
-            ### Firmwares
-            Use [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) to upload the firmware to the device.
+            ### Firmware
+            Use the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) with the [ST-Link](https://smartstore.naver.com/misoparts/products/5263743411) to upload the firmware ELF to the device.\
+            Make sure the `Shared` option is set to `Enabled` in the ST-LINK configuration.
 
             ### FSK-EEM Viewer
+            #### Web
 
-            In MacOS, run the following command before open the installed `fsk-energymeter` for the first time.\
+            https://luftaquila.github.io/fsk-energymeter/
+
+            #### Windows
+
+            When the popup `Windows protected your PC` appears, click <ins>More Info</ins> and click `Run anyway` to run the executable.
+
+            #### MacOS
+
+            Run the following commands before open the `fsk-energymeter` for the first time.\
             Unless, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
 
             ```sh
@@ -54,4 +63,8 @@ jobs:
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
 
-            Currently, the Device Configuration tab of the FSK-EEM Viewer is not supported in the MacOS due to a lack of WebSerial API.
+            The Device Configuration tab is not supported in the MacOS due to a lack of WebSerial API. Use the web version instead.
+
+            #### Linux
+
+            FSK-EEM Viewer is not tested on the Linux yet. Welcome for the testing!

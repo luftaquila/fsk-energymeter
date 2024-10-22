@@ -48,5 +48,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: firmware
+          name: fsk-energymeter-firmware
           path: device/firmware/actions

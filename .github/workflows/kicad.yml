@@ -55,5 +55,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: kicad
+          name: fsk-energymeter-pcb
           path: kicad
