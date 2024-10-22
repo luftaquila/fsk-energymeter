@@ -285,8 +285,8 @@ void cdc_task(void) {
       }
 
       case USB_CMD_RTC: {
-        RTC_DateTypeDef date;
-        RTC_TimeTypeDef time;
+        RTC_DateTypeDef date = { 0, };
+        RTC_TimeTypeDef time = { 0, };
 
         date.Year = rcv.data[0];
         date.Month = rcv.data[1];
@@ -306,6 +306,13 @@ void cdc_task(void) {
           res.res = USB_RES_ERR_UNKNOWN;
           break;
         }
+
+        // reset CR register
+        __HAL_RTC_WRITEPROTECTION_DISABLE(&hrtc);
+        RTC_EnterInitMode(&hrtc);
+        hrtc.Instance->CR = 0;
+        RTC_ExitInitMode(&hrtc);
+        __HAL_RTC_WRITEPROTECTION_ENABLE(&hrtc);
 
         res.res = USB_RES_OK;
         break;
