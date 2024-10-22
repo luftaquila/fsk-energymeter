@@ -20,8 +20,8 @@ void energymeter_init(void) {
   RTC_DateTypeDef date;
   RTC_TimeTypeDef time;
 
-  HAL_RTC_GetTime(&hrtc, &time, FORMAT_BIN);
-  HAL_RTC_GetDate(&hrtc, &date, FORMAT_BIN);
+  HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN);
 
   // read 96-bit device UID
   uid[0] = HAL_GetUIDw0();

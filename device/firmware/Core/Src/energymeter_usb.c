@@ -266,8 +266,8 @@ void cdc_task(void) {
         RTC_DateTypeDef date;
         RTC_TimeTypeDef time;
 
-        HAL_RTC_GetTime(&hrtc, &time, FORMAT_BIN);
-        HAL_RTC_GetDate(&hrtc, &date, FORMAT_BIN);
+        HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
+        HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN);
 
         uint8_t data[6] = {
           date.Year,
@@ -289,7 +289,7 @@ void cdc_task(void) {
         RTC_TimeTypeDef time;
 
         date.Year = rcv.data[0];
-        date.Month = rcv.data[1]; // should be hex encoded
+        date.Month = rcv.data[1];
         date.Date = rcv.data[2];
         time.Hours = rcv.data[3];
         time.Minutes = rcv.data[4];
@@ -297,12 +297,12 @@ void cdc_task(void) {
 
         date.WeekDay = 0; // will be automatically calculated
 
-        if (HAL_RTC_SetTime(&hrtc, &time, FORMAT_BIN) != HAL_OK) {
+        if (HAL_RTC_SetTime(&hrtc, &time, RTC_FORMAT_BCD) != HAL_OK) {
           res.res = USB_RES_ERR_UNKNOWN;
           break;
         }
 
-        if (HAL_RTC_SetDate(&hrtc, &date, FORMAT_BIN) != HAL_OK) {
+        if (HAL_RTC_SetDate(&hrtc, &date, RTC_FORMAT_BCD) != HAL_OK) {
           res.res = USB_RES_ERR_UNKNOWN;
           break;
         }

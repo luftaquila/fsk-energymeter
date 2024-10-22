@@ -48,8 +48,8 @@ DWORD get_fattime(void)
   RTC_DateTypeDef date;
   RTC_TimeTypeDef time;
 
-  HAL_RTC_GetTime(&hrtc, &time, FORMAT_BIN);
-  HAL_RTC_GetDate(&hrtc, &date, FORMAT_BIN);
+  HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN);
 
   return (DWORD)( ((date.Year + 20) << 25)
                  | ((date.Month) << 21)

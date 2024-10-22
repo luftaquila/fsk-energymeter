@@ -183,12 +183,12 @@ function setup() {
 
   document.getElementById("cmd-rtc").addEventListener("click", async e => {
     let datetime = [
-      new Date().getFullYear() % 100,
+      Number(`0x${new Date().getFullYear() % 100}`),
       Number(`0x${new Date().getMonth() + 1}`),
-      new Date().getDate(),
-      new Date().getHours(),
-      new Date().getMinutes(),
-      new Date().getSeconds()
+      Number(`0x${new Date().getDate()}`),
+      Number(`0x${new Date().getHours()}`),
+      Number(`0x${new Date().getMinutes()}`),
+      Number(`0x${new Date().getSeconds()}`)
     ];
 
     let res = await transceive(new Uint8Array([USB_CMD_MAGIC, USB_CMD.indexOf("USB_CMD_RTC"), ...datetime]), LEN_DEVICE_RES);
