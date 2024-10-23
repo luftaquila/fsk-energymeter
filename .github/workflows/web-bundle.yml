@@ -2,6 +2,8 @@ name: Build bundled HTML
 
 on:
   push:
+    branches:
+      - '**'
     paths:
       - 'viewer/web/**'
   workflow_call:

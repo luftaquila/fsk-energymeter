@@ -2,6 +2,8 @@ name: Build desktop application
 
 on:
   push:
+    branches:
+      - '**'
     paths:
       - 'viewer/native/**'
       - 'viewer/web/**'

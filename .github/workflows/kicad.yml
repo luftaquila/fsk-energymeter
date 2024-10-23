@@ -2,6 +2,8 @@ name: Build PCB
 
 on:
   push:
+    branches:
+      - '**'
     paths:
       - 'device/hardware/**'
   workflow_call:
