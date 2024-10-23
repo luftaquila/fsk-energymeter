@@ -25,7 +25,7 @@ jobs:
     - run: |
         cd viewer/web
         npm ci
-        script -qec "npx inliner index.html > fsk-energymeter.html" /dev/null
+        script -qec "npx inliner --inlinemin index.html > fsk-energymeter.html" /dev/null
     - uses: actions/upload-artifact@v4
       with:
         name: html
