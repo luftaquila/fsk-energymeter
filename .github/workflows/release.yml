@@ -50,7 +50,7 @@ jobs:
             ### FSK-EEM Viewer
             #### Web
 
-            * https://luftaquila.github.io/fsk-energymeter
+            * https://fsk-energymeter.luftaquila.io
             * `fsk-energymeter-${{ github.ref_name }}.html`
 
             #### Windows

@@ -15,7 +15,7 @@
 | | MIN | TYP | MAX | UNIT |
 |:-:|:-:|:-:|:-:|:-:|
 | Supply voltage<sup>1</sup> | 6 | | 28 | V |
-| Power consumption | | 0.5 | 1 | W |
+| Power consumption | | 0.25 | 0.5 | W |
 | HV bus voltage | 0 | | 600 | V |
 | HV bus voltage resolution | | 0.24 | | V |
 | HV bus current | -750 | | 750 | A |
