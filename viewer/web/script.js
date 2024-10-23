@@ -321,7 +321,7 @@ function init_chart() {
     height: 600,
     ms: true,
     series: [{
-      value: (self, rawValue) => (rawValue ? new Date(rawValue).format("HH:mm:ss.l") : '-'),
+      value: (self, rawValue) => (rawValue ? new Date(rawValue).format("HH:MM:ss.l") : '-'),
       }, {
         label: "HV",
         scale: "HV",
@@ -352,7 +352,7 @@ function init_chart() {
       }
     ],
     axes: [{
-        values: (self, ticks) => ticks.map(rawValue => new Date(rawValue).format("HH:mm:ss.l")),
+        values: (self, ticks) => ticks.map(rawValue => new Date(rawValue).format("HH:MM:ss.l")),
       }, {
         scale: "A",
         stroke: "dodgerblue",
