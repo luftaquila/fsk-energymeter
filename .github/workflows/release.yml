@@ -12,12 +12,14 @@ jobs:
     uses: ./.github/workflows/kicad.yml
   build-native:
     uses: ./.github/workflows/native.yml
+  build-html:
+    uses: ./.github/workflows/web-bundle.yml
   deploy-web:
     uses: ./.github/workflows/web.yml
   release:
     name: release
     runs-on: ubuntu-latest
-    needs: [build-firmware, build-native, build-pcb]
+    needs: [build-firmware, build-pcb, build-native, build-html]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -27,15 +29,17 @@ jobs:
           mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-windows-x64-${{ github.ref_name }}.exe
           mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-linux-x64-${{ github.ref_name }}.AppImage
           zip -r fsk-energymeter-pcb-${{ github.ref_name }}.zip fsk-energymeter-pcb
+          mv html/fsk-energymeter.html fsk-energymeter-${{ github.ref_name }}.html
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           artifacts: |
             fsk-energymeter-firmware-*.zip
+            fsk-energymeter-pcb-*.zip
             fsk-energymeter-windows-x64-*
             fsk-energymeter-macos-arm64-*
             fsk-energymeter-linux-x64-*
-            fsk-energymeter-pcb-*.zip
+            fsk-energymeter-*.html
           commit: ${{ github.sha }}
           tag: ${{ github.ref_name }}
           body: |
@@ -46,7 +50,8 @@ jobs:
             ### FSK-EEM Viewer
             #### Web
 
-            https://luftaquila.github.io/fsk-energymeter/
+            * https://luftaquila.github.io/fsk-energymeter
+            * `fsk-energymeter-${{ github.ref_name }}.html`
 
             #### Windows
 

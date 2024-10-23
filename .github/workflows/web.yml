@@ -32,7 +32,7 @@ jobs:
       - name: Install Dependencies
         run: |
           cd viewer/web
-          npm ci
+          npm ci --production
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

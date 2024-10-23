@@ -1,0 +1,30 @@
+name: Build bundled HTML
+
+on:
+  push:
+    paths:
+      - 'viewer/web/**'
+  workflow_call:
+  workflow_dispatch:
+  
+jobs:
+  build-html:
+    name: Build html
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+        cache-dependency-path: viewer/native/package-lock.json
+    - run: |
+        cd viewer/web
+        npm ci
+        script -qec "npx inliner index.html > fsk-energymeter.html" /dev/null
+    - uses: actions/upload-artifact@v4
+      with:
+        name: html
+        path: viewer/web/fsk-energymeter.html
