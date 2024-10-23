@@ -388,8 +388,8 @@ function init_chart() {
       }
     ],
     plugins: [
-      wheelZoomPlugin({factor: 0.75}),
-      touchZoomPlugin()
+      touchZoomPlugin(),
+      wheelZoomPlugin({factor: 0.75})
     ],
   }, null, document.getElementById("chart"));
 }

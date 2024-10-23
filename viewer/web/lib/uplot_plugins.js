@@ -236,35 +236,18 @@ function touchZoomPlugin(opts) {
       yVal = u.posToVal(top, "y");
 
       document.addEventListener("touchmove", touchmove, {passive: true});
+      e.preventDefault();
     });
 
     over.addEventListener("touchend", function(e) {
       document.removeEventListener("touchmove", touchmove, {passive: true});
+      e.preventDefault();
     });
   }
 
   return {
     hooks: {
       init,
-			setData: u => {
-				shouldSyncX = true;
-				shouldSyncY = true;
-			},
-			setScale: (u, key) => {
-				if (key == 'x' && shouldSyncX) {
-					xMin = u.scales.x.min;
-					xMax = u.scales.x.max;
-					xRange = xMax - xMin;
-					shouldSyncX = false;
-				}
-				
-				if (key == 'y' && shouldSyncY)  {
-					yMin = u.scales.y.min;
-					yMax = u.scales.y.max;				
-					yRange = yMax - yMin;
-					shouldSyncY = false;
-				}
-			},
     }
   };
 }
