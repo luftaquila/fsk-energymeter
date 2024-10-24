@@ -4,11 +4,15 @@
 
 ## Features
 
-* Records HV bus voltage and current, LV voltage and ambient (CPU) temperature
+* Records the following values:
+    * HV bus voltage 
+    * HV bus current
+    * LV supply voltage 
+    * Ambient (CPU) temperature
+    * Real-world time of each records
 * 100 Hz data sampling rate
-* Mounted as USB Mass Storage to PC when extracting records
-* Records with real world time using internal RTC
-* Data visualizer tool available on both web and desktop applications
+* Mounted as a USB Mass Storage device
+* Data visualizer available on most platforms
 
 ## Specifications
 
@@ -51,15 +55,15 @@
 
 ## Usage
 
-There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is powered, it measures the LV supply voltage and decide the mode to run.
+There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is in startup, it measures the LV supply voltage and decide the mode to run.
 
 ### Record mode
-If `VIN >= 6V`, the device enters the Record mode.
+If `VIN >= 6V` during startup, the device enters the Record mode.
 
 The device will measure HV voltage, HV current, LV voltage and the CPU temperature every 10 ms and save it to the file.
 
 ### USB mode
-If `VIN < 6V`, the device enters the USB mode.
+If `VIN < 6V` during startup, the device enters the USB mode.
 
 When plugged in, the FSK-EEM USB Mass Storage will appear on the host PC. It may took ~20 seconds to be mounted. See [Troubleshootings](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#1-fsk-eem-usb-mass-storage-takes-too-long-to-be-mounted-on-the-pc) for the details.
 
@@ -72,13 +76,19 @@ The recorded log files are stored in the drive like a standard USB memory stick.
 > The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.<br>
 > Do NOT edit the filename of the *.log file. JSON or CSV files are not affected.
 
-#### FSK-EEM Viewer
+### FSK-EEM Viewer
 
 Download the latest FSK-EEM Viewer from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).
 
-* To parse the record, open the record file in the FSK-EEM Viewer.
-* To delete the records, click the `Unlock` and `Delete` button in the Device Configuration tab.
-* To sync the device clock with the host PC, click the `Sync RTC` button in the Device Configuration tab.
+Open the record file in the FSK-EEM Viewer to visualize the data or export as a human-readable format.
+
+#### Device Configuration Tab
+
+Click the `Connect` button and select the FSK-EEM device to connect.\
+The device's UID and the current time will be displayed when connected.
+
+* `Sync RTC` button synchronizes the device clock with the host.
+* `Delete` button deletes the all log files stored in the device.
 
 ## DIY
 
@@ -163,12 +173,20 @@ make debug    # debug build
 
 ## Troubleshootings
 
-#### 1. FSK-EEM USB Mass Storage takes too long to be mounted on the PC
+#### 1. FSK-EEM USB Mass Storage takes too long to be mounted on the host
 The FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s.
 
-When you plug the FSK-EEM to your PC, the host(PC) will try to load the FAT table of the SDMMC into its memory. Since the FAT32's FAT table is around 8 MB in size, it will take ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost.
+When you plug the FSK-EEM device, the host(PC) will try to load the FAT table of the SDMMC into its memory. The size of the FAT32 FAT table is around 8 MB, so it will take ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost.
 
 The RTC sync or record delete functions will work immediately regardless of this limit.
+
+#### 2. `Web Serial API not supported` error on the FSK-EEM Viewer.
+
+FSK-EEM Viewer's Device Configuration tab uses the Web Serial API to talk with the device, which has [limited support](https://caniuse.com/?search=Web%20Serial%20API) across the platforms and browsers.
+
+On MacOS, the native app uses the Safari for its WebView, which does not supports the API. The web version(URL or html file) of the FSK-EEM Viewer will work on the Chrome browser.
+
+On Android and iOS, the API is not supported from the OS layer. Use the desktop version of the viewer to configure the device.
 
 ## LICENSE
 

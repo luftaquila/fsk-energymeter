@@ -45,7 +45,7 @@ jobs:
           body: |
             ### Firmware
             Use the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) with the [ST-Link](https://smartstore.naver.com/misoparts/products/5263743411) to upload the firmware ELF to the device.\
-            Make sure the `Shared` option is set to `Enabled` in the ST-LINK configuration.
+            Make sure that the `Shared` option is set to `Enabled` in the ST-LINK configuration.
 
             ### FSK-EEM Viewer
             #### Web
@@ -55,21 +55,26 @@ jobs:
 
             #### Windows
 
-            When the popup `Windows protected your PC` appears, click <ins>More Info</ins> and click `Run anyway` to run the executable.
+            If the `Windows protected your PC` message appears, click <ins>More Info</ins> and click `Run anyway` to run the application.
 
             #### MacOS
 
-            Run the following commands before open the `fsk-energymeter` for the first time.\
-            Unless, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
+            Run the following commands before open the application for the first time.\
+            Otherwise, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
 
             ```sh
-            cd /path/to/fsk-energymeter
+            unzip fsk-energymeter-macos-arm64-${{ github.ref_name }}.app.zip
             xattr -c fsk-energymeter.app
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
 
-            The Device Configuration tab is not supported in the MacOS due to a lack of WebSerial API. Use the web version instead.
+            The Device Configuration tab is not supported in the native MacOS application and the Safari due to a lack of the WebSerial API.\
+            Use the web version with the Chromium browser instead. ([Reference](https://caniuse.com/?search=Web%20Serial%20API))
 
             #### Linux
 
-            FSK-EEM Viewer is not tested on the Linux yet. Welcome for the testing!
+            Run the following commands before open the application for the first time.
+
+            ```sh
+            chmod u+x fsk-energymeter-linux-x64-${{ github.ref_name }}.AppImage
+            ```
