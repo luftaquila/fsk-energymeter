@@ -352,7 +352,7 @@ function init_chart() {
       }
     ],
     axes: [{
-        values: (self, ticks) => ticks.map(rawValue => new Date(rawValue).format("HH:MM:ss.l")),
+        values: (self, ticks) => ticks.map(rawValue => new Date(rawValue).format("HH:MM:ss\nl")),
       }, {
         scale: "A",
         stroke: "dodgerblue",
