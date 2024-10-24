@@ -135,6 +135,7 @@ function setup() {
       document.getElementById("device").innerText = "UNKNOWN";
       document.getElementById("connect").classList.remove('green', 'disabled');
       document.getElementById("connect").classList.add('orange');
+      document.getElementById("cmd-hello").classList.add('disabled');
       document.getElementById("cmd-rtc").classList.add('disabled');
       document.getElementById("cmd-del").classList.add('disabled');
       document.getElementById("cmd-del-unlock").classList.add('disabled');
@@ -175,10 +176,37 @@ function setup() {
 
     document.getElementById("connect").classList.remove('orange');
     document.getElementById("connect").classList.add('green', 'disabled');
+    document.getElementById("cmd-hello").classList.remove('disabled');
     document.getElementById("cmd-rtc").classList.remove('disabled');
     document.getElementById("cmd-del-unlock").classList.remove('disabled');
 
     notyf.success("Device connected");
+  });
+
+  document.getElementById("cmd-hello").addEventListener("click", async e => {
+    let res = await transceive(new Uint8Array([USB_CMD_MAGIC, USB_CMD.indexOf("USB_CMD_HELLO"), ...new Array(6).fill(0)]), LEN_DEVICE_RES);
+
+    if (!res) {
+      return notyf.error("Failed to greet with the device");
+    }
+
+    let uid = [];
+    uid[0] = to_uint(32, res, 0);
+    uid[1] = to_uint(32, res, 4);
+    uid[2] = to_uint(32, res, 8);
+
+    document.getElementById("device").innerText = uid.map(x => x.toString(16).toUpperCase().padStart(8, '0')).join('-');
+
+    let d = {
+      year: String(to_uint(8, res, 12)).padStart(2, '0'),
+      month: String(to_uint(8, res, 13)).padStart(2, '0'),
+      day: String(to_uint(8, res, 14)).padStart(2, '0'),
+      hour: String(to_uint(8, res, 15)).padStart(2, '0'),
+      minute: String(to_uint(8, res, 16)).padStart(2, '0'),
+      second: String(to_uint(8, res, 17)).padStart(2, '0'),
+    };
+
+    document.getElementById("device-time").innerText = `20${d.year}-${d.month}-${d.day} ${d.hour}:${d.minute}:${d.second}`;
   });
 
   document.getElementById("cmd-rtc").addEventListener("click", async e => {
