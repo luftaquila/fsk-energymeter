@@ -104,6 +104,9 @@ enum {
 #define VOLTAGE_DIVIDER_RATIO_HV_C  (59.0f / 39.0f)
 #define VOLTAGE_DIVIDER_RATIO_5VREF 2.0f
 
+#define ADC_CAL_CNT 10
+#define ADC_AVG_CNT 20
+
 #define ADC_RES 12 // ADC bit resolution
 
 

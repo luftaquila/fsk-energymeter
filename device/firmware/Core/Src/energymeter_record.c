@@ -51,14 +51,30 @@ void energymeter_record(char *filename) {
   HAL_TIM_Base_Start_IT(&htim5); // start 10 ms timer
 
   while (TRUE) {
+    // seems like that the avgerage calculation has no effect
+    int32_t adc_avg_hv_voltage;
+    int32_t adc_avg_hv_current;
+
     // 10 ms timer
     if (timer_flag) {
-      HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
-      while (adc_flag != TRUE); // poll until ADC conv done; nothing to do
+      // reset all average buffers
+      adc_avg_hv_voltage = 0;
+      adc_avg_hv_current = 0;
 
-      log.timestamp = HAL_GetTick(); // boot sequence may take ~500ms; take granted for the error
-      log.packet.record.hv_voltage = adc[ADC_HV_VOLTAGE];
-      log.packet.record.hv_current = adc[ADC_HV_CURRENT];
+      // calculate average values
+      for (int i = 0; i < ADC_AVG_CNT; i++) {
+        HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
+        while (adc_flag != TRUE); // poll until ADC conv done; nothing to do
+
+        adc_avg_hv_voltage += (int16_t)(adc[ADC_HV_VOLTAGE]);
+        adc_avg_hv_current += (int16_t)(adc[ADC_HV_CURRENT]);
+
+        adc_flag = FALSE;
+      }
+
+      log.timestamp = HAL_GetTick(); // boot sequence take ~700ms; take grant for the error
+      log.packet.record.hv_voltage = (uint16_t)(int16_t)(adc_avg_hv_voltage / ADC_AVG_CNT);
+      log.packet.record.hv_current = (uint16_t)(int16_t)(adc_avg_hv_current / ADC_AVG_CNT);
       log.packet.record.lv_voltage = adc[ADC_LV_VOLTAGE];
       log.packet.record.temperature = adc[ADC_TEMP];
 
@@ -92,11 +108,9 @@ void energymeter_record(char *filename) {
 }
 
 void energymeter_calibrate(void) {
-  const int cal_cnt = 10;
-
   float v = 0, c = 0;
 
-  for (int i = 0; i < cal_cnt; i++) {
+  for (int i = 0; i < ADC_CAL_CNT; i++) {
     HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
     while (adc_flag != TRUE);
 
@@ -107,11 +121,11 @@ void energymeter_calibrate(void) {
     HAL_Delay(10);
   }
 
-  hv_voltage_cal = v / (float)cal_cnt;
-  hv_current_cal = c / (float)cal_cnt;
+  hv_voltage_cal = v / (float)ADC_CAL_CNT;
+  hv_current_cal = c / (float)ADC_CAL_CNT;
 
   #ifdef DEBUG
-  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", cal_cnt, hv_voltage_cal / 10.0f, hv_current_cal / 10.0f);
+  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", ADC_CAL_CNT, hv_voltage_cal / 10.0f, hv_current_cal / 10.0f);
   #endif
 }
 
