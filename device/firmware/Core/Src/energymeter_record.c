@@ -121,7 +121,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   // #ifdef DISABLED
   #ifdef DEBUG
   if (tim_cnt == 0) {
-    DEBUG_MSG("[%8lu] Vref: %.2f V\n%*cLV  : %.2f V\n%*cHV  : %.2f V / %.2f A\n%*cTEMP: %.2f °C\n",
+    DEBUG_MSG("[%8lu] Vref: %.2f V\r\n%*cLV  : %.2f V\r\n%*cHV  : %.2f V / %.2f A\r\n%*cTEMP: %.2f °C\r\n",
               HAL_GetTick(), adc_mv[ADC_VREFINT] / 1000.0f,
               11, ' ', adc[ADC_LV_VOLTAGE] / 100.0f,
               11, ' ', adc[ADC_HV_VOLTAGE] / 100.0f, adc[ADC_HV_CURRENT] / 100.0f,

@@ -178,7 +178,7 @@ void Error_Handler(void)
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
 
-  DEBUG_MSG("!!! ERROR !!!\nCODE: %lu\n", error_status);
+  DEBUG_MSG("!!! ERROR !!!\r\nCODE: %lu\r\n", error_status);
 
   while (TRUE) {
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
