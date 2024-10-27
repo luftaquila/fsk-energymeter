@@ -147,6 +147,7 @@ typedef struct {
 void energymeter_init(void);
 void energymeter_usb(void);
 void energymeter_record(char *filename);
+void energymeter_calibrate(void);
 
 /******************************************************************************
  * TinyUSB function prototypes

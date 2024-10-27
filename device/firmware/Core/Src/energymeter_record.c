@@ -17,7 +17,12 @@ volatile uint32_t adc_flag; // adc conversion flag
 uint32_t adc[ADC_CH_CNT];   // adc conversion buffer
 float adc_mv[ADC_CH_CNT];   // adc mV calc buffer
 
+float hv_voltage_cal;
+float hv_current_cal;
+
 void energymeter_record(char *filename) {
+  energymeter_calibrate();
+
   FATFS fat;
 
   disk_initialize((BYTE) 0);
@@ -86,6 +91,30 @@ void energymeter_record(char *filename) {
   }
 }
 
+void energymeter_calibrate(void) {
+  const int cal_cnt = 10;
+
+  float v = 0, c = 0;
+
+  for (int i = 0; i < cal_cnt; i++) {
+    HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
+    while (adc_flag != TRUE);
+
+    v += (float)adc[ADC_HV_VOLTAGE];
+    c += (float)(int16_t)adc[ADC_HV_CURRENT];
+
+    adc_flag = FALSE;
+    HAL_Delay(10);
+  }
+
+  hv_voltage_cal = v / (float)cal_cnt;
+  hv_current_cal = c / (float)cal_cnt;
+
+  #ifdef DEBUG
+  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", cal_cnt, hv_voltage_cal / 100.0f, hv_current_cal / 10.0f);
+  #endif
+}
+
 // 10ms TIM5 callback
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   timer_flag = TRUE;
@@ -109,9 +138,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   adc_mv[ADC_HV_VOLTAGE] = adc_mv[ADC_VREFINT] * (float)adc[ADC_HV_VOLTAGE] / (float)((1 << ADC_RES) - 1);
 
   // actual value calculation
-  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f);                                    // 0.01 V
-  adc[ADC_HV_CURRENT] = (uint16_t)(int16_t)(((adc_mv[ADC_HV_CURRENT] * VOLTAGE_DIVIDER_RATIO_HV_C) - adc_mv[ADC_5V_REF]) * 4.0f); // 0.1 A, signed
-  adc[ADC_HV_VOLTAGE] = (uint16_t)(adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f);                                    // 0.01 V
+  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f); // 0.01 V
+  adc[ADC_HV_CURRENT] = (uint16_t)(int16_t)((((adc_mv[ADC_HV_CURRENT] * VOLTAGE_DIVIDER_RATIO_HV_C) - adc_mv[ADC_5V_REF]) * 4.0f) - hv_current_cal); // 0.1 A, signed
+  adc[ADC_HV_VOLTAGE] = (uint16_t)((adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f) - hv_voltage_cal); // 0.01 V
 
   // temperature calculation
   adc[ADC_TEMP] = (uint16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f); // 0.01 °C

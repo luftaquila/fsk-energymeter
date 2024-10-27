@@ -26,7 +26,7 @@
 | HV bus current resolution | | 0.64 | | A |
 | Operational temperature | -10 | | 80 | °C |
 | IP rating | | IP 20 | | |
-| Startup time |  | 550 | 700 | ms |
+| Startup time |  | 650 | 700 | ms |
 | Record interval |  | 10 | 15 | ms |
 | Possible data loss<br>on power brownout | 0 | | 100 | ms |
 
