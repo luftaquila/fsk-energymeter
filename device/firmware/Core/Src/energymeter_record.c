@@ -109,9 +109,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   adc_mv[ADC_HV_VOLTAGE] = adc_mv[ADC_VREFINT] * (float)adc[ADC_HV_VOLTAGE] / (float)((1 << ADC_RES) - 1);
 
   // actual value calculation
-  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f); // 0.01 V
-  adc[ADC_HV_CURRENT] = (uint16_t)((adc_mv[ADC_HV_CURRENT] - adc_mv[ADC_5V_REF]) * 4.0f);      // 0.1 A, signed. (* 4 = / 1500 * 600 * 10)
-  adc[ADC_HV_VOLTAGE] = (uint16_t)(adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f); // 0.01 V
+  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f);                                    // 0.01 V
+  adc[ADC_HV_CURRENT] = (uint16_t)(int16_t)(((adc_mv[ADC_HV_CURRENT] * VOLTAGE_DIVIDER_RATIO_HV_C) - adc_mv[ADC_5V_REF]) * 4.0f); // 0.1 A, signed
+  adc[ADC_HV_VOLTAGE] = (uint16_t)(adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f);                                    // 0.01 V
 
   // temperature calculation
   adc[ADC_TEMP] = (uint16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f); // 0.01 °C
@@ -121,10 +121,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   // #ifdef DISABLED
   #ifdef DEBUG
   if (tim_cnt == 0) {
-    DEBUG_MSG("[%8lu] Vref: %.2f V\r\n%*cLV  : %.2f V\r\n%*cHV  : %.2f V / %.2f A\r\n%*cTEMP: %.2f °C\r\n",
+    DEBUG_MSG("[%8lu] Vref: %.2f V\r\n%*cLV  : %.2f V\r\n%*cHV  : %.2f V / %.2f A\r\n%*cVREF: %.2f V\r\n%*cTEMP: %.2f °C\r\n",
               HAL_GetTick(), adc_mv[ADC_VREFINT] / 1000.0f,
               11, ' ', adc[ADC_LV_VOLTAGE] / 100.0f,
-              11, ' ', adc[ADC_HV_VOLTAGE] / 100.0f, adc[ADC_HV_CURRENT] / 100.0f,
+              11, ' ', adc[ADC_HV_VOLTAGE] / 100.0f, (int16_t)adc[ADC_HV_CURRENT] / 10.0f,
+              11, ' ', adc_mv[ADC_5V_REF] / 1000.0f,
               11, ' ', adc[ADC_TEMP] / 100.0f);
   }
   #endif
