@@ -328,7 +328,7 @@ function init_chart() {
         label: "HV Power",
         scale: "kW",
         stroke: "hotpink",
-        value: (self, rawValue) => (rawValue ? rawValue : (rawValue === 0 ? 0 : '-')) + 'kW',
+        value: (self, rawValue) => (rawValue ? rawValue.toFixed(1) : (rawValue === 0 ? 0 : '-')) + 'kW',
       }, {
         label: "LV",
         scale: "LV",

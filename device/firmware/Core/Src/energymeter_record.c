@@ -100,7 +100,7 @@ void energymeter_calibrate(void) {
     HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
     while (adc_flag != TRUE);
 
-    v += (float)adc[ADC_HV_VOLTAGE];
+    v += (float)(int16_t)adc[ADC_HV_VOLTAGE];
     c += (float)(int16_t)adc[ADC_HV_CURRENT];
 
     adc_flag = FALSE;
@@ -111,7 +111,7 @@ void energymeter_calibrate(void) {
   hv_current_cal = c / (float)cal_cnt;
 
   #ifdef DEBUG
-  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", cal_cnt, hv_voltage_cal / 100.0f, hv_current_cal / 10.0f);
+  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", cal_cnt, hv_voltage_cal / 10.0f, hv_current_cal / 10.0f);
   #endif
 }
 
@@ -140,7 +140,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   // actual value calculation
   adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f); // 0.01 V
   adc[ADC_HV_CURRENT] = (uint16_t)(int16_t)((((adc_mv[ADC_HV_CURRENT] * VOLTAGE_DIVIDER_RATIO_HV_C) - adc_mv[ADC_5V_REF]) * 4.0f) - hv_current_cal); // 0.1 A, signed
-  adc[ADC_HV_VOLTAGE] = (uint16_t)((adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 10.0f) - hv_voltage_cal); // 0.01 V
+  adc[ADC_HV_VOLTAGE] = (uint16_t)(int16_t)((adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 100.0f) - hv_voltage_cal); // 0.1 V
 
   // temperature calculation
   adc[ADC_TEMP] = (uint16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f); // 0.01 °C
@@ -153,7 +153,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
     DEBUG_MSG("[%8lu] Vref: %.2f V\r\n%*cLV  : %.2f V\r\n%*cHV  : %.2f V / %.2f A\r\n%*cVREF: %.2f V\r\n%*cTEMP: %.2f °C\r\n",
               HAL_GetTick(), adc_mv[ADC_VREFINT] / 1000.0f,
               11, ' ', adc[ADC_LV_VOLTAGE] / 100.0f,
-              11, ' ', adc[ADC_HV_VOLTAGE] / 100.0f, (int16_t)adc[ADC_HV_CURRENT] / 10.0f,
+              11, ' ', (int16_t)adc[ADC_HV_VOLTAGE] / 10.0f, (int16_t)adc[ADC_HV_CURRENT] / 10.0f,
               11, ' ', adc_mv[ADC_5V_REF] / 1000.0f,
               11, ' ', adc[ADC_TEMP] / 100.0f);
   }
