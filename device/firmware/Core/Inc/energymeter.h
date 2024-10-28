@@ -62,10 +62,10 @@ enum {
 };
 
 typedef struct {
-  uint16_t hv_voltage;  // 0.01 V
-  uint16_t hv_current;  // 0.1 A, signed
-  uint16_t lv_voltage;  // 0.01 V
-  uint16_t temperature; // 0.01 °C
+  int16_t hv_voltage;  // 0.1 V
+  int16_t hv_current;  // 0.1 A
+  int16_t lv_voltage;  // 0.01 V
+  int16_t temperature; // 0.01 °C
 } __attribute__((packed, aligned(sizeof(uint32_t)))) log_record_t;
 
 typedef struct {
@@ -104,8 +104,8 @@ enum {
 #define VOLTAGE_DIVIDER_RATIO_HV_C  (59.0f / 39.0f)
 #define VOLTAGE_DIVIDER_RATIO_5VREF 2.0f
 
-#define ADC_CAL_CNT 10
-#define ADC_AVG_CNT 20
+#define ADC_AVG_EXP 4
+#define ADC_AVG_CNT (1 << ADC_AVG_EXP)
 
 #define ADC_RES 12 // ADC bit resolution
 

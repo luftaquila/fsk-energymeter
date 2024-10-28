@@ -13,9 +13,10 @@ uint32_t timer_flag; // 10 ms timer flag
 uint32_t sync_flag;  // 1000 ms timer flag
 uint32_t tim_cnt;    // 1000 ms counter
 
-volatile uint32_t adc_flag; // adc conversion flag
-uint32_t adc[ADC_CH_CNT];   // adc conversion buffer
-float adc_mv[ADC_CH_CNT];   // adc mV calc buffer
+volatile uint32_t adc_flag;   // adc conversion flag
+uint32_t adc[ADC_CH_CNT];     // adc conversion buffer
+int16_t adc_calc[ADC_CH_CNT]; // adc real value buffer
+float adc_mv[ADC_CH_CNT];     // adc mV calc buffer
 
 float hv_voltage_cal;
 float hv_current_cal;
@@ -23,9 +24,9 @@ float hv_current_cal;
 void energymeter_record(char *filename) {
   energymeter_calibrate();
 
-  FATFS fat;
-
   disk_initialize((BYTE) 0);
+
+  FATFS fat;
   FRESULT ret = f_mount(&fat, "", 0);
 
   if (ret != FR_OK) {
@@ -34,7 +35,6 @@ void energymeter_record(char *filename) {
   }
 
   FIL file;
-
   ret = f_open(&file, filename, FA_OPEN_APPEND | FA_WRITE);
 
   if (ret != FR_OK) {
@@ -47,36 +47,37 @@ void energymeter_record(char *filename) {
   log.magic = LOG_MAGIC;
 
   UINT written;
+  int32_t adc_avg[ADC_CH_CNT];
 
   HAL_TIM_Base_Start_IT(&htim5); // start 10 ms timer
 
   while (TRUE) {
-    // seems like that the avgerage calculation has no effect
-    int32_t adc_avg_hv_voltage;
-    int32_t adc_avg_hv_current;
-
     // 10 ms timer
     if (timer_flag) {
       // reset all average buffers
-      adc_avg_hv_voltage = 0;
-      adc_avg_hv_current = 0;
+      adc_avg[ADC_LV_VOLTAGE] = 0;
+      adc_avg[ADC_HV_CURRENT] = 0;
+      adc_avg[ADC_HV_VOLTAGE] = 0;
+      adc_avg[ADC_TEMP] = 0;
 
-      // calculate average values
+      // ADC measurement average calculation
       for (int i = 0; i < ADC_AVG_CNT; i++) {
         HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
-        while (adc_flag != TRUE); // poll until ADC conv done; nothing to do
+        while (adc_flag != TRUE); // poll until ADC conv done
 
-        adc_avg_hv_voltage += (int16_t)(adc[ADC_HV_VOLTAGE]);
-        adc_avg_hv_current += (int16_t)(adc[ADC_HV_CURRENT]);
+        adc_avg[ADC_LV_VOLTAGE] += adc_calc[ADC_LV_VOLTAGE];
+        adc_avg[ADC_HV_CURRENT] += adc_calc[ADC_HV_CURRENT];
+        adc_avg[ADC_HV_VOLTAGE] += adc_calc[ADC_HV_VOLTAGE];
+        adc_avg[ADC_TEMP] += adc_calc[ADC_TEMP];
 
         adc_flag = FALSE;
       }
 
       log.timestamp = HAL_GetTick(); // boot sequence take ~700ms; take grant for the error
-      log.packet.record.hv_voltage = (uint16_t)(int16_t)(adc_avg_hv_voltage / ADC_AVG_CNT);
-      log.packet.record.hv_current = (uint16_t)(int16_t)(adc_avg_hv_current / ADC_AVG_CNT);
-      log.packet.record.lv_voltage = adc[ADC_LV_VOLTAGE];
-      log.packet.record.temperature = adc[ADC_TEMP];
+      log.packet.record.hv_voltage = (int16_t)(adc_avg[ADC_HV_VOLTAGE] >> ADC_AVG_EXP);
+      log.packet.record.hv_current = (int16_t)(adc_avg[ADC_HV_CURRENT] >> ADC_AVG_EXP);
+      log.packet.record.lv_voltage = (int16_t)(adc_avg[ADC_LV_VOLTAGE] >> ADC_AVG_EXP);
+      log.packet.record.temperature = (int16_t)(adc_avg[ADC_TEMP] >> ADC_AVG_EXP);
 
       // checksum calculation
       log.checksum = 0;
@@ -107,25 +108,26 @@ void energymeter_record(char *filename) {
   }
 }
 
+// get ADC values at 0V, 0A
 void energymeter_calibrate(void) {
   float v = 0, c = 0;
 
-  for (int i = 0; i < ADC_CAL_CNT; i++) {
+  for (int i = 0; i < ADC_AVG_CNT; i++) {
     HAL_ADC_Start_DMA(&hadc1, adc, ADC_CH_CNT);
     while (adc_flag != TRUE);
 
-    v += (float)(int16_t)adc[ADC_HV_VOLTAGE];
-    c += (float)(int16_t)adc[ADC_HV_CURRENT];
+    v += (float)adc_calc[ADC_HV_VOLTAGE];
+    c += (float)adc_calc[ADC_HV_CURRENT];
 
     adc_flag = FALSE;
-    HAL_Delay(10);
+    HAL_Delay(1);
   }
 
-  hv_voltage_cal = v / (float)ADC_CAL_CNT;
-  hv_current_cal = c / (float)ADC_CAL_CNT;
+  hv_voltage_cal = v / ADC_AVG_CNT;
+  hv_current_cal = c / ADC_AVG_CNT;
 
   #ifdef DEBUG
-  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", ADC_CAL_CNT, hv_voltage_cal / 10.0f, hv_current_cal / 10.0f);
+  DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", ADC_AVG_CNT, hv_voltage_cal / 10.0f, hv_current_cal / 10.0f);
   #endif
 }
 
@@ -152,24 +154,24 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
   adc_mv[ADC_HV_VOLTAGE] = adc_mv[ADC_VREFINT] * (float)adc[ADC_HV_VOLTAGE] / (float)((1 << ADC_RES) - 1);
 
   // actual value calculation
-  adc[ADC_LV_VOLTAGE] = (uint16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f); // 0.01 V
-  adc[ADC_HV_CURRENT] = (uint16_t)(int16_t)((((adc_mv[ADC_HV_CURRENT] * VOLTAGE_DIVIDER_RATIO_HV_C) - adc_mv[ADC_5V_REF]) * 4.0f) - hv_current_cal); // 0.1 A, signed
-  adc[ADC_HV_VOLTAGE] = (uint16_t)(int16_t)((adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 100.0f) - hv_voltage_cal); // 0.1 V
+  adc_calc[ADC_LV_VOLTAGE] = (int16_t)(adc_mv[ADC_LV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_LV / 10.0f);
+  adc_calc[ADC_HV_CURRENT] = (int16_t)((((adc_mv[ADC_HV_CURRENT] * VOLTAGE_DIVIDER_RATIO_HV_C) - adc_mv[ADC_5V_REF]) * 4.0f) - hv_current_cal);
+  adc_calc[ADC_HV_VOLTAGE] = (int16_t)((adc_mv[ADC_HV_VOLTAGE] * VOLTAGE_DIVIDER_RATIO_HV / 100.0f) - hv_voltage_cal);
 
   // temperature calculation
-  adc[ADC_TEMP] = (uint16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f); // 0.01 °C
+  adc_calc[ADC_TEMP] = (int16_t)(((float)(TEMPSENSOR_CAL2_TEMP - TEMPSENSOR_CAL1_TEMP) / (float)(*TEMPSENSOR_CAL2_ADDR - *TEMPSENSOR_CAL1_ADDR) * (adc[ADC_TEMP] - (float)(*TEMPSENSOR_CAL1_ADDR)) + (float)(TEMPSENSOR_CAL1_TEMP)) * 100.0f);
 
   adc_flag = TRUE;
 
   // #ifdef DISABLED
   #ifdef DEBUG
   if (tim_cnt == 0) {
-    DEBUG_MSG("[%8lu] Vref: %.2f V\r\n%*cLV  : %.2f V\r\n%*cHV  : %.2f V / %.2f A\r\n%*cVREF: %.2f V\r\n%*cTEMP: %.2f °C\r\n",
-              HAL_GetTick(), adc_mv[ADC_VREFINT] / 1000.0f,
-              11, ' ', adc[ADC_LV_VOLTAGE] / 100.0f,
-              11, ' ', (int16_t)adc[ADC_HV_VOLTAGE] / 10.0f, (int16_t)adc[ADC_HV_CURRENT] / 10.0f,
-              11, ' ', adc_mv[ADC_5V_REF] / 1000.0f,
-              11, ' ', adc[ADC_TEMP] / 100.0f);
+    DEBUG_MSG("[%8lu] Vref: %f mV\r\n%*cLV  : %.2f V\r\n%*cHV  : %.1f V / %.1f A\r\n%*cVREF: %f mV\r\n%*cTEMP: %.2f °C\r\n",
+              HAL_GetTick(), adc_mv[ADC_VREFINT],
+              11, ' ', adc_calc[ADC_LV_VOLTAGE] / 100.0f,
+              11, ' ', (int16_t)adc_calc[ADC_HV_VOLTAGE] / 10.0f, (int16_t)adc_calc[ADC_HV_CURRENT] / 10.0f,
+              11, ' ', adc_mv[ADC_5V_REF],
+              11, ' ', adc_calc[ADC_TEMP] / 100.0f);
   }
   #endif
   // #endif

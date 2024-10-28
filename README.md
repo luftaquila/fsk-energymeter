@@ -26,7 +26,7 @@
 | HV bus current resolution | | 0.64 | | A |
 | Operational temperature | -10 | | 80 | °C |
 | IP rating | | IP 20 | | |
-| Startup time |  | 650 | 700 | ms |
+| Startup time |  | 570 | 700 | ms |
 | Record interval |  | 10 | 15 | ms |
 | Possible data loss<br>on power brownout | 0 | | 100 | ms |
 
@@ -61,6 +61,10 @@ There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is in startu
 If `VIN >= 6V` during startup, the device enters the Record mode.
 
 The device will measure HV voltage, HV current, LV voltage and the CPU temperature every 10 ms and save it to the file.
+
+> [!IMPORTANT]
+> The device will perform a zero calibration of the HV voltage and current during the startup sequence.\
+> Make sure that the HV voltage and current are at 0V and 0A until the the startup is complete.
 
 ### USB mode
 If `VIN < 6V` during startup, the device enters the USB mode.

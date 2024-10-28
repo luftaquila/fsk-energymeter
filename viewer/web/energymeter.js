@@ -79,9 +79,9 @@ function parse(data, date) {
     switch (log.type) {
       case "LOG_TYPE_RECORD": {
         log.record = {
-          hv_voltage: to_int(16, data, i + LOG_POS_RECORD_HV_VOLTAGE) / 10,  // 0.1 V, signed
-          hv_current: to_int(16, data, i + LOG_POS_RECORD_HV_CURRENT) / 10,    // 0.1 A, signed
-          lv_voltage: to_uint(16, data, i + LOG_POS_RECORD_LV_VOLTAGE) / 100,  // 0.01 V
+          hv_voltage: to_int(16, data, i + LOG_POS_RECORD_HV_VOLTAGE) / 10,    // 0.1 V
+          hv_current: to_int(16, data, i + LOG_POS_RECORD_HV_CURRENT) / 10,    // 0.1 A
+          lv_voltage: to_int(16, data, i + LOG_POS_RECORD_LV_VOLTAGE) / 100,   // 0.01 V
           temperature: to_int(16, data, i + LOG_POS_RECORD_TEMPERATURE) / 100, // 0.01 °C
         };
         break;

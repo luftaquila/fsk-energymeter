@@ -12,6 +12,7 @@ uint32_t mode;   // module operation mode
 
 extern volatile uint32_t adc_flag;
 extern uint32_t adc[];
+extern int16_t adc_calc[];
 
 char filename[_MAX_LFN + 1];
 
@@ -39,7 +40,7 @@ void energymeter_init(void) {
   adc_flag = FALSE;
 
   // if LV < 6V, the VBUS is not present and is powered by USB
-  if (adc[ADC_LV_VOLTAGE] < 600) { // 0.01 V unit
+  if (adc_calc[ADC_LV_VOLTAGE] < 600) { // 0.01 V unit
     DEBUG_MSG("MODE: USB\r\n");
     mode = EEM_MODE_USB;
 
