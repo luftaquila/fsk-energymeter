@@ -82,30 +82,32 @@ The recorded log files are stored in the drive like a standard USB memory stick.
 
 ### FSK-EEM Viewer
 
-Download the latest FSK-EEM Viewer from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).
+Download the latest FSK-EEM Viewer or open the web viewer URL from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).
 
 Open the record file in the FSK-EEM Viewer to visualize the data or export as a human-readable format.
 
-#### Device Configuration Tab
+#### Device Configuration
 
 Click the `Connect` button and select the FSK-EEM device to connect.\
 The device's UID and the current time will be displayed when connected.
 
-* `Sync RTC` button synchronizes the device clock with the host.
-* `Delete` button deletes the all log files stored in the device.
+* `Sync RTC` button synchronizes the device clock with the host computer.
+* `Delete` button deletes the all log files stored in the device.<br>Unplug and re-connect the device to see the change.
 
 ## DIY
 
 ### Hardware
 
-Download the latest `fsk-energymeter-pcb-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases). The *gerbers/* directory includes the gerber, BOM and CPL files for the JLCPCB PCBA(SMT) order.
+Download the latest `fsk-energymeter-pcb-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).\
+The *gerbers/* directory includes the gerber, BOM and CPL files for the JLCPCB PCBA(SMT) order.
 
 > [!TIP]
-> Exclude through-hole components (HV and LV connector, debug pin header and `L01Z600S05` Hall sensor) from the SMT assembly list. Purchase these parts from the global suppliers and solder it yourself to purchase them cheaper and reduce the setup fee.
+> Exclude through-hole components (HV and LV connector, debug pin header and `L01Z600S05` Hall sensor) from the SMT assembly list.
+> Purchase these parts from the global suppliers and solder it yourself to purchase them cheaper and reduce the setup fee.
 
 ### Firmware
 
-Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) and upload the `firmware-release.elf` to the device via ST-Link.
+Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) and upload the `firmware-release.elf` to the device with ST-Link.
 
 ## Development
 

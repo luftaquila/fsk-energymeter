@@ -25,21 +25,21 @@ jobs:
       - uses: actions/download-artifact@v4
       - run: |
           zip -r fsk-energymeter-firmware-${{ github.ref_name }}.zip fsk-energymeter-firmware
-          (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-macos-arm64-${{ github.ref_name }}.app.zip .)
-          mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-windows-x64-${{ github.ref_name }}.exe
-          mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-linux-x64-${{ github.ref_name }}.AppImage
+          (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-viewer-macos-arm64-${{ github.ref_name }}.app.zip .)
+          mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-viewer-windows-x64-${{ github.ref_name }}.exe
+          mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64-${{ github.ref_name }}.AppImage
           zip -r fsk-energymeter-pcb-${{ github.ref_name }}.zip fsk-energymeter-pcb
-          mv html/fsk-energymeter.html fsk-energymeter-${{ github.ref_name }}.html
+          mv html/fsk-energymeter.html fsk-energymeter-viewer-web-${{ github.ref_name }}.html
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           artifacts: |
             fsk-energymeter-firmware-*.zip
             fsk-energymeter-pcb-*.zip
-            fsk-energymeter-windows-x64-*
-            fsk-energymeter-macos-arm64-*
-            fsk-energymeter-linux-x64-*
-            fsk-energymeter-*.html
+            fsk-energymeter-viewer-windows-x64-*
+            fsk-energymeter-viewer-macos-arm64-*
+            fsk-energymeter-viewer-linux-x64-*
+            fsk-energymeter-viewer-web-*.html
           commit: ${{ github.sha }}
           tag: ${{ github.ref_name }}
           body: |
@@ -51,7 +51,7 @@ jobs:
             #### Web
 
             * https://fsk-energymeter.luftaquila.io
-            * `fsk-energymeter-${{ github.ref_name }}.html`
+            * `fsk-energymeter-viewer-web-${{ github.ref_name }}.html`
 
             #### Windows
 
@@ -63,7 +63,7 @@ jobs:
             Otherwise, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
 
             ```sh
-            unzip fsk-energymeter-macos-arm64-${{ github.ref_name }}.app.zip
+            unzip fsk-energymeter-viewer-macos-arm64-${{ github.ref_name }}.app.zip
             xattr -c fsk-energymeter.app
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
@@ -76,5 +76,5 @@ jobs:
             Run the following commands before open the application for the first time.
 
             ```sh
-            chmod u+x fsk-energymeter-linux-x64-${{ github.ref_name }}.AppImage
+            chmod u+x fsk-energymeter-viewer-linux-x64-${{ github.ref_name }}.AppImage
             ```
