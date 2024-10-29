@@ -26,7 +26,7 @@
 | HV bus current resolution | | 0.64 | | A |
 | Operational temperature | -10 | | 80 | °C |
 | IP rating | | IP 20 | | |
-| Startup time |  | 570 | 700 | ms |
+| Startup time |  | 570 | 600 | ms |
 | Record interval |  | 10 | 15 | ms |
 | Possible data loss<br>on power brownout | 0 | | 100 | ms |
 
@@ -58,18 +58,22 @@
 There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is in startup, it measures the LV supply voltage and decide the mode to run.
 
 ### Record mode
-If `VIN >= 6V` during startup, the device enters the Record mode.
+If `VIN >= 6V` during startup, the device enters the record mode.
 
-The device will measure HV voltage, HV current, LV voltage and the CPU temperature every 10 ms and save it to the file.
+The device measure HV voltage, HV current, LV voltage and the CPU temperature every 10 ms.
+
+Log files are created for every power cycles and synchronized every 100 ms.\
+During the file write, measurement may delayed up to 15 ms.
 
 > [!IMPORTANT]
-> The device will perform a zero calibration of the HV voltage and current during the startup sequence.\
+> The device performs a zero calibration of the HV voltage and current during the startup sequence.\
 > Make sure that the HV voltage and current are at 0V and 0A until the the startup is complete.
 
 ### USB mode
 If `VIN < 6V` during startup, the device enters the USB mode.
 
-When plugged in, the FSK-EEM USB Mass Storage will appear on the host PC. It may took ~20 seconds to be mounted. See [Troubleshootings](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#1-fsk-eem-usb-mass-storage-takes-too-long-to-be-mounted-on-the-pc) for the details.
+When plugged in, the FSK-EEM USB Mass Storage will appear on the host PC.\
+It may took ~20 seconds to be mounted. See [Troubleshootings](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#1-fsk-eem-usb-mass-storage-takes-too-long-to-be-mounted-on-the-pc) for the details.
 
 The recorded log files are stored in the drive like a standard USB memory stick.
 
@@ -82,14 +86,14 @@ The recorded log files are stored in the drive like a standard USB memory stick.
 
 ### FSK-EEM Viewer
 
-Download the latest FSK-EEM Viewer or open the web viewer URL from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).
+Download the latest FSK-EEM Viewer from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) or open the [online viewer](https://fsk-energymeter.luftaquila.io).
 
 Open the record file in the FSK-EEM Viewer to visualize the data or export as a human-readable format.
 
 #### Device Configuration
 
 Click the `Connect` button and select the FSK-EEM device to connect.\
-The device's UID and the current time will be displayed when connected.
+The device's UID and the current time are displayed on successful connection.
 
 * `Sync RTC` button synchronizes the device clock with the host computer.
 * `Delete` button deletes the all log files stored in the device.<br>Unplug and re-connect the device to see the change.
@@ -102,8 +106,8 @@ Download the latest `fsk-energymeter-pcb-<version>.zip` from the [Release](https
 The *gerbers/* directory includes the gerber, BOM and CPL files for the JLCPCB PCBA(SMT) order.
 
 > [!TIP]
-> Exclude through-hole components (HV and LV connector, debug pin header and `L01Z600S05` Hall sensor) from the SMT assembly list.
-> Purchase these parts from the global suppliers and solder it yourself to purchase them cheaper and reduce the setup fee.
+> Exclude through-hole components (connectors, debug pin header and the hall sensor) from the SMT assembly list.
+> Purchase these parts from the global suppliers and solder it yourself for cheaper price and reduced setup fee.
 
 ### Firmware
 
@@ -182,7 +186,7 @@ make debug    # debug build
 #### 1. FSK-EEM USB Mass Storage takes too long to be mounted on the host
 The FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s.
 
-When you plug the FSK-EEM device, the host(PC) will try to load the FAT table of the SDMMC into its memory. The size of the FAT32 FAT table is around 8 MB, so it will take ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost.
+When you plug the FSK-EEM device, the host(PC) will try to load the FAT table of the SDMMC into its memory. The size of the FAT32 FAT table is around 8 MB, so it took ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost.
 
 The RTC sync or record delete functions will work immediately regardless of this limit.
 
