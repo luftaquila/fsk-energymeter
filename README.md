@@ -2,7 +2,7 @@
 
 ![](.github/assets/3d.png)
 
-## Features
+## 0. Features
 
 * Records the following values:
     * HV bus voltage 
@@ -14,7 +14,7 @@
 * Mounted as a USB Mass Storage device
 * Data visualizer available on most platforms
 
-## Specifications
+## 1. Specifications
 
 | | MIN | TYP | MAX | UNIT |
 |:-:|:-:|:-:|:-:|:-:|
@@ -32,7 +32,7 @@
 
 <sup>1</sup> When powered by USB, the device can startup with a minimum supply voltage of 4.5 V.
 
-## Connectors
+## 2. Connectors
 
 | | LV | HV |
 |:-:|:-:|:-:|
@@ -53,7 +53,7 @@
 
 ![](.github/assets/wire.png)
 
-## Usage
+## 3. Usage
 
 There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is in startup, it measures the LV supply voltage and decide the mode to run.
 
@@ -98,7 +98,7 @@ The device's UID and the current time are displayed on successful connection.
 * `Sync RTC` button synchronizes the device clock with the host computer.
 * `Delete` button deletes the all log files stored in the device.<br>Unplug and re-connect the device to see the change.
 
-## DIY
+## 4. DIY
 
 ### Hardware
 
@@ -113,7 +113,7 @@ The *gerbers/* directory includes the gerber, BOM and CPL files for the JLCPCB P
 
 Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) and upload the `firmware-release.elf` to the device with ST-Link.
 
-## Development
+## 5. Development
 
 ### Firmware
 
@@ -181,7 +181,7 @@ make debug    # debug build
     npm run tauri build  # build executables
     ```
 
-## Troubleshootings
+## 6. Troubleshootings
 
 #### 1. FSK-EEM USB Mass Storage takes too long to be mounted on the host
 The FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s.
@@ -198,7 +198,7 @@ On MacOS, the native app uses the Safari for its WebView, which does not support
 
 On Android and iOS, the API is not supported from the OS layer. Use the desktop version of the viewer to configure the device.
 
-## LICENSE
+## 7. LICENSE
 
 ```
 "THE BEERWARE LICENSE" (Revision 42):
