@@ -15,7 +15,6 @@ body {
 
 .root-container {
   display: flex;
-  margin-left: 80px;
 }
 
 h1 {
@@ -103,7 +102,6 @@ input::-webkit-inner-spin-button {
 * sidebar configurations
 *******************************************************************************/
 .sidebar-navigation {
-  position: fixed;
   min-width: 80px;
   min-height: 100vh;
   background-color: #313443;

@@ -17,34 +17,34 @@
 </head>
 
 <body>
-  <nav class="sidebar-navigation">
-    <ul>
-      <li id="viewer" class="nav-mode active">
-        <i class="fa fw fa-database"></i>
-        <span class="tooltip">Data viewer</span>
-      </li>
-      <li id="config" class="nav-mode">
-        <i class="fa fw fa-gear"></i>
-        <span class="tooltip">Device configuration</span>
-      </li>
-    </ul>
-    <ul style="position: fixed; bottom: 0;">
-      <li style="height: 30px; padding: 25px 0px;">
-        <a href="https://dnf.luftaquila.io/c/analytics" target="_blank">
-          <img src="assets/dnf.svg" alt="DNF SVG" style="width: 30px;" />
-          <span class="tooltip" style="margin-top: 0px;">DNF Forum (Support / Discussions)</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/luftaquila/fsk-energymeter" target="_blank">
-          <i class="fab fw fa-github"></i>
-          <span class="tooltip">luftaquila/fsk-energymeter</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-
   <div class="root-container">
+    <nav class="sidebar-navigation">
+      <ul>
+        <li id="viewer" class="nav-mode active">
+          <i class="fa fw fa-database"></i>
+          <span class="tooltip">Data viewer</span>
+        </li>
+        <li id="config" class="nav-mode">
+          <i class="fa fw fa-gear"></i>
+          <span class="tooltip">Device configuration</span>
+        </li>
+      </ul>
+      <ul style="position: absolute; bottom: 0;">
+        <li style="height: 30px; padding: 25px 0px;">
+          <a href="https://dnf.luftaquila.io/c/analytics" target="_blank">
+            <img src="assets/dnf.svg" alt="DNF SVG" style="width: 30px;" />
+            <span class="tooltip" style="margin-top: 0px;">DNF Forum (Support / Discussions)</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/luftaquila/fsk-energymeter" target="_blank">
+            <i class="fab fw fa-github"></i>
+            <span class="tooltip">luftaquila/fsk-energymeter</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
     <div id="container-viewer" class="container">
       <h1>💾 FSK-EEM Data Viewer</h1>
 
@@ -65,7 +65,8 @@
         </div>
 
         <div style="font-size: 0.8rem;">
-          <i class="fas fa-fw fa-info-circle"></i> The timestamp at the beginning of the record's filename is important. Do NOT change it.
+          <i class="fas fa-fw fa-info-circle"></i> The timestamp at the beginning of the record's filename is important.
+          Do NOT change it.
         </div>
       </article>
 
@@ -143,9 +144,10 @@
         <h2><i class="fa fw fa-eraser"></i>Delete records</h2>
 
         <div style="font-size: 0.8rem; line-height: 1.2rem;">
-            <i class="fas fa-fw fa-info-circle"></i> Delete all log files stored in the device storage.<br>
-            <i class="fas fa-fw fa-info-circle" style="color: transparent;"></i> Disconnect and re-connect the device to see the changes.<br>
-            <i class="fas fa-fw fa-triangle-exclamation" style="color: orange"></i> This operation cannot be undone.
+          <i class="fas fa-fw fa-info-circle"></i> Delete all log files stored in the device storage.<br>
+          <i class="fas fa-fw fa-info-circle" style="color: transparent;"></i> Disconnect and re-connect the device to
+          see the changes.<br>
+          <i class="fas fa-fw fa-triangle-exclamation" style="color: orange"></i> This operation cannot be undone.
         </div>
 
         <div style="display: flex; gap: 1rem;">

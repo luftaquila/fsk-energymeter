@@ -22,25 +22,25 @@ function wheelZoomPlugin(opts) {
 
   return {
     hooks: {
-			setData: u => {
-				shouldSyncX = true;
-				shouldSyncY = true;
-			},
-			setScale: (u, key) => {
-				if (key == 'x' && shouldSyncX) {
-					xMin = u.scales.x.min;
-					xMax = u.scales.x.max;
-					xRange = xMax - xMin;
-					shouldSyncX = false;
-				}
-				
-				if (key == 'y' && shouldSyncY)  {
-					yMin = u.scales.y.min;
-					yMax = u.scales.y.max;				
-					yRange = yMax - yMin;
-					shouldSyncY = false;
-				}
-			},
+      setData: u => {
+        shouldSyncX = true;
+        shouldSyncY = true;
+      },
+      setScale: (u, key) => {
+        if (key == 'x' && shouldSyncX) {
+          xMin = u.scales.x.min;
+          xMax = u.scales.x.max;
+          xRange = xMax - xMin;
+          shouldSyncX = false;
+        }
+
+        if (key == 'y' && shouldSyncY) {
+          yMin = u.scales.y.min;
+          yMax = u.scales.y.max;
+          yRange = yMax - yMin;
+          shouldSyncY = false;
+        }
+      },
       ready: u => {
         xMin = u.scales.x.min;
         xMax = u.scales.x.max;
@@ -56,11 +56,11 @@ function wheelZoomPlugin(opts) {
         // wheel drag pan
         over.addEventListener("mousedown", e => {
           if (e.button == 1) {
-          //	plot.style.cursor = "move";
+            //	plot.style.cursor = "move";
             e.preventDefault();
 
             let left0 = e.clientX;
-          //	let top0 = e.clientY;
+            //	let top0 = e.clientY;
 
             let scXMin0 = u.scales.x.min;
             let scXMax0 = u.scales.x.max;
@@ -71,7 +71,7 @@ function wheelZoomPlugin(opts) {
               e.preventDefault();
 
               let left1 = e.clientX;
-            //	let top1 = e.clientY;
+              //	let top1 = e.clientY;
 
               let dx = xUnitsPerPx * (left1 - left0);
 
@@ -95,10 +95,10 @@ function wheelZoomPlugin(opts) {
         over.addEventListener("wheel", e => {
           e.preventDefault();
 
-          let {left, top} = u.cursor;
+          let { left, top } = u.cursor;
 
-          let leftPct = left/rect.width;
-          let btmPct = 1 - top/rect.height;
+          let leftPct = left / rect.width;
+          let btmPct = 1 - top / rect.height;
           let xVal = u.posToVal(left, "x");
           let yVal = u.posToVal(top, "y");
           let oxRange = u.scales.x.max - u.scales.x.min;
@@ -135,8 +135,8 @@ function touchZoomPlugin(opts) {
   function init(u, opts, data) {
     let over = u.over;
     let rect, oxRange, oyRange, xVal, yVal;
-    let fr = {x: 0, y: 0, dx: 0, dy: 0};
-    let to = {x: 0, y: 0, dx: 0, dy: 0};
+    let fr = { x: 0, y: 0, dx: 0, dy: 0 };
+    let to = { x: 0, y: 0, dx: 0, dy: 0 };
 
     function storePos(t, e) {
       let ts = e.touches;
@@ -161,8 +161,8 @@ function touchZoomPlugin(opts) {
         let yMax = Math.max(t0y, t1y);
 
         // midpts
-        t.y = (yMin+yMax)/2;
-        t.x = (xMin+xMax)/2;
+        t.y = (yMin + yMax) / 2;
+        t.x = (xMin + xMax) / 2;
 
         t.dx = xMax - xMin;
         t.dy = yMax - yMin;
@@ -188,8 +188,8 @@ function touchZoomPlugin(opts) {
       let xFactor = fr.d / to.d;
       let yFactor = fr.d / to.d;
 
-      let leftPct = left/rect.width;
-      let btmPct = 1 - top/rect.height;
+      let leftPct = left / rect.width;
+      let btmPct = 1 - top / rect.height;
 
       let nxRange = oxRange * xFactor;
       let nxMin = xVal - leftPct * nxRange;
@@ -213,6 +213,7 @@ function touchZoomPlugin(opts) {
     }
 
     function touchmove(e) {
+      e.preventDefault();
       storePos(to, e);
 
       if (!rafPending) {
@@ -221,7 +222,7 @@ function touchZoomPlugin(opts) {
       }
     }
 
-    over.addEventListener("touchstart", function(e) {
+    over.addEventListener("touchstart", function (e) {
       rect = over.getBoundingClientRect();
 
       storePos(fr, e);
@@ -235,13 +236,11 @@ function touchZoomPlugin(opts) {
       xVal = u.posToVal(left, "x");
       yVal = u.posToVal(top, "y");
 
-      document.addEventListener("touchmove", touchmove, {passive: true});
-      e.preventDefault();
+      document.addEventListener("touchmove", touchmove, { passive: false });
     });
 
-    over.addEventListener("touchend", function(e) {
-      document.removeEventListener("touchmove", touchmove, {passive: true});
-      e.preventDefault();
+    over.addEventListener("touchend", function (e) {
+      document.removeEventListener("touchmove", touchmove, { passive: false });
     });
   }
 
@@ -306,14 +305,14 @@ function downloadImage(uplot, filename) {
     a.click();
   };
 
-  let blob = new Blob([svgText], {type: 'image/svg+xml;charset=utf-8'});
-  
+  let blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+
   /* Using blob.toDataURL() taints the img element due to a bug in Chrome, see
    * https://stackoverflow.com/questions/50824012/why-does-this-svg-holding-blob-url-taint-the-canvas-in-chrome 
    * The workaround here converts the blob to a DataURL which avoids the bug. */
   let reader = new FileReader();
   reader.readAsDataURL(blob);
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     img.src = e.target.result;
   }
 }
