@@ -38,18 +38,13 @@
 |:-:|:-:|:-:|
 | Model | [T4145415051-001](https://www.te.com/en/product-T4145415051-001.html) | [39291028](https://www.molex.com/en-us/products/part-detail/39291028) |
 | Image | <img src=".github/assets/lv.png" width="300"> | <img src=".github/assets/hv.png" width="300"> |
-| Mate | [T4111402051-000](https://www.te.com/en/product-T4111402051-000.html) | [5557-02](https://www.molex.com/en-us/part-list/5557?physical_circuitsMaximum=%222%22&physical_numberOfRows=%222%22) |
-| Pinout | 1: `D-`<br>2: `D+`<br>3: `5VOUT`<sup>1</sup><br>4: `VIN`<br>5: `GND` | 1: `HV+`<br>2: `HV-` |
-
-<sup>1</sup> `5VOUT` is not used by the device. It outputs 5V and can drive current up to 800mA.
+| Mate | [T4111402051-000](https://www.te.com/en/product-T4111402051-000.html)<br>[T4113402051-000](https://www.te.com/en/product-T4113402051-000.html) | [5557-02](https://www.molex.com/en-us/part-list/5557?physical_circuitsMaximum=%222%22&physical_numberOfRows=%222%22) |
+| Pinout | 1: `D-`<br>2: `D+`<br>3: `N/C`<br>4: `VIN`<br>5: `GND` | 1: `HV+`<br>2: `HV-` |
 
 ### Wiring
 
 > [!CAUTION]
 > Misconnection of the pins may cause permanent damage to the device.
-
-> [!WARNING]
-> When powered by USB, 5V rail of the USB must be connected to `VIN`, not `5VOUT`.
 
 ![](.github/assets/wire.png)
 

@@ -6,7 +6,7 @@ connectors:
     type: TE T4111402051-000
     subtype: male
     show_pincount: False
-    pinlabels: [D-, D+, 5VOUT, VIN, GND]
+    pinlabels: [D-, D+, N/C, VIN, GND]
     image:
       src: ./lv-mate.png
       width: 200
