@@ -13662,7 +13662,7 @@
 		(path "/96e70de1-b763-45ff-b057-1c1d677e3e74")
 		(sheetname "Root")
 		(sheetfile "fsk-energymeter.kicad_sch")
-		(attr through_hole)
+		(attr through_hole exclude_from_pos_files)
 		(fp_line
 			(start 3.1 0)
 			(end 4.1 -0.5)
@@ -19778,7 +19778,7 @@
 		(path "/182753ae-0830-4942-a932-31edd8024afa")
 		(sheetname "Root")
 		(sheetfile "fsk-energymeter.kicad_sch")
-		(attr through_hole)
+		(attr through_hole exclude_from_pos_files)
 		(fp_line
 			(start 3.87 -1.33)
 			(end 3.87 8.95)
