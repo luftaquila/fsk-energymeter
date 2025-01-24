@@ -51,6 +51,9 @@ jobs:
           sed -i '$d' fsk-energymeter.cfg && echo 'program ./release/firmware-release.elf verify reset exit' >> fsk-energymeter.cfg
           cp fsk-energymeter.cfg actions
 
+          cd ../../.github/assets
+          cp flash.ps1 flash.bat ../../device/firmware/actions
+
       - uses: actions/upload-artifact@v4
         with:
           name: fsk-energymeter-firmware
