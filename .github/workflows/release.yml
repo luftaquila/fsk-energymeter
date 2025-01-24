@@ -44,8 +44,8 @@ jobs:
           tag: ${{ github.ref_name }}
           body: |
             ### Firmware
-            Use the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) with the [ST-Link](https://smartstore.naver.com/misoparts/products/5263743411) to upload the firmware ELF to the device.\
-            Make sure that the `Shared` option is set to `Enabled` in the ST-LINK configuration.
+            Connect the [ST-Link](https://smartstore.naver.com/misoparts/products/5263743411) with the debug SWD header of the PCB.\
+            Download `fsk-energymeter-firmware-${{ github.ref_name }}.zip` and run `openocd -f fsk-energymeter.cfg`.
 
             ### FSK-EEM Viewer
             #### Web

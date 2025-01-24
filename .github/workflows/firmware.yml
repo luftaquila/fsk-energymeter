@@ -48,6 +48,9 @@ jobs:
           for file in build/firmware.*; do mv "$file" "${file/firmware./firmware-debug.}"; done
           mv build/firmware-debug.* actions/debug
 
+          sed -i '$d' fsk-energymeter.cfg && echo 'program ./release/firmware-release.elf verify reset exit' >> fsk-energymeter.cfg
+          cp fsk-energymeter.cfg actions
+
       - uses: actions/upload-artifact@v4
         with:
           name: fsk-energymeter-firmware

@@ -106,7 +106,9 @@ The *gerbers/* directory includes the gerber, BOM and CPL files for the JLCPCB P
 
 ### Firmware
 
-Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) and upload the `firmware-release.elf` to the device with ST-Link.
+1. Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) and extract.
+2. Download OpenOCD from [Prerequisites](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#prerequisites) at 5. Development and make sure the `openocd.exe` is at `$PATH`.
+3. Open the terminal, `cd` into the extracted directory and run the following command: `openocd -f fsk-energymeter.cfg`
 
 ## 5. Development
 
