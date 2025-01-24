@@ -38,81 +38,107 @@
 |:-:|:-:|:-:|
 | Model | [T4145415051-001](https://www.te.com/en/product-T4145415051-001.html) | [39291028](https://www.molex.com/en-us/products/part-detail/39291028) |
 | Image | <img src=".github/assets/lv.png" width="300"> | <img src=".github/assets/hv.png" width="300"> |
-| Mate | [T4111402051-000](https://www.te.com/en/product-T4111402051-000.html)<br>[T4113402051-000](https://www.te.com/en/product-T4113402051-000.html) | [5557-02](https://www.molex.com/en-us/part-list/5557?physical_circuitsMaximum=%222%22&physical_numberOfRows=%222%22) |
+| Mate | [T4113402051-000](https://www.te.com/en/product-T4113402051-000.html)<sup>1</sup> | [5557-02](https://www.molex.com/en-us/part-list/5557?physical_circuitsMaximum=%222%22&physical_numberOfRows=%222%22) and [5556T](https://www.molex.com/en-us/products/part-detail/39000038) |
 | Pinout | 1: `D-`<br>2: `D+`<br>3: `N/C`<br>4: `VIN`<br>5: `GND` | 1: `HV+`<br>2: `HV-` |
 
+<sup>1</sup> [T4111402051-000](https://www.te.com/en/product-T4111402051-000.html) is also mountable, but it is **highly recommended** to use the angled model `T4113402051-000`. It is much easier to detach within the limited space.
+
 ### Wiring
+
+![](.github/assets/wire.png)
 
 > [!CAUTION]
 > Misconnection of the pins may cause permanent damage to the device.
 
-![](.github/assets/wire.png)
+> [!NOTE]
+> The _data cable_ and the _drive cable_ are two distinct cables. When driving the vehicle, connect the _drive cable_ to the LV connector of the FSK-EEM device. When extracting the data, disconnect the _drive cable_ and connect the _data cable_ instead. The easiest way to make a data cable is to cut any USB cable with a USB Type-A connector on one end.
 
 ## 3. Usage
 
-There are 2 operation modes in the FSK-EEM device. When the FSK-EEM is in startup, it measures the LV supply voltage and decide the mode to run.
+### 3-1. Record data
 
-### Record mode
-If `VIN >= 6V` during startup, the device enters the record mode.
+When driving the vehicle, connect both _HV cable_ and _drive cable_ to the FSK-EEM device.
 
-The device measure HV voltage, HV current, LV voltage and the CPU temperature every 10 ms.
-
-Log files are created for every power cycles and synchronized every 100 ms.\
-During the file write, measurement may delayed up to 15 ms.
+The _drive cable_ should supply `VIN >= 6V` to the device to start as a record mode.
 
 > [!IMPORTANT]
 > The device performs a zero calibration of the HV voltage and current during the startup sequence.\
 > Make sure that the HV voltage and current are at 0V and 0A until the the startup is complete.
 
-### USB mode
-If `VIN < 6V` during startup, the device enters the USB mode.
+When the zero calibration is finished, the device will continuously measure the HV voltage, HV current, LV voltage and the CPU temperature every 10 ms.
 
-When plugged in, the FSK-EEM USB Mass Storage will appear on the host PC.\
-It may took ~20 seconds to be mounted. See [Troubleshootings](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#1-fsk-eem-usb-mass-storage-takes-too-long-to-be-mounted-on-the-pc) for the details.
-
-The recorded log files are stored in the drive like a standard USB memory stick.
+A new log file will be created for every power cycles.
 
 > [!NOTE]
-> The drive is **read-only**. You cannot edit or delete the log files in the explorer.
+> The logged data will be synchronized to the file every 100 ms. During the file write, measurement may delayed up to 5 ms.
+
+> [!NOTE]
+> The device uses its internal clock to record the actual time of the measured data. As the clock accumulate errors over time, you should synchronize the time with FSK-EEM Viewer if you're using it after a long period. If the time kept resetted to `May 12, 1999`, it means that the battery should be replaced.
+
+### 3-2. Extract data
+
+To extract the recorded data from the device, disconnect _drive cable_ from the device and connect _data cable_ instead. There is no need to disconnect the _HV cable_ during data extraction.
+
+Plug the USB side of the _data cable_ to the PC. The FSK-EEM USB Mass Storage will appear soon.
+
+The recorded log files are stored in the drive like a common USB memory stick. Copy the log files to your PC.
 
 > [!IMPORTANT]
 > The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.<br>
 > Do NOT edit the filename of the *.log file. JSON or CSV files are not affected.
 
-### FSK-EEM Viewer
+> [!NOTE]
+> It may took ~20 seconds for the device to be mounted. See [Troubleshootings](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings) for the details.
 
-Download the latest FSK-EEM Viewer from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) or open the [online viewer](https://fsk-energymeter.luftaquila.io).
+> [!NOTE]
+> The drive is **read-only**. You cannot edit or delete the log files in the file explorer.
 
-Open the record file in the FSK-EEM Viewer to visualize the data or export as a human-readable format.
+> [!TIP]
+> To access the log files with your smartphone, use an additional USB Type-A to Type-C adapter.
 
-#### Device Configuration
+### 3-3. View data
 
-Click the `Connect` button and select the FSK-EEM device to connect.\
+Go to the [online viewer](https://fsk-energymeter.luftaquila.io) and open the log file to view the recorded data as a graph, or export the log as a human-readable JSON/CSV format.
+
+> [!NOTE]
+> If there is no Internet connection, download the FSK-EEM Viewer program from the [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) in advance.
+
+### 3-4. Configure the device
+
+In the FSK-EEM Viewer's Device Configuration section, click the `Connect` button and select the FSK-EEM device to connect.\
 The device's UID and the current time are displayed on successful connection.
 
 * `Sync RTC` button synchronizes the device clock with the host computer.
-* `Delete` button deletes the all log files stored in the device.<br>Unplug and re-connect the device to see the change.
+* `Delete` button deletes the all log files stored in the device. This button will be active only if the `Unlock` button is clicked.
+
+The delete action cannot be undone. Unplug and re-connect the device to see the change after the delete.
 
 ## 4. DIY
 
-### Hardware
+### 4.1 Build your own hardware
 
-Download the latest `fsk-energymeter-pcb-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases).\
-The *gerbers/* directory includes the gerber, BOM and CPL files for the JLCPCB PCBA(SMT) order.
+Download the `fsk-energymeter-pcb.zip` from the [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) and extract it.\
+The *gerbers/* directory includes the gerber, BOM and CPL file for the JLCPCB PCBA(SMT) order.
 
-> [!TIP]
-> Exclude through-hole components (connectors, debug pin header and the hall sensor) from the SMT assembly list.
-> Purchase these parts from the global suppliers and solder it yourself for cheaper price and reduced setup fee.
+When the PCB arrives, solder following parts manually to the device.
 
-### Firmware
+* [L01Z600S05](https://www.eleparts.co.kr/goods/view?no=261774) Hall sensor
+* [39291028](https://www.eleparts.co.kr/goods/view?no=1058873) HV connector
+* [T4145415051-001](https://www.eleparts.co.kr/goods/view?no=7504808) LV connector
+* [2.54mm 2\*4 debug pin header](https://www.eleparts.co.kr/goods/view?no=12534585)
 
-1. Download the latest `fsk-energymeter-firmware-<version>.zip` from the [Release](https://github.com/luftaquila/fsk-energymeter/releases) and extract.
-2. Download OpenOCD from [Prerequisites](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#prerequisites) at 5. Development and make sure the `openocd.exe` is at `$PATH`.
-3. Open the terminal, `cd` into the extracted directory and run the following command: `openocd -f fsk-energymeter.cfg`
+### 4.2 Upload firmware to your device
+
+1. Download the `fsk-energymeter-firmware.zip` [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) and extract it.
+1. Connect ST-Link's `3V3`, `GND`, `SWCLK`, `SWDIO` pins to the same pins at the FSK-EEM's debug pin header.
+1. Run `flash.bat` to flash the release firmware to the device.
 
 ## 5. Development
 
-### Firmware
+> [!NOTE]
+> This section is for developers who want to modify the firmware or the viewer on their own, and is NOT REQUIRED in general.
+
+### 5-1. Firmware
 
 #### Prerequisites
 
@@ -148,7 +174,7 @@ make program  # release build
 make debug    # debug build
 ```
 
-### Viewer
+### 5-2. Viewer
 
 #### Prerequisites
 
@@ -203,3 +229,6 @@ LUFT-AQUILA wrote this project. As long as you retain this notice,
 you can do whatever you want with this stuff. If we meet someday,
 and you think this stuff is worth it, you can buy me a beer in return.
 ```
+
+이 저장소의 모든 내용물은 얼마든지 자유롭게 사용할 수 있습니다.\
+이 프로젝트가 마음에 든다면, 언젠가 우리가 만나게 되었을 때 맥주 한 잔 사 주세요.
