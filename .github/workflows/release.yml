@@ -24,46 +24,45 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
       - run: |
-          zip -r fsk-energymeter-firmware-${{ github.ref_name }}.zip fsk-energymeter-firmware
-          (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-viewer-macos-arm64-${{ github.ref_name }}.app.zip .)
-          mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-viewer-windows-x64-${{ github.ref_name }}.exe
-          mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64-${{ github.ref_name }}.AppImage
-          zip -r fsk-energymeter-pcb-${{ github.ref_name }}.zip fsk-energymeter-pcb
-          mv html/fsk-energymeter.html fsk-energymeter-viewer-web-${{ github.ref_name }}.html
+          zip -r fsk-energymeter-firmware.zip fsk-energymeter-firmware
+          (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-viewer-macos-arm64.app.zip .)
+          mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-viewer-windows-x64.exe
+          mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64.AppImage
+          zip -r fsk-energymeter-pcb.zip fsk-energymeter-pcb
+          mv html/fsk-energymeter.html fsk-energymeter-viewer-web.html
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           artifacts: |
-            fsk-energymeter-firmware-*.zip
-            fsk-energymeter-pcb-*.zip
-            fsk-energymeter-viewer-windows-x64-*
-            fsk-energymeter-viewer-macos-arm64-*
-            fsk-energymeter-viewer-linux-x64-*
-            fsk-energymeter-viewer-web-*.html
+            fsk-energymeter-firmware.zip
+            fsk-energymeter-pcb.zip
+            fsk-energymeter-viewer-windows-x64.exe
+            fsk-energymeter-viewer-macos-arm64.app.zip
+            fsk-energymeter-viewer-linux-x64.AppImage
+            fsk-energymeter-viewer-web.html
           commit: ${{ github.sha }}
           tag: ${{ github.ref_name }}
           body: |
-            ### Firmware
-            Connect the [ST-Link](https://smartstore.naver.com/misoparts/products/5263743411) with the debug SWD header of the PCB.\
-            Download `fsk-energymeter-firmware-${{ github.ref_name }}.zip` and run `openocd -f fsk-energymeter.cfg`.
+            ### 1. Firmware
+            Follow the steps at [4.2 Upload firmware to your device](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#42-upload-firmware-to-your-device). ST-Link could be found [here](https://smartstore.naver.com/misoparts/products/5263743411).
 
-            ### FSK-EEM Viewer
-            #### Web
+            ### 2. FSK-EEM Viewer
+            #### 2-1. Web
 
             * https://fsk-energymeter.luftaquila.io
-            * `fsk-energymeter-viewer-web-${{ github.ref_name }}.html`
+            * `fsk-energymeter-viewer-web.html`
 
-            #### Windows
+            #### 2-2. Windows
 
             If the `Windows protected your PC` message appears, click <ins>More Info</ins> and click `Run anyway` to run the application.
 
-            #### MacOS
+            #### 2-3. MacOS
 
             Run the following commands before open the application for the first time.\
             Otherwise, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
 
             ```sh
-            unzip fsk-energymeter-viewer-macos-arm64-${{ github.ref_name }}.app.zip
+            unzip fsk-energymeter-viewer-macos-arm64.app.zip
             xattr -c fsk-energymeter.app
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
@@ -71,10 +70,10 @@ jobs:
             The Device Configuration tab is not supported in the native MacOS application and the Safari due to a lack of the WebSerial API.\
             Use the web version with the Chromium browser instead. ([Reference](https://caniuse.com/?search=Web%20Serial%20API))
 
-            #### Linux
+            #### 2-4. Linux
 
             Run the following commands before open the application for the first time.
 
             ```sh
-            chmod u+x fsk-energymeter-viewer-linux-x64-${{ github.ref_name }}.AppImage
+            chmod u+x fsk-energymeter-viewer-linux-x64.AppImage
             ```
