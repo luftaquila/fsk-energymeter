@@ -41,6 +41,7 @@ jobs:
 
       - name: Build PCB schematic, artwork and 3d models
         run: |
+          sudo apt-get install imagemagick
           npm i -g svgexport
           mkdir -p kicad
           kicad-cli sch export svg device/hardware/fsk-energymeter.kicad_sch -o kicad --exclude-drawing-sheet --no-background-color
