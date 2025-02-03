@@ -1,0 +1,29 @@
+name: Export 3d models
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'device/3d/**'
+  workflow_call:
+  workflow_dispatch:
+  
+jobs:
+  build-3d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export stl files from stp
+        run: |
+          sudo snap install freecad
+          cd device/3d
+          cp ../../.github/assets/3d.py .
+          freecad.cmd 3d.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fsk-energymeter-3d
+          path: |
+            device/3d/*.stl
+            device/3d/*.stp

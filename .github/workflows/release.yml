@@ -10,6 +10,8 @@ jobs:
     uses: ./.github/workflows/firmware.yml
   build-pcb:
     uses: ./.github/workflows/kicad.yml
+  build-3d:
+    uses: ./.github/workflows/3d.yml
   build-native:
     uses: ./.github/workflows/native.yml
   build-html:
@@ -19,7 +21,7 @@ jobs:
   release:
     name: release
     runs-on: ubuntu-latest
-    needs: [build-firmware, build-pcb, build-native, build-html]
+    needs: [build-firmware, build-pcb, build-3d, build-native, build-html]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -29,6 +31,7 @@ jobs:
           mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-viewer-windows-x64.exe
           mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64.AppImage
           zip -r fsk-energymeter-pcb.zip fsk-energymeter-pcb
+          zip -r fsk-energymeter-3d.zip fsk-energymeter-3d
           mv html/fsk-energymeter.html fsk-energymeter-viewer-web.html
       - uses: ncipollo/release-action@v1
         with:
@@ -36,6 +39,7 @@ jobs:
           artifacts: |
             fsk-energymeter-firmware.zip
             fsk-energymeter-pcb.zip
+            fsk-energymeter-3d.zip
             fsk-energymeter-viewer-windows-x64.exe
             fsk-energymeter-viewer-macos-arm64.app.zip
             fsk-energymeter-viewer-linux-x64.AppImage
@@ -44,7 +48,7 @@ jobs:
           tag: ${{ github.ref_name }}
           body: |
             ### 1. Firmware
-            Follow the steps at [4.2 Upload firmware to your device](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#42-upload-firmware-to-your-device). ST-Link could be found [here](https://smartstore.naver.com/misoparts/products/5263743411).
+            Follow the steps at [4.2 Upload firmware to your device](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#42-upload-firmware-to-your-device).
 
             ### 2. FSK-EEM Viewer
             #### 2-1. Web
