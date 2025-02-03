@@ -1,6 +1,10 @@
 # Formula Student Korea Electric Energy Meter
 
-![](.github/assets/3d.png)
+<p align="center">
+  <img src=".github/assets/pcb.png" width="45%">
+  &ensp;
+  <img src=".github/assets/housing.png" width="45%">
+</p>
 
 ## 0. Features
 
@@ -91,7 +95,7 @@ The recorded log files are stored in the drive like a common USB memory stick. C
 
 > [!IMPORTANT]
 > The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.
-> Do ***NOT*** edit the filename of the *.log file. JSON or CSV files are not affected.
+> Do ***NOT*** edit the filename of the \*.log file. JSON or CSV files are not affected.
 
 > [!NOTE]
 > The drive is ***read-only***. You cannot edit or delete the log files in the file explorer.
@@ -113,7 +117,7 @@ In the FSK-EEM Viewer's Device Configuration section, click the `Connect` button
 The device's UID and the current time will be displayed on successful connection.
 
 * `Sync RTC` button synchronizes the device clock with the host computer.
-* `Delete` button deletes **ALL** files stored in the device. This button will be active only if the `Unlock` button is clicked.
+* `Delete` button deletes ***ALL*** files stored in the device. This button will be active only if the `Unlock` button is clicked.
 
 Unplug and re-connect the device to see the change after the delete.
 
