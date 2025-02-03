@@ -32,35 +32,41 @@ jobs:
           mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64.AppImage
           zip -r fsk-energymeter-pcb.zip fsk-energymeter-pcb
           zip -r fsk-energymeter-3d.zip fsk-energymeter-3d
-          mv html/fsk-energymeter.html fsk-energymeter-viewer-web.html
+          mv html/fsk-energymeter.html fsk-energymeter-viewer.html
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           artifacts: |
+            fsk-energymeter-3d.zip
             fsk-energymeter-firmware.zip
             fsk-energymeter-pcb.zip
-            fsk-energymeter-3d.zip
+            fsk-energymeter-viewer.html
             fsk-energymeter-viewer-windows-x64.exe
             fsk-energymeter-viewer-macos-arm64.app.zip
             fsk-energymeter-viewer-linux-x64.AppImage
-            fsk-energymeter-viewer-web.html
           commit: ${{ github.sha }}
           tag: ${{ github.ref_name }}
           body: |
-            ### 1. Firmware
-            Follow the steps at [4.2 Upload firmware to your device](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#42-upload-firmware-to-your-device).
+            ### FSK-EEM Viewer
 
-            ### 2. FSK-EEM Viewer
-            #### 2-1. Web
+            #### Web
 
             * https://fsk-energymeter.luftaquila.io
-            * `fsk-energymeter-viewer-web.html`
+            * `fsk-energymeter-viewer.html`
 
-            #### 2-2. Windows
+            #### Windows
 
             If the `Windows protected your PC` message appears, click <ins>More Info</ins> and click `Run anyway` to run the application.
 
-            #### 2-3. MacOS
+            #### Linux
+
+            Run the following commands before open the application for the first time.
+
+            ```sh
+            chmod u+x fsk-energymeter-viewer-linux-x64.AppImage
+            ```
+
+            #### macOS
 
             Run the following commands before open the application for the first time.\
             Otherwise, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
@@ -71,13 +77,4 @@ jobs:
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
 
-            The Device Configuration tab is not supported in the native MacOS application and the Safari due to a lack of the WebSerial API.\
-            Use the web version with the Chromium browser instead. ([Reference](https://caniuse.com/?search=Web%20Serial%20API))
-
-            #### 2-4. Linux
-
-            Run the following commands before open the application for the first time.
-
-            ```sh
-            chmod u+x fsk-energymeter-viewer-linux-x64.AppImage
-            ```
+            To use the Device Configuration tab in macOS, use the web version with the Chrome browser. ([Reference](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings))
