@@ -89,7 +89,7 @@ A new log file will be created for every power cycles.
 
 To extract the recorded data from the device, disconnect _drive cable_ from the device and connect _data cable_ instead. There is no need to disconnect the _HV cable_ during data extraction.
 
-Plug the USB side of the _data cable_ to the PC. The FSK-EEM USB Mass Storage will appear soon ([max ~20s](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings)).
+Plug the USB side of the _data cable_ to the PC. The FSK-EEM USB Mass Storage will appear soon ([~20s](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings)).
 
 The recorded log files are stored in the drive like a common USB memory stick. Copy the log files to your PC.
 
@@ -135,10 +135,11 @@ Unplug and re-connect the device to see the change after the delete.
     * [39291028](https://www.eleparts.co.kr/goods/view?no=1058873) HV connector
     * [T4145415051-001](https://www.eleparts.co.kr/goods/view?no=7504808) LV connector
     * [2.54mm 2\*4 debug pin header](https://www.eleparts.co.kr/goods/view?no=12534585)
+4. Insert a CR1220 battery and a Micro SD card to each slots on the PCB.
 
 ### 4.2 Upload firmware
 
-1. Download `fsk-energymeter-firmware.zip` [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) and extract it.
+1. Download `fsk-energymeter-firmware.zip` from the [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) and extract it.
 1. Connect ST-Link's `3V3`, `GND`, `SWCLK`, `SWDIO` pins to the same pins at the FSK-EEM's debug pin header.
 1. Run `flash.bat` to flash the release firmware to the device.
 
