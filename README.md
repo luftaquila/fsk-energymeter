@@ -8,15 +8,15 @@
 
 ## 0. Features
 
-* Records the following values:
+* Records following data:
     * HV bus voltage 
     * HV bus current
     * LV supply voltage 
     * Ambient (CPU) temperature
-    * Real-world time of each records
-* 100 Hz data sampling rate
+    * Real-world time of each record
+* 100 Hz sampling rate
 * Mounted as a USB Mass Storage device
-* Data visualizer available on most platforms
+* Data viewer available on most platforms
 
 ## 1. Specifications
 
@@ -43,72 +43,63 @@
 | Model | [T4145415051-001](https://www.te.com/en/product-T4145415051-001.html) | [39291028](https://www.molex.com/en-us/products/part-detail/39291028) |
 | Image | <img src=".github/assets/lv.png" width="300"> | <img src=".github/assets/hv.png" width="300"> |
 | Mate | [T4113402051-000](https://www.te.com/en/product-T4113402051-000.html)<sup>1</sup> | [5557-02](https://www.molex.com/en-us/part-list/5557?physical_circuitsMaximum=%222%22&physical_numberOfRows=%222%22) and [5556T](https://www.molex.com/en-us/products/part-detail/39000038) |
-| Pinout | 1: `D-`<br>2: `D+`<br>3: `N/C`<br>4: `VIN`<br>5: `GND` | 1: `HV+`<br>2: `HV-` |
+| Pinout | 1: `D-` &ensp; 2: `D+`<br>3: `N/C` &ensp; 4: `VIN`<br>5: `GND` | 1: `HV+` &ensp; 2: `HV-` |
 
-<sup>1</sup> [T4111402051-000](https://www.te.com/en/product-T4111402051-000.html) is also mountable, but it is ***highly recommended*** to use the angled model `T4113402051-000`.
+<sup>1</sup> [T4111402051-000](https://www.te.com/en/product-T4111402051-000.html) is also mountable, but it is ***highly recommended*** to use the `T4113402051-000`.
 
 ### Wiring
 
 ![](.github/assets/wire.png)
 
+The _data cable_ and the _drive cable_ are two distinct cables. When driving the vehicle, connect the _drive cable_ to the LV connector of the FSK-EEM device. When extracting the data, disconnect the _drive cable_ and connect the _data cable_ instead.
+
 > [!CAUTION]
 > Misconnection of the pins may cause permanent damage to the device.
 
-> [!NOTE]
-> The _data cable_ and the _drive cable_ are two distinct cables. When driving the vehicle, connect the _drive cable_ to the LV connector of the FSK-EEM device.
-> When extracting the data, disconnect the _drive cable_ and connect the _data cable_ instead.
-
 > [!TIP]
-> The easiest way to make a data cable is to cut any USB cable with a USB Type-A connector on one end.
+> The easiest way to make a data cable is to cut a USB cable with Type-A connector on one end.
 
 ## 3. Usage
 
 ### 3-1. Record data
 
-When driving the vehicle, connect both _HV cable_ and _drive cable_ to the FSK-EEM device.
+When driving the vehicle, connect both _HV cable_ and _drive cable_ to the FSK-EEM device. The _drive cable_ should supply `VIN >= 6V` to the device to start as a record mode.
 
-The _drive cable_ should supply `VIN >= 6V` to the device to start as a record mode.
+The device performs a zero calibration of the HV voltage and current during the startup sequence. Once the calibration is complete, it continuously measures data every 10 ms.
+
+The recorded data is updated to the file every 100 ms. During the file update, next measurement may be delayed up to 5 ms.
+
+A new log file is created with each power cycle; each log file corresponds to a single power session.
 
 > [!IMPORTANT]
-> The device performs a zero calibration of the HV voltage and current during the startup sequence (~700ms).
-> Make sure that the HV voltage and current are at 0V and 0A until the the startup is complete.
-
-When the zero calibration is finished, the device will continuously measure the HV voltage, HV current, LV voltage and the CPU temperature every 10 ms.
-
-A new log file will be created for every power cycles.
-
-> [!NOTE]
-> The logged data will be synchronized to the file every 100 ms. During the file write, measurement may delayed up to 5 ms.
+> Make sure that the HV voltage and current are at 0V and 0A until the startup is complete.
 
 > [!NOTE]
 > The device uses its internal clock to record the actual time of the measured data.
-> As the clock accumulate errors over time, you should synchronize the time with FSK-EEM Viewer if you're using it after a long period.
-> If the time kept resetted to `May 12, 1999`, it means that the battery should be replaced.
+> As the clock accumulates errors over time, you should synchronize the time with FSK-EEM Viewer if you're using it after a long period.
+> If the time keeps resetting to `May 12, 1999`, the battery should be replaced.
 
 ### 3-2. Extract data
 
 To extract the recorded data from the device, disconnect _drive cable_ from the device and connect _data cable_ instead. There is no need to disconnect the _HV cable_ during data extraction.
 
-Plug the USB side of the _data cable_ to the PC. The FSK-EEM USB Mass Storage will appear soon ([~20s](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings)).
+Plug the USB side of the _data cable_ to the PC, or smartphone with a Type-A to C adapter. The FSK-EEM USB Mass Storage will appear in a [while](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings).
 
-The recorded log files are stored in the drive like a common USB memory stick. Copy the log files to your PC.
+The log files are stored in the drive like a common USB memory. Copy the files to your PC.
 
 > [!IMPORTANT]
 > The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.
 > Do ***NOT*** edit the filename of the \*.log file. JSON or CSV files are not affected.
 
 > [!NOTE]
-> The drive is ***read-only***. You cannot edit or delete the log files in the file explorer.
-
-> [!TIP]
-> To read log files with your smartphone, use an additional USB Type-A to Type-C adapter with the _data cable_.
+> The drive is ***read-only*** and you cannot edit or delete the stored logs in the file explorer.
 
 ### 3-3. View data
 
 Go to the [online viewer](https://fsk-energymeter.luftaquila.io) and open the log file to view the recorded data as a graph, or export the log as a human-readable JSON/CSV format.
 
 > [!NOTE]
-> If there is no Internet connection, download html or executable of the FSK-EEM Viewer from the [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) in advance.
+> If there is no Internet connection, download html or executable from the [release](https://github.com/luftaquila/fsk-energymeter/releases/latest) in advance.
 
 ### 3-4. Configure the device
 
@@ -122,7 +113,7 @@ The device's UID and the current time will be displayed on successful connection
 Unplug and re-connect the device to see the change after the delete.
 
 > [!WARNING]
-> The delete action cannot be undone.
+> The delete action ***cannot be undone***.
 
 ## 4. DIY
 
@@ -155,7 +146,7 @@ Unplug and re-connect the device to see the change after the delete.
 ## 5. Development
 
 > [!NOTE]
-> This section is for developers who want to modify the firmware or the viewer on their own, and is NOT REQUIRED in general.
+> This section is NOT REQUIRED in general, and is for developers who want to modify the firmware or the viewer on their own.
 
 ### 5-1. Firmware
 
@@ -234,7 +225,9 @@ make debug    # debug build
 #### 1. FSK-EEM USB Mass Storage takes too long to be mounted on the host
 The FSK-EEM uses the STM32F401, which implements a USB Full Speed PHY. It is decades-old technology with a maximum transfer speed of 12 Mbit/s. However, in the real world, the actual speed is around 4 Mbit/s or 0.5 MB/s.
 
-When you plug the FSK-EEM device, the host(PC) will try to load the FAT table of the SDMMC into its memory. The size of the FAT32 FAT table is around 8 MB, so it took ~20 seconds for the FSK-EEM to be successfully mounted on the host computer. This is a hardware limitation in exchange of the lower cost.
+When you connect the FSK-EEM to your host PC, it will try to load the FAT table of the SDMMC. The FAT32 FAT table is typically a few megabytes, so it will take ~20 seconds to mount.
+
+To reduce the mount time, use SD cards with smaller capacities or format them with larger cluster sizes.
 
 The RTC sync or record delete functions will work immediately regardless of this limit.
 
