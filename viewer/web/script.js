@@ -31,6 +31,7 @@ function setup() {
       document.getElementById("log-duration").innerText = "N/A";
       document.getElementById("log-uid").innerText = "N/A";
       document.getElementById("error").style.display = "none";
+      document.getElementById("warning").style.display = "none";
 
       switch (ext) {
         case 'log': {
