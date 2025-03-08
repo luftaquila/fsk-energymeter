@@ -26,18 +26,6 @@
 
 
 /******************************************************************************
- * module operation mode
- *****************************************************************************/
-extern uint32_t operation_mode;
-
-enum {
-  EEM_MODE_RECORD,
-  EEM_MODE_USB,
-  EEM_MODE_CNT
-};
-
-
-/******************************************************************************
  * module error status
  *****************************************************************************/
 extern uint32_t error_status;
@@ -53,9 +41,11 @@ enum {
 /******************************************************************************
  * log types and formats
  *****************************************************************************/
+#define PROTOCOL_VERSION 0x02
 #define LOG_MAGIC 0xAA
 
 enum {
+  LOG_TYPE_HEADER, // start header
   LOG_TYPE_RECORD, // 100 Hz report
   LOG_TYPE_EVENT,  // instant event
   LOG_TYPE_CNT
@@ -84,6 +74,25 @@ typedef struct {
     log_event_t event;
   } packet;
 } __attribute__((packed, aligned(sizeof(uint32_t)))) log_t;
+
+typedef struct {
+  uint8_t magic;
+  uint8_t type;
+  uint16_t checksum;
+  uint32_t timestamp;
+  uint32_t uid[3]; // 96-bit device uid
+  uint8_t version; // log protocol version
+  uint8_t _reserved[3];
+  struct {
+    uint8_t year;
+    uint8_t month;
+    uint8_t day;
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t second;
+    uint16_t millisecond;
+  }; // boot time
+} __attribute__((packed, aligned(sizeof(uint32_t)))) header_t;
 
 
 /******************************************************************************
@@ -149,7 +158,7 @@ typedef struct {
  *****************************************************************************/
 void energymeter_init(void);
 void energymeter_usb(void);
-void energymeter_record(char *filename);
+void energymeter_record(void);
 void energymeter_calibrate(void);
 
 /******************************************************************************

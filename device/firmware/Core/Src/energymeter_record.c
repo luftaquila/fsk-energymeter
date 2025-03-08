@@ -7,6 +7,7 @@
 #include "main.h"
 #include "energymeter.h"
 
+extern header_t header;
 extern uint32_t error_status;
 
 uint32_t timer_flag; // 10 ms timer flag
@@ -21,9 +22,18 @@ float adc_mv[ADC_CH_CNT];     // adc mV calc buffer
 float hv_voltage_cal;
 float hv_current_cal;
 
-void energymeter_record(char *filename) {
-  energymeter_calibrate();
+// size must be aligned to 4 bytes
+static uint16_t checksum(uint16_t *data, size_t size) {
+  uint16_t checksum = 0;
 
+  for (int i = 0; i < (size >> 1); i++) {
+    checksum ^= data[i];
+  }
+
+  return checksum;
+}
+
+void energymeter_record(void) {
   disk_initialize((BYTE) 0);
 
   FATFS fat;
@@ -34,6 +44,13 @@ void energymeter_record(char *filename) {
     Error_Handler();
   }
 
+  char filename[_MAX_LFN];
+
+  sprintf(filename, "20%02d-%02d-%02d-%02d-%02d-%02d-%03d %08lX-%08lX-%08lX.log",
+          header.year, header.month, header.day,
+          header.hour, header.minute, header.second, header.millisecond,
+          header.uid[0], header.uid[1], header.uid[2]);
+
   FIL file;
   ret = f_open(&file, filename, FA_OPEN_APPEND | FA_WRITE);
 
@@ -42,11 +59,20 @@ void energymeter_record(char *filename) {
     Error_Handler();
   }
 
+  header.timestamp = HAL_GetTick(); // typically 550 ms here
+  header.checksum = 0;
+  header.checksum = checksum((uint16_t *)&header, sizeof(header_t));
+
+  // write log header
+  UINT written;
+  ret = f_write(&file, &header, sizeof(header_t), &written);
+
+  DEBUG_MSG("LOG : %s\r\n", filename);
+
   log_t log;
   log.type = LOG_TYPE_RECORD;
   log.magic = LOG_MAGIC;
 
-  UINT written;
   int32_t adc_avg[ADC_CH_CNT];
 
   HAL_TIM_Base_Start_IT(&htim5); // start 10 ms timer
@@ -73,7 +99,7 @@ void energymeter_record(char *filename) {
         adc_flag = FALSE;
       }
 
-      log.timestamp = HAL_GetTick(); // boot sequence take ~700ms; take grant for the error
+      log.timestamp = HAL_GetTick();
       log.packet.record.hv_voltage = (int16_t)(adc_avg[ADC_HV_VOLTAGE] >> ADC_AVG_EXP);
       log.packet.record.hv_current = (int16_t)(adc_avg[ADC_HV_CURRENT] >> ADC_AVG_EXP);
       log.packet.record.lv_voltage = (int16_t)(adc_avg[ADC_LV_VOLTAGE] >> ADC_AVG_EXP);
@@ -81,14 +107,7 @@ void energymeter_record(char *filename) {
 
       // checksum calculation
       log.checksum = 0;
-      log.checksum += *(uint16_t *)&log;
-      log.checksum += *((uint16_t *)&log + 2);
-      log.checksum += *((uint16_t *)&log + 3);
-      log.checksum += *((uint16_t *)&log + 4);
-      log.checksum += *((uint16_t *)&log + 5);
-      log.checksum += *((uint16_t *)&log + 6);
-      log.checksum += *((uint16_t *)&log + 7);
-      log.checksum = ~log.checksum;
+      log.checksum = checksum((uint16_t *)&log, sizeof(log_t));
 
       // won't handle error; better keep retrying on failure
       ret = f_write(&file, &log, sizeof(log_t), &written);

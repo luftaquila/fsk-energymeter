@@ -5,7 +5,7 @@
 #include "bsp_driver_sd.h"
 #include "energymeter.h"
 
-extern uint32_t uid[];
+extern header_t header;
 
 /******************************************************************************
  * USB mode function
@@ -278,7 +278,7 @@ void cdc_task(void) {
           time.Seconds
         };
 
-        tud_cdc_write(uid, 12); // 96-bit UID
+        tud_cdc_write(header.uid, 12); // 96-bit UID
         tud_cdc_write(data, 6); // current time
         tud_cdc_write_flush();
         return;
