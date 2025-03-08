@@ -40,7 +40,7 @@
 
 | | LV | HV |
 |:-:|:-:|:-:|
-| Model | [Molex 5569-04A1 (39291048)](https://www.molex.com/en-us/products/part-detail/) | [Molex 5569-02A1 (39291028)](https://www.molex.com/en-us/products/part-detail/39291028) |
+| Model | [Molex 5569-04A1 (39291048)](https://www.molex.com/en-us/products/part-detail/39291048) | [Molex 5569-02A1 (39291028)](https://www.molex.com/en-us/products/part-detail/39291028) |
 | Image | <img src=".github/assets/lv.png" width="300"> | <img src=".github/assets/hv.png" width="300"> |
 | Mate | [Molex 5557-04R (39012040)](https://www.molex.com/en-us/products/part-detail/39012040) | [Molex 5557-02R (39012020)](https://www.molex.com/en-us/products/part-detail/39012020)  |
 | Pinout | 1: `D+` &ensp; 2: `D-`<br>3: `VIN` &ensp; 4: `GND` | 1: `HV+` &ensp; 2: `HV-` |
