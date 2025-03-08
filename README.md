@@ -30,8 +30,8 @@
 | HV bus current resolution | | 0.64 | | A |
 | Operational temperature | -10 | | 80 | °C |
 | IP rating | | IP 20 | | |
-| Startup time |  | 570 | 700 | ms |
-| Record interval |  | 10 | 15 | ms |
+| Startup time | | 550 | | ms |
+| Record interval | | 10 | 15 | ms |
 | Possible data loss<br>on power brownout | 0 | | 100 | ms |
 
 <sup>1</sup> When powered by USB, the device can startup with a minimum supply voltage of 4.5 V.
@@ -86,10 +86,6 @@ To extract the recorded data from the device, disconnect _drive cable_ from the 
 Plug the USB side of the _data cable_ to the PC, or smartphone with a Type-A to C adapter. The FSK-EEM USB Mass Storage will appear in a [while](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings).
 
 The log files are stored in the drive like a common USB memory. Copy the files to your PC.
-
-> [!IMPORTANT]
-> The timestamp part at the beginning of the log file's name is important to calculate the actual timestamp.
-> Do ***NOT*** edit the filename of the \*.log file. JSON or CSV files are not affected.
 
 > [!NOTE]
 > The drive is ***read-only*** and you cannot edit or delete the stored logs in the file explorer.
