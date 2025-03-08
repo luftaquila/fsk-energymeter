@@ -3,16 +3,16 @@
 
 connectors:
   ENERGY-METER LV:
-    type: TE T4111402051-000
+    type: MOLEX 5557-04R (39012040)
     subtype: male
     show_pincount: False
-    pinlabels: [D-, D+, N/C, VIN, GND]
+    pinlabels: [D+, D-, VIN, GND]
     image:
       src: ./lv-mate.png
       width: 200
 
   ENERGY-METER HV:
-    type: MOLEX 5557-02
+    type: MOLEX 5557-02R (39012020)
     subtype: male
     show_pincount: False
     pinlabels: [HV+, HV-]
