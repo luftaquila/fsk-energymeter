@@ -1,11 +1,24 @@
+const PROTOCOL_VERSION = 0x02;
 const LOG_MAGIC = 0xAA;
-const LOG_TYPE = [ "LOG_TYPE_RECORD", "LOG_TYPE_EVENT", "LOG_TYPE_CNT" ];
 
+const LOG_TYPE = ["LOG_TYPE_HEADER", "LOG_TYPE_RECORD", "LOG_TYPE_EVENT", "LOG_TYPE_CNT"];
+
+const HEADER_SIZE = 32;
 const LOG_SIZE = 16;
+
 const LOG_POS_TYPE = 1;
 const LOG_POS_CHECKSUM = 2;
 const LOG_POS_TIMESTAMP = 4;
-const LOG_POS_DATA = 8;
+
+const LOG_POS_HEADER_UID = 8;
+const LOG_POS_HEADER_VERSION = 20;
+const LOG_POS_HEADER_YEAR = 24;
+const LOG_POS_HEADER_MONTH = 25;
+const LOG_POS_HEADER_DAY = 26;
+const LOG_POS_HEADER_HOUR = 27;
+const LOG_POS_HEADER_MINUTE = 28;
+const LOG_POS_HEADER_SECOND = 29;
+const LOG_POS_HEADER_MILLISECOND = 30;
 
 const LOG_POS_RECORD_HV_VOLTAGE = 8;
 const LOG_POS_RECORD_HV_CURRENT = 10;
@@ -43,41 +56,86 @@ const USB_RES_POS_RES = 1;
 const USB_RES_POS_DATA = 2;
 
 
-function parse(data, date) {
+function parse(data) {
   let logs = {
     ok: 0,
-    error: 0,
+    error: [],
     data: [],
+    header: {},
   };
 
   let i = 0;
+  let header_found = false;
 
   while (i < data.length) {
     // test magic byte and checksum
-    if (data[i] !== LOG_MAGIC || !validate_checksum(data, i)) {
-      logs.error++;
-
+    if (data[i] !== LOG_MAGIC || !validate_checksum(data, i, data[i + LOG_POS_TYPE])) {
       // try to find next magic byte
       let n;
 
-      for (n = i; n < data.length; n++) {
+      for (n = i + 1; n < data.length; n++) {
         if (data[n] === LOG_MAGIC) {
           break;
         }
       }
+
+      logs.error.push(`#${logs.data.length}: Invalid magic byte or checksum detected.`);
+      logs.data.push({
+        type: "LOG_TYPE_ERR",
+        raw: data.slice(i, n),
+      });
 
       i = n;
       continue;
     }
 
     let log = {
-      raw: data.slice(i, i + LOG_SIZE),
       type: LOG_TYPE[to_uint(8, data, i + LOG_POS_TYPE)],
-      timestamp: date + to_uint(32, data, i + LOG_POS_TIMESTAMP),
     };
 
+    if (logs.header.datetime) {
+      log.timestamp = logs.header.datetime + to_uint(32, data, i + LOG_POS_TIMESTAMP);
+    }
+
     switch (log.type) {
+      case "LOG_TYPE_HEADER": {
+        if (!header_found) {
+          header_found = true;
+        } else {
+          logs.error.push(`#${logs.data.length}: Multiple header found. RTC battery may be out of charge.`);
+          logs.ok--;
+        }
+
+        log.raw = data.slice(i, i + HEADER_SIZE);
+        log.header = {
+          uid: [
+            to_uint(32, data, i + LOG_POS_HEADER_UID),
+            to_uint(32, data, i + LOG_POS_HEADER_UID + 4),
+            to_uint(32, data, i + LOG_POS_HEADER_UID + 8),
+          ],
+          version: to_uint(8, data, i + LOG_POS_HEADER_VERSION),
+          datetime: Number(new Date(
+            to_uint(8, data, i + LOG_POS_HEADER_YEAR) + 2000,
+            to_uint(8, data, i + LOG_POS_HEADER_MONTH) - 1,
+            to_uint(8, data, i + LOG_POS_HEADER_DAY),
+            to_uint(8, data, i + LOG_POS_HEADER_HOUR),
+            to_uint(8, data, i + LOG_POS_HEADER_MINUTE),
+            to_uint(8, data, i + LOG_POS_HEADER_SECOND),
+            to_uint(16, data, i + LOG_POS_HEADER_MILLISECOND),
+          )),
+        };
+        log.timestamp = log.header.datetime + to_uint(32, data, i + LOG_POS_TIMESTAMP);
+
+        logs.header = log.header;
+        break;
+      }
+
       case "LOG_TYPE_RECORD": {
+        if (!header_found || !logs.header.datetime) {
+          throw new Error("No valid header found. File may be corrupted.");
+        }
+
+        log.raw = data.slice(i, i + LOG_SIZE);
         log.record = {
           hv_voltage: to_int(16, data, i + LOG_POS_RECORD_HV_VOLTAGE) / 10,    // 0.1 V
           hv_current: to_int(16, data, i + LOG_POS_RECORD_HV_CURRENT) / 10,    // 0.1 A
@@ -88,6 +146,11 @@ function parse(data, date) {
       }
 
       case "LOG_TYPE_EVENT": {
+        if (!header_found || !logs.header.datetime) {
+          throw new Error("No valid header found. File may be corrupted.");
+        }
+
+        log.raw = data.slice(i, i + LOG_SIZE);
         log.event = {
           type: to_uint(8, data, i + LOG_POS_EVENT_TYPE),
           id: to_uint(8, data, i + LOG_POS_EVENT_ID),
@@ -97,15 +160,16 @@ function parse(data, date) {
       }
 
       default: {
-        logs.error++;
-        i += LOG_SIZE;
-        continue;
+        log.raw = data.slice(i, i + LOG_SIZE);
+        logs.error.push(`#${logs.data.length}: Unknown log type found.`);
+        logs.ok--;
+        break;
       }
     }
 
     logs.data.push(log);
     logs.ok++;
-    i += LOG_SIZE;
+    i += log.type === "LOG_TYPE_HEADER" ? HEADER_SIZE : LOG_SIZE;
   }
 
   let processed = [[], [], [], [], [], []];
@@ -128,18 +192,20 @@ function parse(data, date) {
 }
 
 /* utility functions***********************************************************/
-function validate_checksum(buffer, start) {
-  let checksum = 1;
-  checksum += to_uint(16, buffer, start);
-  checksum += to_uint(16, buffer, start + 2);
-  checksum += to_uint(16, buffer, start + 4);
-  checksum += to_uint(16, buffer, start + 6);
-  checksum += to_uint(16, buffer, start + 8);
-  checksum += to_uint(16, buffer, start + 10);
-  checksum += to_uint(16, buffer, start + 12);
-  checksum += to_uint(16, buffer, start + 14);
+function validate_checksum(buffer, start, type) {
+  let size = LOG_TYPE[type] === "LOG_TYPE_HEADER" ? HEADER_SIZE : LOG_SIZE;
+  let checksum = 0;
 
-  return !(checksum & 0xFFFF);
+  for (let i = 0; i < size; i += 2) {
+    // skip checksum field
+    if (i === LOG_POS_CHECKSUM) {
+      continue;
+    }
+
+    checksum ^= to_uint(16, buffer, start + i);
+  }
+
+  return checksum === to_uint(16, buffer, start + LOG_POS_CHECKSUM);
 }
 
 function to_string(buffer, start, end) {

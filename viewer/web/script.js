@@ -25,97 +25,99 @@ function setup() {
       ext = file.name.split('.').pop();
       filename = file.name.replace(`.${ext}`, '');
 
-      if (!/^\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}/.test(filename)) {
-        return notyf.error("*.log file should contain the timestamp in the filename");
-      }
-
       document.getElementById("file-selected").innerText = "Processing data...";
+      document.getElementById("log-boot").innerText = "N/A";
+      document.getElementById("log-cnt").innerText = "N/A";
+      document.getElementById("log-duration").innerText = "N/A";
+      document.getElementById("log-uid").innerText = "N/A";
+      document.getElementById("error").style.display = "none";
 
       switch (ext) {
         case 'log': {
           reader.readAsArrayBuffer(file);
           reader.onload = e => {
-            let data = new Uint8Array(e.target.result);
+            try {
+              result = parse(new Uint8Array(e.target.result));
 
-            let date = filename.slice(0, 19);
-            date = date.split('-');
-            date = [date.slice(0, 3).join('-'), date.slice(3).join(':')];
-            date = date.join('T');
-
-            let result = parse(data, Number(new Date(date)));
-            uplot.setData(result.processed);
-
-            document.getElementById("log-cnt").innerText = `${(result.logs.ok + result.logs.error).toLocaleString()} total (${result.logs.ok.toLocaleString()} valid / ${result.logs.error.toLocaleString()} error)`;
-
-            let duration = result.logs.data[result.logs.data.length - 1].timestamp - result.logs.data[0].timestamp;
-            document.getElementById("log-duration").innerText = `${ms_to_human_time(duration)} (${duration.toLocaleString()} ms)`;
-
+              set_chart_data(result);
+            } catch (e) {
+              uplot.setData([]);
+              document.getElementById("error").innerText = e;
+              document.getElementById("error").style.display = "block";
+              return;
+            } finally {
+              document.getElementById("file-selected").innerText = `${filename}.${ext}`;
+            }
           };
           break;
         }
 
-        // json and csv
+        case 'csv':
         case 'json': {
           reader.readAsText(file);
           reader.onload = e => {
-            let data = JSON.parse(e.target.result);
-            let processed = [[], [], [], [], [], []];
+            try {
+              if (ext === 'csv') {
+                let flag = false;
+                let csv = e.target.result.split('\n');
 
-            for (let log of data) {
-              processed[0].push(log.timestamp);
-              processed[1].push(log.hv_voltage);
-              processed[2].push(log.hv_current);
-              processed[3].push(log.hv_power);
-              processed[4].push(log.lv_voltage);
-              processed[5].push(log.temperature);
+                for (let i = 0; i < csv.length; i++) {
+                  if (csv[i] === "original json data" && csv[i + 1]) {
+                    flag = true;
+                    result = { logs: JSON.parse(csv [i + 1]) };
+                    break;
+                  }
+                }
+
+                if (!flag) {
+                  throw Error("Cannot restore JSON data.");
+                }
+              } else if (ext === 'json') {
+                result = { logs: JSON.parse(e.target.result) };
+              }
+
+              result.processed = [[], [], [], [], [], []];
+
+              for (let log of result.logs.data) {
+                if (log.type === "LOG_TYPE_RECORD") {
+                  result.processed[0].push(log.timestamp);
+                  result.processed[1].push(log.record.hv_voltage);
+                  result.processed[2].push(log.record.hv_current);
+                  result.processed[3].push(log.record.hv_voltage * log.record.hv_current / 1000);
+                  result.processed[4].push(log.record.lv_voltage);
+                  result.processed[5].push(log.record.temperature);
+                };
+              }
+
+              set_chart_data(result);
+            } catch (e) {
+              uplot.setData([]);
+              document.getElementById("error").innerText = e;
+              document.getElementById("error").style.display = "block";
+              return;
+            } finally {
+              document.getElementById("file-selected").innerText = `${filename}.${ext}`;
             }
-
-            uplot.setData(processed);
-
-            document.getElementById("log-cnt").innerText = `${data.length.toLocaleString()} total`;
-
-            let duration = data[data.length - 1].timestamp - data[0].timestamp;
-            document.getElementById("log-duration").innerText = `${ms_to_human_time(duration)} (${duration.toLocaleString()} ms)`;
           };
-          break;
-        }
 
-        case 'csv': {
-          reader.readAsText(file);
-          reader.onload = e => {
-            let data = e.target.result.split('\n').map(x => x.split(',')).slice(1, -1);
-            let processed = [[], [], [], [], [], []];
-
-            for (let log of data) {
-              processed[0].push(Number(log[0]));
-              processed[1].push(Number(log[1]));
-              processed[2].push(Number(log[2]));
-              processed[3].push(Number(log[3]));
-              processed[4].push(Number(log[4]));
-              processed[5].push(Number(log[5]));
-            }
-
-            uplot.setData(processed);
-
-            document.getElementById("log-cnt").innerText = `${data.length.toLocaleString()} total`;
-
-            let duration = data[data.length - 1][0] - data[0][0];
-            document.getElementById("log-duration").innerText = `${ms_to_human_time(duration)} (${duration.toLocaleString()} ms)`;
-          };
           break;
         }
 
         default:
           return;
       }
-
-      document.getElementById("file-selected").innerText = `${filename}.${ext}`;
-
-      document.getElementById("export-json").classList.remove("disabled");
-      document.getElementById("export-csv").classList.remove("disabled");
-      document.getElementById("export-image").classList.remove("disabled");
     }
   });
+
+  function set_chart_data(data) {
+    uplot.setData(data.processed);
+    display_metadata(data.logs);
+    console.log(data);
+
+    document.getElementById("export-json").classList.remove("disabled");
+    document.getElementById("export-csv").classList.remove("disabled");
+    document.getElementById("export-image").classList.remove("disabled");
+  }
 
   /* serial command funcntions**************************************************/
   document.getElementById("connect").addEventListener("click", async e => {
@@ -239,23 +241,11 @@ function setup() {
   const export_labels = ["timestamp", "hv_voltage", "hv_current", "hv_power", "lv_voltage", "temperature"];
 
   document.getElementById("export-json").addEventListener("click", e => {
-    let result = [];
-
-    for (let i = 0; i < uplot._data[0].length; i++) {
-      let record = {};
-
-      for (let j = 0; j < uplot._data.length; j++) {
-        record[export_labels[j]] = uplot._data[j][i];
-      }
-
-      result.push(record);
-    }
-
-    download(JSON.stringify(result, null, 2), `${filename}.json`, 'text/plain');
+    download(JSON.stringify(result.logs, null, 2), `${filename}.json`, 'text/plain');
   });
 
   document.getElementById("export-csv").addEventListener("click", e => {
-    let result = export_labels.join(",") + "\n";
+    let csv = export_labels.join(",") + "\n";
 
     for (let i = 0; i < uplot._data[0].length; i++) {
       let record = [];
@@ -264,10 +254,12 @@ function setup() {
         record.push(uplot._data[j][i]);
       }
 
-      result += record.join(",") + "\n";
+      csv += record.join(",") + "\n";
     }
 
-    download(result, `${filename}.csv`, 'text/plain');
+    csv += `\noriginal json data\n${JSON.stringify(result.logs)}`;
+
+    download(csv, `${filename}.csv`, 'text/plain');
   });
 
   document.getElementById("export-image").addEventListener("click", e => {
@@ -454,6 +446,28 @@ function download(content, fileName, contentType) {
     a.href = URL.createObjectURL(file);
     a.download = fileName;
     a.click();
+}
+
+function display_metadata(logs) {
+  document.getElementById("log-boot").innerText = `${new Date(logs.header.datetime).format("yyyy-mm-dd HH:MM:ss.l")}`;
+
+  document.getElementById("log-cnt").innerText = `${(logs.data.length).toLocaleString()} total`;
+  document.getElementById("log-cnt").innerText += ` (${logs.ok.toLocaleString()} valid / ${logs.error.length.toLocaleString()} error)`;
+
+  let duration = logs.data[logs.data.length - 1].timestamp - logs.data[0].timestamp;
+  document.getElementById("log-duration").innerText = `${ms_to_human_time(duration)} (${duration.toLocaleString()} ms)`;
+
+  document.getElementById("log-uid").innerText = logs.header.uid.map(x => x.toString(16).toUpperCase().padStart(8, '0')).join('-');
+
+  if (logs.header.datetime > Number(new Date(2099, 0))) {
+    document.getElementById("warning").innerText = "Invalid RTC date detected. Sync the clock in the Device configuration tab.";
+    document.getElementById("warning").style.display = "block";
+  }
+
+  if (logs.error.length) {
+    document.getElementById("error").innerText = logs.error.join('\n');
+    document.getElementById("error").style.display = "block";
+  }
 }
 
 

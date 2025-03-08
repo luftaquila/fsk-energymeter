@@ -63,6 +63,22 @@ input#file {
   display: none;
 }
 
+div#error, div#warning {
+  display: none;
+  color: white;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+div#error {
+  background-color: red;
+}
+
+div#warning {
+  background-color: darkorange;
+}
+
 div#chart>div {
   margin: 0px;
 }

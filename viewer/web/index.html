@@ -61,18 +61,20 @@
           <span id="export-json" class="btn small blue disabled"><i class="fas fw fa-file-code"></i>Export JSON</span>
           <span id="export-csv" class="btn small blue disabled"><i class="fas fw fa-file-csv"></i>Export CSV</span>
         </div>
-
-        <div style="font-size: 0.8rem;">
-          <i class="fas fa-fw fa-info-circle"></i> The timestamp at the beginning of the record's filename is important.
-          Do NOT change it.
-        </div>
       </article>
 
       <article>
         <h2><i class="fa fw fa-chart-line"></i>Graph Viewer</h2>
 
         <div>
+          <div id="warning"></div>
+          <div id="error"></div>
           <table>
+            <tr>
+              <td>Boot</td>
+              <td>&ensp;:&ensp;</td>
+              <td id="log-boot">N/A</td>
+            </tr>
             <tr>
               <td>Logs</td>
               <td>&ensp;:&ensp;</td>
@@ -82,6 +84,11 @@
               <td>Duration</td>
               <td>&ensp;:&ensp;</td>
               <td id="log-duration">N/A</td>
+            </tr>
+            <tr>
+              <td>Device ID</td>
+              <td>&ensp;:&ensp;</td>
+              <td id="log-uid">N/A</td>
             </tr>
           </table>
         </div>
