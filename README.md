@@ -123,7 +123,7 @@ Unplug and reconnect the device to see the change after deletion.
     * [5557-02A1](https://www.eleparts.co.kr/goods/view?no=25304) HV connector
     * [5569-04A1](https://www.eleparts.co.kr/goods/view?no=25303) LV connector
     * [2.54mm 2\*4 debug pin header](https://www.eleparts.co.kr/goods/view?no=12534585)
-4. Insert a CR1220 battery and a Micro SD card to each slots on the PCB.
+4. Insert the CR1220 battery and Micro SD card into the PCB.
 
 ### 4.2 Upload firmware
 
@@ -143,7 +143,7 @@ Unplug and reconnect the device to see the change after deletion.
 ## 5. Development
 
 > [!NOTE]
-> This section is *NOT REQUIRED* in general, and is for developers who want to modify the firmware or the viewer on their own.
+> This section is *NOT REQUIRED* in general, and is for developers who want to modify the software on their own.
 
 <details>
 <summary>click to expand</summary>
