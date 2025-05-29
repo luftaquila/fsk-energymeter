@@ -25,9 +25,9 @@
 | Supply voltage<sup>1</sup> | 6 | | 28 | V |
 | Power consumption | | 0.25 | 0.5 | W |
 | HV bus voltage | 0 | | 600 | V |
-| HV bus voltage resolution | | 0.24 | | V |
+| HV bus voltage resolution | | 0.24 | | V/LSB |
 | HV bus current | -750 | | 750 | A |
-| HV bus current resolution | | 0.64 | | A |
+| HV bus current resolution | | 0.32 | | A/LSB |
 | Operational temperature | -10 | | 80 | °C |
 | IP rating | | IP 20 | | |
 | Startup time | | 550 | | ms |
@@ -52,7 +52,7 @@
 
 ![](.github/assets/wire.png)
 
-The _data cable_ and the _drive cable_ are two distinct cables. When driving the vehicle, connect the _drive cable_ to the LV connector of the FSK-EEM device. To extract data, disconnect the _drive cable_ and connect the _data cable_ instead.
+The _data cable_ and the _drive cable_ are two distinct cables. When driving the vehicle, connect the _drive cable_ to the LV connector of the device. To extract data, disconnect the _drive cable_ and connect the _data cable_ instead.
 
 > [!CAUTION]
 > Misconnection of the pins may cause permanent damage to the device.
@@ -64,7 +64,7 @@ The _data cable_ and the _drive cable_ are two distinct cables. When driving the
 
 ### 3-1. Record data
 
-When driving the vehicle, connect both _HV cable_ and _drive cable_ to the FSK-EEM device. The _drive cable_ should supply `VIN >= 6V` to start recording.
+When driving the vehicle, connect both _HV cable_ and _drive cable_ to the device. The _drive cable_ should supply `VIN >= 6V` to start recording.
 
 Once the device is powered up, it performs a zero calibration of the HV voltage and current. After calibration, it continuously measures data every 10 ms.
 
@@ -100,7 +100,7 @@ Go to the [online viewer](https://fsk-energymeter.luftaquila.io) and open the lo
 
 ### 3-4. Configure the device
 
-In the viewer's Device Configuration section, click `Connect` and select the FSK-EEM device to connect.
+In the viewer's Device Configuration section, click `Connect` and select the device to connect.
 
 The device's UID and the current time will be displayed on successful connection.
 
@@ -117,18 +117,18 @@ Unplug and reconnect the device to see the change after deletion.
 ### 4.1 Build hardware
 
 1. Download `fsk-energymeter-pcb.zip` from the [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) and extract it.
-2. Place a JLCPCB PCBA (SMT) order using the GERBER, BOM and CPL files at the The *gerbers/* directory.
+2. Place a JLCPCB PCBA (SMT) order using the GERBER, BOM and CPL files at the *gerbers/* directory.
 3. Solder following parts manually to the device after the PCB arrives.
     * [L01Z600S05](https://www.eleparts.co.kr/goods/view?no=261774) Hall sensor
     * [5557-02A1](https://www.eleparts.co.kr/goods/view?no=25304) HV connector
     * [5569-04A1](https://www.eleparts.co.kr/goods/view?no=25303) LV connector
     * [2.54mm 2\*4 debug pin header](https://www.eleparts.co.kr/goods/view?no=12534585)
-4. Insert a CR1220 battery and a Micro SD card to each slots on the PCB.
+4. Insert the CR1220 battery and Micro SD card into the PCB.
 
 ### 4.2 Upload firmware
 
 1. Download `fsk-energymeter-firmware.zip` from the [latest release](https://github.com/luftaquila/fsk-energymeter/releases/latest) and extract it.
-1. Connect ST-Link's `3V3`, `GND`, `SWCLK`, `SWDIO` pins to the corresponding pins on the FSK-EEM's debug pin header.
+1. Connect `3V3`, `GND`, `SWCLK`, `SWDIO` pins of the ST-Link to the corresponding pins on the device's debug pin header.
 1. Run `flash.bat` to flash the release firmware to the device.
 
 ### 4.3 3d-print housing
@@ -143,7 +143,7 @@ Unplug and reconnect the device to see the change after deletion.
 ## 5. Development
 
 > [!NOTE]
-> This section is *NOT REQUIRED* in general, and is for developers who want to modify the firmware or the viewer on their own.
+> This section is *NOT REQUIRED* in general, and is for developers who want to modify the software on their own.
 
 <details>
 <summary>click to expand</summary>
@@ -215,7 +215,7 @@ make debug    # debug build
 ## 6. Troubleshootings
 
 #### 1. FSK-EEM USB Mass Storage takes too long to be mounted
-The FSK-EEM's USB interface only supports Full Speed USB (USB 1.1) specification. It is decades-old technology with a maximum transfer speed of 12 Mbps. However, in the real world, the actual speed is around 4 Mbps (0.5 MB/s).
+The device only supports USB Full Speed (USB 1.1) spec. It is decades-old technology with a maximum transfer speed of 12 Mbps. However, in the real world, the actual speed is around 4 Mbps (0.5 MB/s).
 
 When the device is connected to the host PC, the host will try to load the FAT table of the SDMMC. The FAT32 FAT table is typically a few megabytes, so it will take ~20 seconds to mount.
 
@@ -225,7 +225,7 @@ To reduce the mount time, format SD cards with larger cluster sizes. The RTC syn
 
 The FSK-EEM Viewer's Device Configuration tab uses the Web Serial API to talk with the device, which has [limited support](https://caniuse.com/?search=Web%20Serial%20API) across the platforms and browsers.
 
-On macOS, the native app uses the Safari for its WebView, which does not supports the API. The web version (URL or html file) of the FSK-EEM Viewer will work on the Chrome browser. The mobile platforms also does not supports the API.
+On macOS, the native app uses the Safari for its WebView, which does not supports the API. The web version (URL or html file) of the FSK-EEM Viewer will work on the Chromium. The mobile platforms also does not supports the API.
 
 ## 7. LICENSE
 

@@ -51,30 +51,29 @@ jobs:
 
             #### Web
 
-            * https://fsk-energymeter.luftaquila.io
+            * https://fsk.luftaquila.io/energymeter
             * `fsk-energymeter-viewer.html`
 
             #### Windows
 
-            If the `Windows protected your PC` message appears, click <ins>More Info</ins> and click `Run anyway` to run the application.
+            Download and run `fsk-energymeter-viewer-windows-x64.exe`.
+
+            If `Windows protected your PC` message appears, click <ins>More Info</ins> and `Run anyway`.
 
             #### Linux
 
-            Run the following commands before open the application for the first time.
-
             ```sh
+            wget https://github.com/luftaquila/fsk-energymeter/releases/download/${{ github.ref_name }}/fsk-energymeter-viewer-linux-x64.AppImage
             chmod u+x fsk-energymeter-viewer-linux-x64.AppImage
             ```
 
             #### macOS
 
-            Run the following commands before open the application for the first time.\
-            Otherwise, it will say `"fsk-energymeter" is damaged and can’t be opened.` because the packages are not signed.
-
             ```sh
+            wget https://github.com/luftaquila/fsk-energymeter/releases/download/${{ github.ref_name }}/fsk-energymeter-viewer-macos-arm64.app.zip
             unzip fsk-energymeter-viewer-macos-arm64.app.zip
             xattr -c fsk-energymeter.app
             chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
             ```
 
-            To use the Device Configuration tab in macOS, use the web version with the Chrome browser. ([Reference](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings))
+            To use the Device Configuration tab in macOS, use the web version with the Chromium. ([Reference](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings))
