@@ -10,6 +10,15 @@
 #   2015-07-22 - first version
 # ------------------------------------------------
 
+# for Windows compatibility
+ifeq ($(OS),Windows_NT) 
+RM = del /Q /F
+CP = copy /Y
+else
+RM = rm -rf
+CP = cp -f
+endif
+
 ######################################
 # target
 ######################################
@@ -214,7 +223,7 @@ $(BUILD_DIR):
 # clean up
 #######################################
 clean:
-	-rm -fR $(BUILD_DIR)
+	-$(RM) $(BUILD_DIR)
   
 #######################################
 # dependencies
