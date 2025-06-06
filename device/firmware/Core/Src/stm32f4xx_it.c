@@ -22,7 +22,6 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "tusb.h"
 #include "energymeter.h"
 /* USER CODE END Includes */
 
@@ -59,10 +58,9 @@
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_adc1;
 extern ADC_HandleTypeDef hadc1;
-extern SD_HandleTypeDef hsd;
 extern TIM_HandleTypeDef htim5;
 /* USER CODE BEGIN EV */
-extern uint32_t error_status;
+
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -89,7 +87,6 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-  error_status = EEM_ERR_HARDFAULT;
   Error_Handler();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
@@ -219,20 +216,6 @@ void ADC_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles SDIO global interrupt.
-  */
-void SDIO_IRQHandler(void)
-{
-  /* USER CODE BEGIN SDIO_IRQn 0 */
-
-  /* USER CODE END SDIO_IRQn 0 */
-  HAL_SD_IRQHandler(&hsd);
-  /* USER CODE BEGIN SDIO_IRQn 1 */
-
-  /* USER CODE END SDIO_IRQn 1 */
-}
-
-/**
   * @brief This function handles TIM5 global interrupt.
   */
 void TIM5_IRQHandler(void)
@@ -258,22 +241,6 @@ void DMA2_Stream0_IRQHandler(void)
   /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
 
   /* USER CODE END DMA2_Stream0_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USB On The Go FS global interrupt.
-  */
-void OTG_FS_IRQHandler(void)
-{
-  /* USER CODE BEGIN OTG_FS_IRQn 0 */
-  tud_int_handler(BOARD_TUD_RHPORT);
-
-  #ifdef DISABLED
-  /* USER CODE END OTG_FS_IRQn 0 */
-  HAL_PCD_IRQHandler();
-  /* USER CODE BEGIN OTG_FS_IRQn 1 */
-  #endif /* ifdef DISABLED */
-  /* USER CODE END OTG_FS_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
