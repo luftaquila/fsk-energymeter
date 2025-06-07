@@ -37,6 +37,6 @@ void energymeter_init(void);
 void energymeter_record(void);
 void energymeter_calibrate(void);
 void energymeter_sample(float new, uint32_t ts);
-void energymeter_plot(void);
+void energymeter_plot(float min, float max);
 
 #endif /* ENERGYMETER_H */
