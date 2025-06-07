@@ -54,7 +54,6 @@ BUILD_DIR = build
 C_SOURCES =  \
 Core/Src/adc.c \
 Core/Src/dma.c \
-Core/Src/energymeter.c \
 Core/Src/gpio.c \
 Core/Src/i2c.c \
 Core/Src/main.c \
@@ -84,6 +83,8 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
+Core/Src/energymeter.c \
+Core/Src/energymeter_plot.c \
 ssd1306/ssd1306/ssd1306.c \
 ssd1306/ssd1306/ssd1306_fonts.c
 
@@ -178,9 +179,9 @@ LIBS = -lc -lm -lnosys
 LIBDIR = 
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
-ifeq ($(DEBUG), 1)
+# ifeq ($(DEBUG), 1)
 LDFLAGS += -u _printf_float
-endif
+# endif
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
@@ -231,22 +232,33 @@ clean:
 -include $(wildcard $(BUILD_DIR)/*.d)
 
 #######################################
+# flash commands
+#######################################
+OCD_CFG   := fsk-energymeter.cfg
+OPENOCD   := openocd -f $(OCD_CFG)
+
+define FLASH
+	$(MAKE) $(1)
+	$(OPENOCD)
+endef
+
+#######################################
 # debug mode
 #######################################
 debug:
-	make DEBUG=1 && openocd -f fsk-energymeter.cfg
+	$(call FLASH,DEBUG=1)
 
 #######################################
 # program
 #######################################
 program:
-	make && openocd -f fsk-energymeter.cfg
+	$(call FLASH,)
 
 #######################################
 # upload
 #######################################
 upload:
-	openocd -f fsk-energymeter.cfg
+	$(OPENOCD)
 
 #######################################
 # attach
