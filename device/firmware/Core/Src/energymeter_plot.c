@@ -38,41 +38,30 @@ typedef enum {
   STATE_END,
 } state_t;
 
-state_t state = STATE_IDLE;
-bool is_first = TRUE;
-
-// moving average buffer
-float movavg_buf[WINDOW_POINT];
-float movavg_sum = 0;
-int32_t movavg_idx = 0;
-int32_t movavg_cnt = 0;
-
-// 1 minute buffer
-typedef struct {
-  float voltage;
-  uint32_t timestamp;
-} data_t;
-
-data_t buf[BUF_SIZE];
-
-// previous moving average
-float prev = 0.0f;
-
-// observed min/max
-float min = FLT_MAX;
-float max = -FLT_MAX;
-
 typedef struct {
   int32_t start;
   int32_t steep;
   int32_t end;
 } value_t;
 
-value_t consec = { 0, 0, 0 };       // consecutive points counter
-value_t idx = { -1, -1, -1 };  // event index at threshold start
+typedef struct {
+  float voltage;
+  uint32_t timestamp;
+} data_t;
+
+// 1 minute buffer
+data_t buf[BUF_SIZE];
+
+// event index at threshold start
+value_t idx = { -1, -1, -1 };
 
 // calculate moving average with newest point
 static inline float movavg(float new) {
+  static float movavg_buf[WINDOW_POINT];
+  static float movavg_sum = 0;
+  static int32_t movavg_idx = 0;
+  static int32_t movavg_cnt = 0;
+
   if (movavg_cnt < WINDOW_POINT) {
     movavg_buf[movavg_idx] = new;
     movavg_sum += new;
@@ -108,6 +97,9 @@ static inline int32_t push(float new, uint32_t ts) {
 
 // process new sample
 void energymeter_sample(float new, uint32_t ts) {
+  static float prev = 0.0f;
+  static bool is_first = TRUE;
+
   int32_t pos = push(new, ts);
   float movavg_new = movavg(new);
 
@@ -116,6 +108,12 @@ void energymeter_sample(float new, uint32_t ts) {
     is_first = FALSE;
     return;
   }
+
+  static state_t state = STATE_IDLE;
+  static value_t consec = { 0, 0, 0 };
+
+  static float min = FLT_MAX;
+  static float max = -FLT_MAX;
 
   float delta = movavg_new - prev;
   float delta_abs = fabsf(delta);
@@ -183,7 +181,7 @@ void energymeter_sample(float new, uint32_t ts) {
         state = STATE_IDLE;
         HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
 
-        energymeter_plot();
+        energymeter_plot(min, max);
 
         consec.start = 0;
         idx.start = -1;
@@ -198,7 +196,7 @@ void energymeter_sample(float new, uint32_t ts) {
   prev = movavg_new;
 }
 
-void energymeter_plot(void) {
+void energymeter_plot(float min, float max) {
   ssd1306_Fill(Black);
 
   int32_t start = idx.start - CONTEXT_SAMPLES;
