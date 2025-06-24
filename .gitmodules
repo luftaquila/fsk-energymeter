@@ -4,3 +4,6 @@
 [submodule "viewer/web/lib/uplot"]
 	path = viewer/web/lib/uplot
 	url = https://github.com/leeoniya/uPlot.git
+[submodule "device/3d/BOSL2"]
+	path = device/3d/BOSL2
+	url = https://github.com/BelfrySCAD/BOSL2.git
