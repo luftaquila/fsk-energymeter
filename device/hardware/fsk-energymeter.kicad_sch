@@ -13546,7 +13546,7 @@
 				)
 			)
 		)
-		(property "Value" "L78L05ABUTR"
+		(property "Value" "78L05G-AB3-R"
 			(at 293.37 53.34 0)
 			(effects
 				(font
@@ -13633,7 +13633,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C42738"
+		(property "LCSC" "C71136"
 			(at 308.61 58.42 0)
 			(effects
 				(font
@@ -18732,7 +18732,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "SS15"
+		(property "Value" "SS14"
 			(at 312.42 153.3524 90)
 			(effects
 				(font
@@ -18777,7 +18777,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C3151634"
+		(property "LCSC" "C2480"
 			(at 312.42 150.8124 0)
 			(effects
 				(font

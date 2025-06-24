@@ -1391,7 +1391,7 @@
 		(path "/60ec9b51-eff4-423f-b204-4e8a2af89917")
 		(sheetname "Root")
 		(sheetfile "fsk-energymeter.kicad_sch")
-		(attr smd)
+		(attr smd exclude_from_pos_files exclude_from_bom)
 		(fp_line
 			(start 1.65 1.4)
 			(end 1.65 1.1)
@@ -13974,7 +13974,7 @@
 				)
 			)
 		)
-		(property "Value" "L78L05ABUTR"
+		(property "Value" "78L05G-AB3-R"
 			(at 0 0.27 90)
 			(layer "F.SilkS")
 			(hide yes)
@@ -14087,7 +14087,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C42738"
+		(property "LCSC" "C71136"
 			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17265,7 +17265,7 @@
 				)
 			)
 		)
-		(property "Value" "SS15"
+		(property "Value" "SS14"
 			(at 0 2.6 0)
 			(layer "F.Fab")
 			(uuid "3e102033-77df-4ec5-bf70-6bd06e4da9fa")
@@ -17328,7 +17328,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C3151634"
+		(property "LCSC" "C2480"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
