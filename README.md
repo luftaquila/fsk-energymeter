@@ -38,6 +38,9 @@
 
 ## 2. Connectors
 
+> [!NOTE]
+> The HV current measurement terminals at the top of the device are standard-pitch M6 brass bolts.
+
 | | LV | HV |
 |:-:|:-:|:-:|
 | Model | [Molex 5569-04A1 (39291048)](https://www.molex.com/en-us/products/part-detail/39291048) | [Molex 5569-02A1 (39291028)](https://www.molex.com/en-us/products/part-detail/39291028) |
@@ -227,7 +230,12 @@ The FSK-EEM Viewer's Device Configuration tab uses the Web Serial API to talk wi
 
 On macOS, the native app uses the Safari for its WebView, which does not supports the API. The web version (URL or html file) of the FSK-EEM Viewer will work on the Chromium. The mobile platforms also does not supports the API.
 
-## 7. LICENSE
+## 7. DISCLAIMER
+
+> [!IMPORTANT]
+> 차량기술규정 및 출력제한 위반 여부는 대회장에서 제공하는 공식 에너지미터로만 판단합니다. 에너지미터를 직접 만들어 사용하는 경우, 제조 공정의 차이로 인해 공식 에너지미터와 측정값이 상이할 수 있음을 반드시 인지해야 합니다. 팀에서 제작한 에너지미터의 데이터는 대회 중 공식적으로 인정되지 않으며, 단순 참고용으로만 활용 가능합니다.
+
+## 8. LICENSE
 
 ```
 "THE BEERWARE LICENSE" (Revision 42):
