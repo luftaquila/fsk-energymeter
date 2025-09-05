@@ -8,15 +8,14 @@
 
 ## 0. Features
 
-* Records following data:
+* 100 Hz data recording
   * HV bus voltage 
   * HV bus current
   * LV supply voltage 
   * Ambient (CPU) temperature
   * Real-world time of each record
-* 100 Hz sampling rate
-* Mounts as a USB Mass Storage device
-* Data viewer available on most platforms
+* USB Mass Storage data extraction
+* Web-based data viewer
 
 ## 1. Specifications
 
@@ -55,7 +54,9 @@
 
 ![](.github/assets/wire.png)
 
-The _data cable_ and the _drive cable_ are two distinct cables. When driving the vehicle, connect the _drive cable_ to the LV connector of the device. To extract data, disconnect the _drive cable_ and connect the _data cable_ instead.
+The _data cable_ and the _drive cable_ are two distinct cables.
+When driving the vehicle, connect the _drive cable_ to the LV connector of the device.
+To extract data, disconnect the _drive cable_ and connect the _data cable_ instead.
 
 > [!CAUTION]
 > Misconnection of the pins may cause permanent damage to the device.
@@ -85,9 +86,11 @@ A new log file is created with each power cycle. Each log file corresponds to a 
 
 ### 3-2. Extract data
 
-To extract the recorded data from the device, disconnect _drive cable_ and connect _data cable_ instead. There is no need to disconnect the _HV cable_ during data extraction.
+To extract the recorded data from the device, disconnect _drive cable_ and connect _data cable_ instead.
+There is no need to disconnect the _HV cable_ during data extraction.
 
-Plug the USB side of the _data cable_ to the PC or smartphone (with a Type-A to C adapter). The FSK-EEM USB Mass Storage will appear [shortly](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings).
+Plug the USB side of the _data cable_ to the PC or smartphone (with a Type-A to C adapter).
+The FSK-EEM USB Mass Storage will appear [shortly](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings).
 
 The log files are stored in the drive like a common USB memory. Copy the files to your PC.
 
@@ -218,11 +221,14 @@ make debug    # debug build
 ## 6. Troubleshootings
 
 #### 1. FSK-EEM USB Mass Storage takes too long to be mounted
-The device only supports USB Full Speed (USB 1.1) spec. It is decades-old technology with a maximum transfer speed of 12 Mbps. However, in the real world, the actual speed is around 4 Mbps (0.5 MB/s).
+The device only supports USB Full Speed (USB 1.1) spec. It is decades-old technology with a maximum transfer speed of 12 Mbps.
+However, in the real world, the actual speed is around 4 Mbps (0.5 MB/s).
 
-When the device is connected to the host PC, the host will try to load the FAT table of the SDMMC. The FAT32 FAT table is typically a few megabytes, so it will take ~20 seconds to mount.
+When the device is connected to the host PC, the host will try to load the FAT table of the SDMMC.
+The FAT32 FAT table is typically a few megabytes, so it will take ~20 seconds to mount.
 
-To reduce the mount time, format SD cards with larger cluster sizes. The RTC sync or record delete functions will work immediately regardless of this limit.
+To reduce the mount time, format SD cards with larger cluster sizes.
+The RTC sync or record delete functions will work immediately regardless of this limit.
 
 #### 2. `Web Serial API not supported` error on the FSK-EEM Viewer.
 
@@ -233,7 +239,9 @@ On macOS, the native app uses the Safari for its WebView, which does not support
 ## 7. DISCLAIMER
 
 > [!IMPORTANT]
-> 차량기술규정 및 출력제한 위반 여부는 대회장에서 제공하는 공식 에너지미터로만 판단합니다. 에너지미터를 직접 만들어 사용하는 경우, 제조 공정의 차이로 인해 공식 에너지미터와 측정값이 상이할 수 있음을 반드시 인지해야 합니다. 팀에서 제작한 에너지미터의 데이터는 대회 중 공식적으로 인정되지 않으며, 단순 참고용으로만 활용 가능합니다.
+> 차량기술규정 및 출력제한 위반 여부는 대회장에서 제공하는 공식 에너지미터로만 판단합니다.
+> 에너지미터를 직접 만들어 사용하는 경우, 제조 공정의 차이 등으로 인해 공식 에너지미터와 측정값이 상이할 수 있음을 반드시 인지해야 합니다.
+> 팀에서 제작한 에너지미터는 대회 중 인정되지 않으며 단순 참고용으로만 활용할 수 있습니다.
 
 ## 8. LICENSE
 
