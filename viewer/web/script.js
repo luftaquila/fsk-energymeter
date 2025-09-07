@@ -321,6 +321,29 @@ async function update_device_info() {
 
 /* draw chart *****************************************************************/
 function init_chart() {
+  const axis = {
+    HV: {splits: [], max: 0, min: 0},
+    A: {splits: [], max: 0, min: 0},
+    kW: {splits: [], max: 0, min: 0},
+    LV: {splits: [], max: 0, min: 0},
+    C: {splits: [], max: 0, min: 0},
+  };
+
+  const scales = {};
+
+  for (const [k, v] of Object.entries(axis)) {
+    scales[k] = {
+      range: (u, d_min, d_max) => {
+        if (d_min === null && d_max === null) {
+          return [null, null];
+        } else {
+          axis[k] = split_range(d_min, d_max);
+          return [axis[k].min, axis[k].max];
+        }
+      }
+    }
+  }
+
   uplot = new uPlot({
     width: 900,
     height: 600,
@@ -340,7 +363,7 @@ function init_chart() {
       }, {
         label: "HV Power",
         scale: "kW",
-        stroke: "hotpink",
+        stroke: "mediumorchid",
         value: (self, rawValue) => (rawValue ? rawValue.toFixed(1) : (rawValue === 0 ? 0 : '-')) + 'kW',
       }, {
         label: "LV",
@@ -362,36 +385,38 @@ function init_chart() {
         scale: "A",
         stroke: "dodgerblue",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "A"),
-        grid: { show: false, },
-        ticks: { show: false, }
+        splits: () => axis.A.splits,
+        size: 55,
       }, {
         scale: "HV",
         stroke: "red",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "V"),
-        grid: { show: false, },
-        ticks: { show: false, }
+        splits: () => axis.HV.splits,
+        size: 55,
       }, {
         scale: "kW",
         stroke: "hotpink",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "kW"),
         side: 1,
-        ticks: { show: false, }
+        splits: () => axis.kW.splits,
+        size: 55,
       }, {
         scale: "LV",
         stroke: "green",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "V"),
         side: 1,
-        grid: { show: false, },
-        ticks: { show: false, }
+        splits: () => axis.LV.splits,
+        size: 55,
       }, {
         scale: "C",
         stroke: "orange",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "°C"),
         side: 1,
-        grid: { show: false, },
-        ticks: { show: false, }
+        splits: () => axis.C.splits,
+        size: 55,
       }
     ],
+    scales: scales,
     plugins: [
       touchZoomPlugin(),
       wheelZoomPlugin({factor: 0.75})
@@ -495,6 +520,31 @@ function display_metadata(logs) {
   }
 }
 
+function split_range(d_min, d_max) {
+  if (d_min === d_max) {
+    d_min *= 0.85;
+    d_max *= 1.15;
+  } else {
+    const range = d_max - d_min;
+    d_min = d_min - range * 0.05;
+    d_max = d_max + range * 0.05;
+  }
+
+  const tick = 10;
+  const step = (d_max - d_min) / (tick - 1);
+  const min = d_min;
+  const max = d_max;
+  const splits = Array.from({length: tick + 1}, (_, i) => min + i * step);
+  return {min, max, splits};
+}
+
+Array.prototype.max = function () {
+  return Math.max.apply(null, this.filter(x => x));
+};
+
+Array.prototype.min = function () {
+  return Math.min.apply(null, this.filter(x => x));
+};
 
 /* new Date().format() ********************************************************/
 var dateFormat = function () {
