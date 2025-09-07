@@ -30,6 +30,9 @@ function setup() {
       document.getElementById("log-cnt").innerText = "N/A";
       document.getElementById("log-duration").innerText = "N/A";
       document.getElementById("log-uid").innerText = "N/A";
+      document.getElementById("log-energy").innerText = "N/A";
+      document.getElementById("log-current").innerText = "N/A";
+      document.getElementById("log-power").innerText = "N/A";
       document.getElementById("error").style.display = "none";
       document.getElementById("warning").style.display = "none";
 
@@ -78,13 +81,30 @@ function setup() {
               }
 
               result.processed = [[], [], [], [], [], []];
+              result.logs.power = 0;
+              result.logs.max_power = Number.MIN_SAFE_INTEGER;
+              result.logs.max_current = Number.MIN_SAFE_INTEGER;
 
-              for (let log of result.logs.data) {
+              for (const [i, log] of result.logs.data.entries()) {
                 if (log.type === "LOG_TYPE_RECORD") {
+                  const power = log.record.hv_voltage * log.record.hv_current / 1000;
+
+                  if (i) {
+                    result.logs.power += power * (log.timestamp - result.logs.data[i - 1].timestamp) / 3600000;
+                  }
+
+                  if (power > result.logs.max_power) {
+                    result.logs.max_power = power;
+                  }
+
+                  if (log.record.hv_current > result.logs.max_current) {
+                    result.logs.max_current = log.record.hv_current;
+                  }
+
                   result.processed[0].push(log.timestamp);
                   result.processed[1].push(log.record.hv_voltage);
                   result.processed[2].push(log.record.hv_current);
-                  result.processed[3].push(log.record.hv_voltage * log.record.hv_current / 1000);
+                  result.processed[3].push(power);
                   result.processed[4].push(log.record.lv_voltage);
                   result.processed[5].push(log.record.temperature);
                 };
@@ -452,13 +472,17 @@ function download(content, fileName, contentType) {
 function display_metadata(logs) {
   document.getElementById("log-boot").innerText = `${new Date(logs.header.datetime).format("yyyy-mm-dd HH:MM:ss.l")}`;
 
-  document.getElementById("log-cnt").innerText = `${(logs.data.length).toLocaleString()} total`;
+  document.getElementById("log-cnt").innerText = `${(logs.data.length).toLocaleString()}`;
   document.getElementById("log-cnt").innerText += ` (${logs.ok.toLocaleString()} valid / ${logs.error.length.toLocaleString()} error)`;
 
   let duration = logs.data[logs.data.length - 1].timestamp - logs.data[0].timestamp;
   document.getElementById("log-duration").innerText = `${ms_to_human_time(duration)} (${duration.toLocaleString()} ms)`;
 
   document.getElementById("log-uid").innerText = logs.header.uid.map(x => x.toString(16).toUpperCase().padStart(8, '0')).join('-');
+
+  document.getElementById("log-energy").innerText = `${logs.power.toFixed(2)} kWh`;
+  document.getElementById("log-current").innerText = `${logs.max_current.toFixed(1)} A`;
+  document.getElementById("log-power").innerText = `${logs.max_power.toFixed(1)} kW`;
 
   if (logs.header.datetime > Number(new Date(2099, 0))) {
     document.getElementById("warning").innerText = "Invalid RTC date detected. Sync the clock in the Device configuration tab.";

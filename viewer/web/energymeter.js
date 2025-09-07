@@ -174,12 +174,30 @@ function parse(data) {
 
   let processed = [[], [], [], [], [], []];
 
-  for (let log of logs.data) {
+  logs.power = 0;
+  logs.max_power = Number.MIN_SAFE_INTEGER;
+  logs.max_current = Number.MIN_SAFE_INTEGER;
+
+  for (const [i, log] of logs.data.entries()) {
     if (log.type === "LOG_TYPE_RECORD") {
+      const power = log.record.hv_voltage * log.record.hv_current / 1000;
+
+      if (i) {
+        logs.power += power * (log.timestamp - logs.data[i - 1].timestamp) / 3600000;
+      }
+
+      if (power > logs.max_power) {
+        logs.max_power = power;
+      }
+
+      if (log.record.hv_current > logs.max_current) {
+        logs.max_current = log.record.hv_current;
+      }
+
       processed[0].push(log.timestamp);
       processed[1].push(log.record.hv_voltage);
       processed[2].push(log.record.hv_current);
-      processed[3].push(log.record.hv_voltage * log.record.hv_current / 1000);
+      processed[3].push(power);
       processed[4].push(log.record.lv_voltage);
       processed[5].push(log.record.temperature);
     };
