@@ -12,8 +12,8 @@ jobs:
     uses: ./.github/workflows/kicad.yml
   build-3d:
     uses: ./.github/workflows/3d.yml
-  build-native:
-    uses: ./.github/workflows/native.yml
+  # build-native:
+  #   uses: ./.github/workflows/native.yml
   build-html:
     uses: ./.github/workflows/web-bundle.yml
   deploy-web:
@@ -21,15 +21,15 @@ jobs:
   release:
     name: release
     runs-on: ubuntu-latest
-    needs: [build-firmware, build-pcb, build-3d, build-native, build-html]
+    needs: [build-firmware, build-pcb, build-3d, build-html]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
       - run: |
           zip -r fsk-energymeter-firmware.zip fsk-energymeter-firmware
-          (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-viewer-macos-arm64.app.zip .)
-          mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-viewer-windows-x64.exe
-          mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64.AppImage
+          # (cd build.fsk-energymeter-macos-arm64 && zip -r ../fsk-energymeter-viewer-macos-arm64.app.zip .)
+          # mv build.fsk-energymeter-windows-x64/fsk-energymeter.exe fsk-energymeter-viewer-windows-x64.exe
+          # mv build.fsk-energymeter-linux-x64/fsk-energymeter*.AppImage fsk-energymeter-viewer-linux-x64.AppImage
           zip -r fsk-energymeter-pcb.zip fsk-energymeter-pcb
           zip -r fsk-energymeter-3d.zip fsk-energymeter-3d
           mv html/fsk-energymeter.html fsk-energymeter-viewer.html
@@ -41,39 +41,15 @@ jobs:
             fsk-energymeter-firmware.zip
             fsk-energymeter-pcb.zip
             fsk-energymeter-viewer.html
-            fsk-energymeter-viewer-windows-x64.exe
-            fsk-energymeter-viewer-macos-arm64.app.zip
-            fsk-energymeter-viewer-linux-x64.AppImage
+            # fsk-energymeter-viewer-windows-x64.exe
+            # fsk-energymeter-viewer-macos-arm64.app.zip
+            # fsk-energymeter-viewer-linux-x64.AppImage
           commit: ${{ github.sha }}
           tag: ${{ github.ref_name }}
           body: |
             ### FSK-EEM Viewer
 
-            #### Web
-
             * https://fsk.luftaquila.io/energymeter
-            * `fsk-energymeter-viewer.html`
+            * Download `fsk-energymeter-viewer.html` and open it with your browser
 
-            #### Windows
-
-            Download and run `fsk-energymeter-viewer-windows-x64.exe`.
-
-            If `Windows protected your PC` message appears, click <ins>More Info</ins> and `Run anyway`.
-
-            #### Linux
-
-            ```sh
-            wget https://github.com/luftaquila/fsk-energymeter/releases/download/${{ github.ref_name }}/fsk-energymeter-viewer-linux-x64.AppImage
-            chmod u+x fsk-energymeter-viewer-linux-x64.AppImage
-            ```
-
-            #### macOS
-
-            ```sh
-            wget https://github.com/luftaquila/fsk-energymeter/releases/download/${{ github.ref_name }}/fsk-energymeter-viewer-macos-arm64.app.zip
-            unzip fsk-energymeter-viewer-macos-arm64.app.zip
-            xattr -c fsk-energymeter.app
-            chmod +x fsk-energymeter.app/Contents/MacOS/fsk-energymeter
-            ```
-
-            To use the Device Configuration tab in macOS, use the web version with the Chromium. ([Reference](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings))
+            To use the Device Configuration tab in macOS, use the Chromium (Chrome) browser. ([Reference](https://github.com/luftaquila/fsk-energymeter?tab=readme-ov-file#6-troubleshootings))
