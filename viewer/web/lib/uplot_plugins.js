@@ -95,6 +95,9 @@ function wheelZoomPlugin(opts) {
         over.addEventListener("wheel", e => {
           e.preventDefault();
 
+          // Update rect for accurate cursor position calculation
+          rect = over.getBoundingClientRect();
+          
           let { left, top } = u.cursor;
 
           let leftPct = left / rect.width;
@@ -293,6 +296,16 @@ function peakAnnotationsPlugin() {
     return annotation;
   }
 
+  function isPointInViewport(u, timestamp, value, scale) {
+    // Check if the point is within the current visible range
+    const xMin = u.scales.x.min;
+    const xMax = u.scales.x.max;
+    const yMin = u.scales[scale].min;
+    const yMax = u.scales[scale].max;
+    
+    return timestamp >= xMin && timestamp <= xMax && value >= yMin && value <= yMax;
+  }
+
   function placePeakAnnotations(u) {
     // Remove existing annotations
     if (powerAnnotation) {
@@ -312,41 +325,95 @@ function peakAnnotationsPlugin() {
 
     // Power annotation (series index 3)
     if (u.series[3].show && window.result.max_power_timestamp && window.result.max_power) {
-      powerAnnotation = createPeakAnnotation(window.result.max_power_timestamp, window.result.max_power, 'P', 'mediumorchid', 'kW', 'kW', 1003);
+      // Only show if the peak point is within the visible viewport
+      if (isPointInViewport(u, window.result.max_power_timestamp, window.result.max_power, 'kW')) {
+        powerAnnotation = createPeakAnnotation(window.result.max_power_timestamp, window.result.max_power, 'P', 'mediumorchid', 'kW', 'kW', 1003);
 
-      const xPos = u.valToPos(window.result.max_power_timestamp, 'x');
-      const yPos = u.valToPos(window.result.max_power, 'kW');
-      powerAnnotation.style.left = `${xPos - 40}px`;
-      powerAnnotation.style.top = `${yPos - 45}px`;
-      u.over.appendChild(powerAnnotation);
+        const xPos = u.valToPos(window.result.max_power_timestamp, 'x');
+        const yPos = u.valToPos(window.result.max_power, 'kW');
+        powerAnnotation.style.left = `${xPos - 40}px`;
+        powerAnnotation.style.top = `${yPos - 45}px`;
+        u.over.appendChild(powerAnnotation);
+      }
     }
 
     // Voltage annotation (series index 1)
     if (u.series[1].show && window.result.max_voltage_timestamp && window.result.max_voltage) {
-      voltageAnnotation = createPeakAnnotation(window.result.max_voltage_timestamp, window.result.max_voltage, 'V', 'red', 'HV', 'V', 1002);
+      // Only show if the peak point is within the visible viewport
+      if (isPointInViewport(u, window.result.max_voltage_timestamp, window.result.max_voltage, 'HV')) {
+        voltageAnnotation = createPeakAnnotation(window.result.max_voltage_timestamp, window.result.max_voltage, 'V', 'red', 'HV', 'V', 1002);
 
-      const xPos = u.valToPos(window.result.max_voltage_timestamp, 'x');
-      const yPos = u.valToPos(window.result.max_voltage, 'HV');
-      voltageAnnotation.style.left = `${xPos - 40}px`;
-      voltageAnnotation.style.top = `${yPos - 45}px`;
-      u.over.appendChild(voltageAnnotation);
+        const xPos = u.valToPos(window.result.max_voltage_timestamp, 'x');
+        const yPos = u.valToPos(window.result.max_voltage, 'HV');
+        voltageAnnotation.style.left = `${xPos - 40}px`;
+        voltageAnnotation.style.top = `${yPos - 45}px`;
+        u.over.appendChild(voltageAnnotation);
+      }
     }
 
     // Current annotation (series index 2)
     if (u.series[2].show && window.result.max_current_timestamp && window.result.max_current) {
-      currentAnnotation = createPeakAnnotation(window.result.max_current_timestamp, window.result.max_current, 'A', 'dodgerblue', 'A', 'A', 1001);
+      // Only show if the peak point is within the visible viewport
+      if (isPointInViewport(u, window.result.max_current_timestamp, window.result.max_current, 'A')) {
+        currentAnnotation = createPeakAnnotation(window.result.max_current_timestamp, window.result.max_current, 'A', 'dodgerblue', 'A', 'A', 1001);
 
-      const xPos = u.valToPos(window.result.max_current_timestamp, 'x');
-      const yPos = u.valToPos(window.result.max_current, 'A');
-      currentAnnotation.style.left = `${xPos - 40}px`;
-      currentAnnotation.style.top = `${yPos - 45}px`;
-      u.over.appendChild(currentAnnotation);
+        const xPos = u.valToPos(window.result.max_current_timestamp, 'x');
+        const yPos = u.valToPos(window.result.max_current, 'A');
+        currentAnnotation.style.left = `${xPos - 40}px`;
+        currentAnnotation.style.top = `${yPos - 45}px`;
+        u.over.appendChild(currentAnnotation);
+      }
+    }
+  }
+
+  let lastViewport = null;
+
+  function checkViewportChange(u) {
+    const currentViewport = {
+      xMin: u.scales.x.min,
+      xMax: u.scales.x.max,
+      powerYMin: u.scales.kW ? u.scales.kW.min : null,
+      powerYMax: u.scales.kW ? u.scales.kW.max : null,
+      voltageYMin: u.scales.HV ? u.scales.HV.min : null,
+      voltageYMax: u.scales.HV ? u.scales.HV.max : null,
+      currentYMin: u.scales.A ? u.scales.A.min : null,
+      currentYMax: u.scales.A ? u.scales.A.max : null
+    };
+
+    // Only update if viewport actually changed
+    if (!lastViewport || 
+        lastViewport.xMin !== currentViewport.xMin ||
+        lastViewport.xMax !== currentViewport.xMax ||
+        lastViewport.powerYMin !== currentViewport.powerYMin ||
+        lastViewport.powerYMax !== currentViewport.powerYMax ||
+        lastViewport.voltageYMin !== currentViewport.voltageYMin ||
+        lastViewport.voltageYMax !== currentViewport.voltageYMax ||
+        lastViewport.currentYMin !== currentViewport.currentYMin ||
+        lastViewport.currentYMax !== currentViewport.currentYMax) {
+      
+      lastViewport = currentViewport;
+      placePeakAnnotations(u);
     }
   }
 
   return {
     hooks: {
-      drawClear: [placePeakAnnotations],
+      ready: [placePeakAnnotations],
+      setScale: [
+        (u, key) => {
+          // Only update annotations when scale changes (zoom/pan)
+          if (key === 'x' || key === 'kW' || key === 'HV' || key === 'A') {
+            // Use requestAnimationFrame to debounce rapid scale changes
+            if (u._annotationUpdatePending) return;
+            u._annotationUpdatePending = true;
+            
+            requestAnimationFrame(() => {
+              u._annotationUpdatePending = false;
+              checkViewportChange(u);
+            });
+          }
+        }
+      ]
     },
   };
 }
