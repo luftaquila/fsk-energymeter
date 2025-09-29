@@ -179,8 +179,11 @@ function calculate_metadata(data) {
   data.processed = [[], [], [], [], [], []];
   data.power = 0;
   data.max_power = Number.MIN_SAFE_INTEGER;
+  data.max_power_timestamp = 0;
   data.max_voltage = Number.MIN_SAFE_INTEGER;
+  data.max_voltage_timestamp = 0;
   data.max_current = Number.MIN_SAFE_INTEGER;
+  data.max_current_timestamp = 0;
   data.violation = [];
 
   const power_limit = parseInt(localStorage.getItem("power-limit")) || 0;
@@ -198,14 +201,17 @@ function calculate_metadata(data) {
 
       if (power > data.max_power) {
         data.max_power = power;
+        data.max_power_timestamp = log.timestamp;
       }
 
       if (log.record.hv_voltage > data.max_voltage) {
         data.max_voltage = log.record.hv_voltage;
+        data.max_voltage_timestamp = log.timestamp;
       }
 
       if (log.record.hv_current > data.max_current) {
         data.max_current = log.record.hv_current;
+        data.max_current_timestamp = log.timestamp;
       }
 
         if (power_limit > 0) {

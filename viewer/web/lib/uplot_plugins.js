@@ -251,6 +251,106 @@ function touchZoomPlugin(opts) {
   };
 }
 
+function peakAnnotationsPlugin() {
+  let powerAnnotation = null;
+  let voltageAnnotation = null;
+  let currentAnnotation = null;
+
+  function createPeakAnnotation(timestamp, value, label, color, scale, unit, zIndex) {
+    // Create annotation container
+    const annotation = document.createElement('div');
+    annotation.style.position = 'absolute';
+    annotation.style.pointerEvents = 'none';
+    annotation.style.zIndex = zIndex;
+
+    // Create the tooltip box
+    const tooltipBox = document.createElement('div');
+    tooltipBox.style.background = color;
+    tooltipBox.style.color = 'white';
+    tooltipBox.style.padding = '4px 8px';
+    tooltipBox.style.borderRadius = '4px';
+    tooltipBox.style.fontSize = '12px';
+    tooltipBox.style.fontWeight = 'bold';
+    tooltipBox.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+    tooltipBox.textContent = `${label}: ${value.toFixed(1)} ${unit}`;
+
+    // Create the arrow pointing down to the data point
+    const arrow = document.createElement('div');
+    arrow.style.position = 'absolute';
+    arrow.style.top = '100%';
+    arrow.style.left = '50%';
+    arrow.style.transform = 'translateX(-50%)';
+    arrow.style.width = '0';
+    arrow.style.height = '0';
+    arrow.style.borderLeft = '6px solid transparent';
+    arrow.style.borderRight = '6px solid transparent';
+    arrow.style.borderTop = `6px solid ${color}`;
+
+    // Assemble the annotation
+    tooltipBox.appendChild(arrow);
+    annotation.appendChild(tooltipBox);
+
+    return annotation;
+  }
+
+  function placePeakAnnotations(u) {
+    // Remove existing annotations
+    if (powerAnnotation) {
+      powerAnnotation.remove();
+      powerAnnotation = null;
+    }
+    if (voltageAnnotation) {
+      voltageAnnotation.remove();
+      voltageAnnotation = null;
+    }
+    if (currentAnnotation) {
+      currentAnnotation.remove();
+      currentAnnotation = null;
+    }
+
+    if (!window.result) return;
+
+    // Power annotation (series index 3)
+    if (u.series[3].show && window.result.max_power_timestamp && window.result.max_power) {
+      powerAnnotation = createPeakAnnotation(window.result.max_power_timestamp, window.result.max_power, 'P', 'mediumorchid', 'kW', 'kW', 1003);
+
+      const xPos = u.valToPos(window.result.max_power_timestamp, 'x');
+      const yPos = u.valToPos(window.result.max_power, 'kW');
+      powerAnnotation.style.left = `${xPos - 40}px`;
+      powerAnnotation.style.top = `${yPos - 45}px`;
+      u.over.appendChild(powerAnnotation);
+    }
+
+    // Voltage annotation (series index 1)
+    if (u.series[1].show && window.result.max_voltage_timestamp && window.result.max_voltage) {
+      voltageAnnotation = createPeakAnnotation(window.result.max_voltage_timestamp, window.result.max_voltage, 'V', 'red', 'HV', 'V', 1002);
+
+      const xPos = u.valToPos(window.result.max_voltage_timestamp, 'x');
+      const yPos = u.valToPos(window.result.max_voltage, 'HV');
+      voltageAnnotation.style.left = `${xPos - 40}px`;
+      voltageAnnotation.style.top = `${yPos - 45}px`;
+      u.over.appendChild(voltageAnnotation);
+    }
+
+    // Current annotation (series index 2)
+    if (u.series[2].show && window.result.max_current_timestamp && window.result.max_current) {
+      currentAnnotation = createPeakAnnotation(window.result.max_current_timestamp, window.result.max_current, 'A', 'dodgerblue', 'A', 'A', 1001);
+
+      const xPos = u.valToPos(window.result.max_current_timestamp, 'x');
+      const yPos = u.valToPos(window.result.max_current, 'A');
+      currentAnnotation.style.left = `${xPos - 40}px`;
+      currentAnnotation.style.top = `${yPos - 45}px`;
+      u.over.appendChild(currentAnnotation);
+    }
+  }
+
+  return {
+    hooks: {
+      drawClear: [placePeakAnnotations],
+    },
+  };
+}
+
 function downloadImage(uplot, filename) {
   let pxRatio = devicePixelRatio;
   let rect = uplot.root.getBoundingClientRect();

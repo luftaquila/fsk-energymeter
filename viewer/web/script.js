@@ -308,15 +308,14 @@ async function update_device_info() {
   return true;
 }
 
-
 /* draw chart *****************************************************************/
 function init_chart() {
   const axis = {
-    HV: {splits: [], max: 0, min: 0},
-    A: {splits: [], max: 0, min: 0},
-    kW: {splits: [], max: 0, min: 0},
-    LV: {splits: [], max: 0, min: 0},
-    C: {splits: [], max: 0, min: 0},
+    HV: { splits: [], max: 0, min: 0 },
+    A: { splits: [], max: 0, min: 0 },
+    kW: { splits: [], max: 0, min: 0 },
+    LV: { splits: [], max: 0, min: 0 },
+    C: { splits: [], max: 0, min: 0 },
   };
 
   const scales = {};
@@ -409,7 +408,8 @@ function init_chart() {
     scales: scales,
     plugins: [
       touchZoomPlugin(),
-      wheelZoomPlugin({factor: 0.75})
+      wheelZoomPlugin({ factor: 0.75 }),
+      peakAnnotationsPlugin()
     ],
   }, null, document.getElementById("chart"));
 }
@@ -477,11 +477,11 @@ function ms_to_human_time(ms) {
 }
 
 function download(content, fileName, contentType) {
-    let a = document.createElement("a");
-    let file = new Blob([content], {type: contentType});
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
+  let a = document.createElement("a");
+  let file = new Blob([content], { type: contentType });
+  a.href = URL.createObjectURL(file);
+  a.download = fileName;
+  a.click();
 }
 
 function display_metadata(logs) {
@@ -543,8 +543,8 @@ function split_range(d_min, d_max) {
   const step = (d_max - d_min) / (tick - 1);
   const min = d_min;
   const max = d_max;
-  const splits = Array.from({length: tick + 1}, (_, i) => min + i * step);
-  return {min, max, splits};
+  const splits = Array.from({ length: tick + 1 }, (_, i) => min + i * step);
+  return { min, max, splits };
 }
 
 Array.prototype.max = function () {
@@ -557,7 +557,7 @@ Array.prototype.min = function () {
 
 /* new Date().format() ********************************************************/
 var dateFormat = function () {
-  var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+  var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
     timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
     timezoneClip = /[^-+\dA-Z]/g,
     pad = function (val, len) {
@@ -579,7 +579,7 @@ var dateFormat = function () {
       mask = mask.slice(4);
       utc = true;
     }
-    var	_ = utc ? 'getUTC' : 'get',
+    var _ = utc ? 'getUTC' : 'get',
       d = date[_ + 'Date'](),
       D = date[_ + 'Day'](),
       m = date[_ + 'Month'](),
@@ -590,40 +590,40 @@ var dateFormat = function () {
       L = date[_ + 'Milliseconds'](),
       o = utc ? 0 : date.getTimezoneOffset(),
       flags = {
-        d:    d,
-        dd:   pad(d),
-        ddd:  dF.i18n.dayNames[D],
+        d: d,
+        dd: pad(d),
+        ddd: dF.i18n.dayNames[D],
         dddd: dF.i18n.dayNames[D + 7],
-        m:    m + 1,
-        mm:   pad(m + 1),
-        mmm:  dF.i18n.monthNames[m],
+        m: m + 1,
+        mm: pad(m + 1),
+        mmm: dF.i18n.monthNames[m],
         mmmm: dF.i18n.monthNames[m + 12],
-        yy:   String(y).slice(2),
+        yy: String(y).slice(2),
         yyyy: y,
-        h:    H % 12 || 12,
-        hh:   pad(H % 12 || 12),
-        H:    H,
-        HH:   pad(H),
-        M:    M,
-        MM:   pad(M),
-        s:    s,
-        ss:   pad(s),
-        l:    pad(L, 3),
-        L:    pad(L > 99 ? Math.round(L / 10) : L),
-        t:    H < 12 ? 'a'  : 'p',
-        tt:   H < 12 ? 'am' : 'pm',
-        T:    H < 12 ? 'A'  : 'P',
-        TT:   H < 12 ? '오전' : '오후',
-        Z:    utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
-        o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-        S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+        h: H % 12 || 12,
+        hh: pad(H % 12 || 12),
+        H: H,
+        HH: pad(H),
+        M: M,
+        MM: pad(M),
+        s: s,
+        ss: pad(s),
+        l: pad(L, 3),
+        L: pad(L > 99 ? Math.round(L / 10) : L),
+        t: H < 12 ? 'a' : 'p',
+        tt: H < 12 ? 'am' : 'pm',
+        T: H < 12 ? 'A' : 'P',
+        TT: H < 12 ? '오전' : '오후',
+        Z: utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
+        o: (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+        S: ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
       };
     return mask.replace(token, function ($0) {
       return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
     });
   };
 }();
-dateFormat.masks = {'default':'ddd mmm dd yyyy HH:MM:ss'};
+dateFormat.masks = { 'default': 'ddd mmm dd yyyy HH:MM:ss' };
 dateFormat.i18n = {
   dayNames: [
     '일', '월', '화', '수', '목', '금', '토',
@@ -634,5 +634,5 @@ dateFormat.i18n = {
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
   ]
 };
-Date.prototype.format = function(mask, utc) { return dateFormat(this, mask, utc); };
+Date.prototype.format = function (mask, utc) { return dateFormat(this, mask, utc); };
 
