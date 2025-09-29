@@ -176,6 +176,7 @@ function parse(data) {
 
   logs.power = 0;
   logs.max_power = Number.MIN_SAFE_INTEGER;
+  logs.max_voltage = Number.MIN_SAFE_INTEGER;
   logs.max_current = Number.MIN_SAFE_INTEGER;
 
   for (const [i, log] of logs.data.entries()) {
@@ -188,6 +189,10 @@ function parse(data) {
 
       if (power > logs.max_power) {
         logs.max_power = power;
+      }
+
+      if (log.record.hv_voltage > logs.max_voltage) {
+        logs.max_voltage = log.record.hv_voltage;
       }
 
       if (log.record.hv_current > logs.max_current) {

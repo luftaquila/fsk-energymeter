@@ -83,6 +83,7 @@ function setup() {
               result.processed = [[], [], [], [], [], []];
               result.logs.power = 0;
               result.logs.max_power = Number.MIN_SAFE_INTEGER;
+              result.logs.max_voltage = Number.MIN_SAFE_INTEGER;
               result.logs.max_current = Number.MIN_SAFE_INTEGER;
 
               for (const [i, log] of result.logs.data.entries()) {
@@ -95,6 +96,10 @@ function setup() {
 
                   if (power > result.logs.max_power) {
                     result.logs.max_power = power;
+                  }
+
+                  if (log.record.hv_voltage > result.logs.max_voltage) {
+                    result.logs.max_voltage = log.record.hv_voltage;
                   }
 
                   if (log.record.hv_current > result.logs.max_current) {
@@ -502,8 +507,9 @@ function display_metadata(logs) {
   document.getElementById("log-uid").innerText = logs.header.uid.map(x => x.toString(16).toUpperCase().padStart(8, '0')).join('-');
 
   document.getElementById("log-energy").innerText = `${logs.power.toFixed(2)} kWh`;
-  document.getElementById("log-current").innerText = `${logs.max_current.toFixed(1)} A`;
   document.getElementById("log-power").innerText = `${logs.max_power.toFixed(1)} kW`;
+  document.getElementById("log-voltage").innerText = `${logs.max_voltage.toFixed(1)} V`;
+  document.getElementById("log-current").innerText = `${logs.max_current.toFixed(1)} A`;
 
   if (logs.header.datetime > Number(new Date(2099, 0))) {
     document.getElementById("warning").innerText = "Invalid RTC date detected. Sync the clock in the Device configuration tab.";
