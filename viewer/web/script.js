@@ -372,8 +372,8 @@ function init_chart() {
           points: {
             show: true,
             size: 6,
-            fill: "darkturquoise",
-            stroke: "darkturquoise",
+            fill: "dimgray",
+            stroke: "dimgray",
             width: 2
           }
         }, {
@@ -382,8 +382,8 @@ function init_chart() {
           points: {
             show: true,
             size: 6,
-            fill: "lightseagreen",
-            stroke: "lightseagreen",
+            fill: "darkgray",
+            stroke: "darkgray",
             width: 2
           }
         }
@@ -537,7 +537,7 @@ function display_metadata(logs) {
 
   if (logs.violation.length) {
     document.getElementById("violation").innerHTML =
-      logs.violation.slice(0, 5).map(x => `#${x.index}: ${x.type} (${x.value.toFixed(3)} kW at ${new Date(x.timestamp).format("HH:MM:ss.l")})`).join('<br>');
+      logs.violation.slice(0, 5).map(x => `#${x.index}: ${x.type} (${x.value.toFixed(2)} kW at ${new Date(x.timestamp).format("HH:MM:ss.l")})`).join('<br>');
 
     if (logs.violation.length > 5) {
       document.getElementById("violation").innerHTML += `<br>&emsp;...and ${logs.violation.length - 5} more violations.`;

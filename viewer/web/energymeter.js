@@ -281,9 +281,9 @@ function calculate_metadata(data) {
   data.violation.forEach(violation => {
     if (violation.index < data.processed[6].length) {
       if (violation.type === '100 ms continuous power limit violation') {
-        data.processed[6][violation.index] = violation.value; // 100ms violations in series 6
+        data.processed[6][violation.index] = data.processed[3][violation.index];
       } else if (violation.type === '500 ms average power limit violation') {
-        data.processed[7][violation.index] = violation.value; // 500ms violations in series 7
+        data.processed[7][violation.index] = data.processed[3][violation.index];
       }
     }
   });
