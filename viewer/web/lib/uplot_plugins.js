@@ -351,6 +351,46 @@ function peakAnnotationsPlugin() {
   };
 }
 
+function violationVisibilityPlugin() {
+  return {
+    hooks: {
+      setSeries: [
+        (u, seriesIdx, opts) => {
+          // If power series (index 3) visibility changes, sync violation series (index 6 and 7)
+          if (seriesIdx === 3) {
+            const violation100msIdx = 6;
+            const violation500msIdx = 7;
+            
+            if (u.series[violation100msIdx] && u.series[violation100msIdx].show !== opts.show) {
+              u.setSeries(violation100msIdx, { show: opts.show });
+            }
+            if (u.series[violation500msIdx] && u.series[violation500msIdx].show !== opts.show) {
+              u.setSeries(violation500msIdx, { show: opts.show });
+            }
+          }
+        }
+      ],
+      ready: [
+        (u) => {
+          // Initially sync violation series visibility with power series
+          const powerSeriesShow = u.series[3].show;
+          u.setSeries(6, { show: powerSeriesShow });
+          u.setSeries(7, { show: powerSeriesShow });
+          
+          // Hide the violation series from legend by hiding their legend rows
+          const legendRows = u.root.querySelectorAll('.u-legend tr');
+          if (legendRows[6]) { // 100ms violations
+            legendRows[6].style.display = 'none';
+          }
+          if (legendRows[7]) { // 500ms violations
+            legendRows[7].style.display = 'none';
+          }
+        }
+      ]
+    }
+  };
+}
+
 function downloadImage(uplot, filename) {
   let pxRatio = devicePixelRatio;
   let rect = uplot.root.getBoundingClientRect();

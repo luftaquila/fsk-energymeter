@@ -176,7 +176,7 @@ function parse(data) {
 }
 
 function calculate_metadata(data) {
-  data.processed = [[], [], [], [], [], []];
+  data.processed = [[], [], [], [], [], [], [], []]; // Added 8th array for 500ms violations
   data.power = 0;
   data.max_power = Number.MIN_SAFE_INTEGER;
   data.max_power_timestamp = 0;
@@ -190,6 +190,8 @@ function calculate_metadata(data) {
   const window_100ms = [];
   const window_500ms = [];
   let sum_500ms = 0;
+  let last_100ms_violation_time = 0;
+  let last_500ms_violation_time = 0;
   
   for (const [i, log] of data.data.entries()) {
     if (log.type === "LOG_TYPE_RECORD") {
@@ -230,13 +232,16 @@ function calculate_metadata(data) {
           
           if (window_100ms.length > 1) {
             if (window_100ms.every(entry => entry.power > power_limit)) {
-              data.violation.push({
-                index: i,
-                timestamp: log.timestamp,
-                type: '100 ms continuous power limit violation',
-                value: window_100ms.reduce((sum, entry) => sum + entry.power, 0) / window_100ms.length,
-              });
+              if (log.timestamp - last_100ms_violation_time >= 100) {
+                data.violation.push({
+                  index: i,
+                  timestamp: log.timestamp,
+                  type: '100 ms continuous power limit violation',
+                  value: window_100ms.reduce((sum, entry) => sum + entry.power, 0) / window_100ms.length,
+                });
 
+                last_100ms_violation_time = log.timestamp;
+              }
               window_100ms.length = 0;
             }
           }
@@ -245,13 +250,16 @@ function calculate_metadata(data) {
             const avg = sum_500ms / window_500ms.length;
             
             if (avg > power_limit) {
-              data.violation.push({
-                index: i,
-                timestamp: log.timestamp,
-                type: '500 ms average power limit violation',
-                value: avg,
-              });
+              if (log.timestamp - last_500ms_violation_time >= 500) {
+                data.violation.push({
+                  index: i,
+                  timestamp: log.timestamp,
+                  type: '500 ms average power limit violation',
+                  value: avg,
+                });
 
+                last_500ms_violation_time = log.timestamp;
+              }
               window_500ms.length = 0;
               sum_500ms = 0;
             }
@@ -264,8 +272,21 @@ function calculate_metadata(data) {
       data.processed[3].push(power);
       data.processed[4].push(log.record.lv_voltage);
       data.processed[5].push(log.record.temperature);
+      data.processed[6].push(null); // Initialize 100ms violation points as null
+      data.processed[7].push(null); // Initialize 500ms violation points as null
     };
   }
+
+  // Add violation points to the processed data
+  data.violation.forEach(violation => {
+    if (violation.index < data.processed[6].length) {
+      if (violation.type === '100 ms continuous power limit violation') {
+        data.processed[6][violation.index] = violation.value; // 100ms violations in series 6
+      } else if (violation.type === '500 ms average power limit violation') {
+        data.processed[7][violation.index] = violation.value; // 500ms violations in series 7
+      }
+    }
+  });
 
   return data;
 }

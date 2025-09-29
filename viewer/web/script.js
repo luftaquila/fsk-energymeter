@@ -366,7 +366,27 @@ function init_chart() {
         stroke: "orange",
         value: (self, rawValue) => (rawValue ? rawValue : (rawValue === 0 ? 0 : '-')) + '°C',
         show: false,
-      }
+        }, {
+          label: "100ms Violations",
+          scale: "kW",
+          points: {
+            show: true,
+            size: 6,
+            fill: "darkturquoise",
+            stroke: "darkturquoise",
+            width: 2
+          }
+        }, {
+          label: "500ms Violations", 
+          scale: "kW",
+          points: {
+            show: true,
+            size: 6,
+            fill: "lightseagreen",
+            stroke: "lightseagreen",
+            width: 2
+          }
+        }
     ],
     axes: [{
         values: (self, ticks) => ticks.map(rawValue => new Date(rawValue).format("HH:MM:ss\nl")),
@@ -409,7 +429,8 @@ function init_chart() {
     plugins: [
       touchZoomPlugin(),
       wheelZoomPlugin({ factor: 0.75 }),
-      peakAnnotationsPlugin()
+      peakAnnotationsPlugin(),
+      violationVisibilityPlugin()
     ],
   }, null, document.getElementById("chart"));
 }
