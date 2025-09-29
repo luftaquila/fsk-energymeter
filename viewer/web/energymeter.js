@@ -181,7 +181,13 @@ function calculate_metadata(data) {
   data.max_power = Number.MIN_SAFE_INTEGER;
   data.max_voltage = Number.MIN_SAFE_INTEGER;
   data.max_current = Number.MIN_SAFE_INTEGER;
+  data.violation = [];
 
+  const power_limit = parseInt(localStorage.getItem("power-limit")) || 0;
+  const window_100ms = [];
+  const window_500ms = [];
+  let sum_500ms = 0;
+  
   for (const [i, log] of data.data.entries()) {
     if (log.type === "LOG_TYPE_RECORD") {
       const power = log.record.hv_voltage * log.record.hv_current / 1000;
@@ -201,6 +207,50 @@ function calculate_metadata(data) {
       if (log.record.hv_current > data.max_current) {
         data.max_current = log.record.hv_current;
       }
+
+        if (power_limit > 0) {
+          window_100ms.push({ index: i, power, timestamp: log.timestamp });
+          window_500ms.push({ index: i, power, timestamp: log.timestamp });
+          sum_500ms += power;
+          
+          while (window_100ms.length > 0 && log.timestamp - window_100ms[0].timestamp > 100) {
+            window_100ms.shift();
+          }
+          
+          while (window_500ms.length > 0 && log.timestamp - window_500ms[0].timestamp > 500) {
+            sum_500ms -= window_500ms[0].power;
+            window_500ms.shift();
+          }
+          
+          if (window_100ms.length > 1) {
+            if (window_100ms.every(entry => entry.power > power_limit)) {
+              data.violation.push({
+                index: i,
+                timestamp: log.timestamp,
+                type: '100 ms continuous power limit violation',
+                value: window_100ms.reduce((sum, entry) => sum + entry.power, 0) / window_100ms.length,
+              });
+
+              window_100ms.length = 0;
+            }
+          }
+          
+          if (window_500ms.length > 1) {
+            const avg = sum_500ms / window_500ms.length;
+            
+            if (avg > power_limit) {
+              data.violation.push({
+                index: i,
+                timestamp: log.timestamp,
+                type: '500 ms average power limit violation',
+                value: avg,
+              });
+
+              window_500ms.length = 0;
+              sum_500ms = 0;
+            }
+          }
+        }
 
       data.processed[0].push(log.timestamp);
       data.processed[1].push(log.record.hv_voltage);

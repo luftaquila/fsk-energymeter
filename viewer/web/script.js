@@ -2,6 +2,12 @@ setup();
 
 function setup() {
   notyf = new Notyf({ ripple: false, duration: 3500 });
+
+  // set default power limit to 80 kW
+  if (localStorage.getItem("power-limit") === null) {
+    localStorage.setItem("power-limit", 80);
+  }
+
   init_chart();
 
   /* navigation sidebar handler ***********************************************/
@@ -33,8 +39,6 @@ function setup() {
       document.getElementById("log-energy").innerText = "N/A";
       document.getElementById("log-current").innerText = "N/A";
       document.getElementById("log-power").innerText = "N/A";
-      document.getElementById("error").style.display = "none";
-      document.getElementById("warning").style.display = "none";
 
       switch (ext) {
         case 'log': {
@@ -103,7 +107,9 @@ function setup() {
 
     document.getElementById("export-json").classList.remove("disabled");
     document.getElementById("export-csv").classList.remove("disabled");
+    document.getElementById("power-limit").classList.remove("disabled");
     document.getElementById("reverse-current").classList.remove("disabled");
+    document.getElementById("limit").innerText = localStorage.getItem("power-limit");
   }
 
   document.getElementById("reverse-current").addEventListener("click", e => {
@@ -112,6 +118,18 @@ function setup() {
         log.record.hv_current = -log.record.hv_current;
       }
     });
+
+    set_chart_data(calculate_metadata(result));
+  });
+
+  document.getElementById("power-limit").addEventListener("click", e => {
+    const power_limit = parseInt(localStorage.getItem("power-limit")) || 0;
+
+    if (power_limit === 80) {
+      localStorage.setItem("power-limit", 10);
+    } else {
+      localStorage.setItem("power-limit", 80);
+    }
 
     set_chart_data(calculate_metadata(result));
   });
@@ -485,11 +503,29 @@ function display_metadata(logs) {
   if (logs.header.datetime > Number(new Date(2099, 0))) {
     document.getElementById("warning").innerText = "Invalid RTC date detected. Sync the clock in the Device configuration tab.";
     document.getElementById("warning").style.display = "block";
+  } else {
+    document.getElementById("warning").style.display = "none";
   }
 
   if (logs.error.length) {
     document.getElementById("error").innerText = logs.error.join('\n');
     document.getElementById("error").style.display = "block";
+  } else {
+    document.getElementById("error").style.display = "none";
+  }
+
+  if (logs.violation.length) {
+    document.getElementById("violation").innerHTML =
+      logs.violation.slice(0, 5).map(x => `#${x.index}: ${x.type} (${x.value.toFixed(3)} kW at ${new Date(x.timestamp).format("HH:MM:ss.l")})`).join('<br>');
+
+    if (logs.violation.length > 5) {
+      document.getElementById("violation").innerHTML += `<br>&emsp;...and ${logs.violation.length - 5} more violations.`;
+      console.info(logs.violation);
+    }
+
+    document.getElementById("violation").style.display = "block";
+  } else {
+    document.getElementById("violation").style.display = "none";
   }
 }
 
