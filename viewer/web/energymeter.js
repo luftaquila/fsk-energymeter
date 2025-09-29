@@ -176,7 +176,7 @@ function parse(data) {
 }
 
 function calculate_metadata(data) {
-  data.processed = [[], [], [], [], [], [], [], []]; // Added 8th array for 500ms violations
+  data.processed = [[], [], [], [], [], [], [], []];
   data.power = 0;
   data.max_power = Number.MIN_SAFE_INTEGER;
   data.max_power_timestamp = 0;
@@ -218,51 +218,44 @@ function calculate_metadata(data) {
 
         if (power_limit > 0) {
           window_100ms.push({ index: i, power, timestamp: log.timestamp });
-          window_500ms.push({ index: i, power, timestamp: log.timestamp });
-          sum_500ms += power;
           
           while (window_100ms.length > 0 && log.timestamp - window_100ms[0].timestamp > 100) {
             window_100ms.shift();
           }
+        
+          if (window_100ms.every(entry => entry.power > power_limit) && log.timestamp - last_100ms_violation_time >= 100) {
+            data.violation.push({
+              index: i,
+              timestamp: log.timestamp,
+              value: power,
+              type: '100 ms continuous power limit violation',
+            });
+
+            last_100ms_violation_time = log.timestamp;
+            window_100ms.length = 0;
+          }
+          
+          window_500ms.push({ index: i, power, timestamp: log.timestamp });
+          sum_500ms += power;
           
           while (window_500ms.length > 0 && log.timestamp - window_500ms[0].timestamp > 500) {
             sum_500ms -= window_500ms[0].power;
             window_500ms.shift();
           }
+        
+          const avg = sum_500ms / window_500ms.length;
           
-          if (window_100ms.length > 1) {
-            if (window_100ms.every(entry => entry.power > power_limit)) {
-              if (log.timestamp - last_100ms_violation_time >= 100) {
-                data.violation.push({
-                  index: i,
-                  timestamp: log.timestamp,
-                  type: '100 ms continuous power limit violation',
-                  value: window_100ms.reduce((sum, entry) => sum + entry.power, 0) / window_100ms.length,
-                });
+          if (avg > power_limit && log.timestamp - last_500ms_violation_time >= 500) {
+            data.violation.push({
+              index: i,
+              timestamp: log.timestamp,
+              value: power,
+              type: '500 ms average power limit violation',
+            });
 
-                last_100ms_violation_time = log.timestamp;
-              }
-              window_100ms.length = 0;
-            }
-          }
-          
-          if (window_500ms.length > 1) {
-            const avg = sum_500ms / window_500ms.length;
-            
-            if (avg > power_limit) {
-              if (log.timestamp - last_500ms_violation_time >= 500) {
-                data.violation.push({
-                  index: i,
-                  timestamp: log.timestamp,
-                  type: '500 ms average power limit violation',
-                  value: avg,
-                });
-
-                last_500ms_violation_time = log.timestamp;
-              }
-              window_500ms.length = 0;
-              sum_500ms = 0;
-            }
+            last_500ms_violation_time = log.timestamp;
+            window_500ms.length = 0;
+            sum_500ms = 0;
           }
         }
 
@@ -272,18 +265,17 @@ function calculate_metadata(data) {
       data.processed[3].push(power);
       data.processed[4].push(log.record.lv_voltage);
       data.processed[5].push(log.record.temperature);
-      data.processed[6].push(null); // Initialize 100ms violation points as null
-      data.processed[7].push(null); // Initialize 500ms violation points as null
+      data.processed[6].push(null);
+      data.processed[7].push(null);
     };
   }
 
-  // Add violation points to the processed data
   data.violation.forEach(violation => {
     if (violation.index < data.processed[6].length) {
       if (violation.type === '100 ms continuous power limit violation') {
-        data.processed[6][violation.index] = data.processed[3][violation.index];
+        data.processed[6][violation.index - 1] = data.processed[3][violation.index - 1];
       } else if (violation.type === '500 ms average power limit violation') {
-        data.processed[7][violation.index] = data.processed[3][violation.index];
+        data.processed[7][violation.index - 1] = data.processed[3][violation.index - 1];
       }
     }
   });

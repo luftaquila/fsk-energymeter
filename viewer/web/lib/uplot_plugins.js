@@ -275,7 +275,7 @@ function peakAnnotationsPlugin() {
     tooltipBox.style.fontSize = '12px';
     tooltipBox.style.fontWeight = 'bold';
     tooltipBox.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
-    tooltipBox.textContent = `${label}: ${value.toFixed(1)} ${unit}`;
+    tooltipBox.textContent = `${value.toFixed(1)} ${unit}`;
 
     // Create the arrow pointing down to the data point
     const arrow = document.createElement('div');
@@ -331,9 +331,13 @@ function peakAnnotationsPlugin() {
 
         const xPos = u.valToPos(window.result.max_power_timestamp, 'x');
         const yPos = u.valToPos(window.result.max_power, 'kW');
-        powerAnnotation.style.left = `${xPos - 40}px`;
-        powerAnnotation.style.top = `${yPos - 45}px`;
         u.over.appendChild(powerAnnotation);
+        
+        // Position tooltip centered on the data point
+        const tooltipRect = powerAnnotation.getBoundingClientRect();
+        const overlayRect = u.over.getBoundingClientRect();
+        powerAnnotation.style.left = `${xPos - tooltipRect.width / 2}px`;
+        powerAnnotation.style.top = `${yPos - tooltipRect.height - 10}px`;
       }
     }
 
@@ -345,9 +349,12 @@ function peakAnnotationsPlugin() {
 
         const xPos = u.valToPos(window.result.max_voltage_timestamp, 'x');
         const yPos = u.valToPos(window.result.max_voltage, 'HV');
-        voltageAnnotation.style.left = `${xPos - 40}px`;
-        voltageAnnotation.style.top = `${yPos - 45}px`;
         u.over.appendChild(voltageAnnotation);
+        
+        // Position tooltip centered on the data point
+        const tooltipRect = voltageAnnotation.getBoundingClientRect();
+        voltageAnnotation.style.left = `${xPos - tooltipRect.width / 2}px`;
+        voltageAnnotation.style.top = `${yPos - tooltipRect.height - 10}px`;
       }
     }
 
@@ -359,9 +366,12 @@ function peakAnnotationsPlugin() {
 
         const xPos = u.valToPos(window.result.max_current_timestamp, 'x');
         const yPos = u.valToPos(window.result.max_current, 'A');
-        currentAnnotation.style.left = `${xPos - 40}px`;
-        currentAnnotation.style.top = `${yPos - 45}px`;
         u.over.appendChild(currentAnnotation);
+        
+        // Position tooltip centered on the data point
+        const tooltipRect = currentAnnotation.getBoundingClientRect();
+        currentAnnotation.style.left = `${xPos - tooltipRect.width / 2}px`;
+        currentAnnotation.style.top = `${yPos - tooltipRect.height - 10}px`;
       }
     }
   }
