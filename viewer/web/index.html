@@ -67,6 +67,7 @@
         <h2><i class="fa fw fa-chart-line"></i>Graph Viewer</h2>
 
         <div>
+          <div id="violation"></div>
           <div id="warning"></div>
           <div id="error"></div>
         </div>
@@ -125,8 +126,9 @@
           <i class="fas fa-fw fa-info-circle"></i> drag or scroll to zoom in/out
         </div>
 
-        <div style="display: flex; gap: 1rem; justify-content: center;">
-          <span id="reverse-current" class="btn mint small disabled"><i class="fas fw fa-arrow-rotate-left"></i>Reverse Current Direction</span>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+          <span id="power-limit" class="btn orange small disabled"><i class="fas fw fa-car-battery"></i>Power Limit: <span id='limit'>N/A</span> kW</span>
+          <span id="reverse-current" class="btn purple small disabled"><i class="fas fw fa-arrow-rotate-left"></i>Reverse Current Direction</span>
         </div>
       </article>
     </div>

@@ -172,46 +172,46 @@ function parse(data) {
     i += log.type === "LOG_TYPE_HEADER" ? HEADER_SIZE : LOG_SIZE;
   }
 
-  let processed = [[], [], [], [], [], []];
+  return logs;
+}
 
-  logs.power = 0;
-  logs.max_power = Number.MIN_SAFE_INTEGER;
-  logs.max_voltage = Number.MIN_SAFE_INTEGER;
-  logs.max_current = Number.MIN_SAFE_INTEGER;
+function calculate_metadata(data) {
+  data.processed = [[], [], [], [], [], []];
+  data.power = 0;
+  data.max_power = Number.MIN_SAFE_INTEGER;
+  data.max_voltage = Number.MIN_SAFE_INTEGER;
+  data.max_current = Number.MIN_SAFE_INTEGER;
 
-  for (const [i, log] of logs.data.entries()) {
+  for (const [i, log] of data.data.entries()) {
     if (log.type === "LOG_TYPE_RECORD") {
       const power = log.record.hv_voltage * log.record.hv_current / 1000;
 
       if (i) {
-        logs.power += power * (log.timestamp - logs.data[i - 1].timestamp) / 3600000;
+        data.power += power * (log.timestamp - data.data[i - 1].timestamp) / 3600000;
       }
 
-      if (power > logs.max_power) {
-        logs.max_power = power;
+      if (power > data.max_power) {
+        data.max_power = power;
       }
 
-      if (log.record.hv_voltage > logs.max_voltage) {
-        logs.max_voltage = log.record.hv_voltage;
+      if (log.record.hv_voltage > data.max_voltage) {
+        data.max_voltage = log.record.hv_voltage;
       }
 
-      if (log.record.hv_current > logs.max_current) {
-        logs.max_current = log.record.hv_current;
+      if (log.record.hv_current > data.max_current) {
+        data.max_current = log.record.hv_current;
       }
 
-      processed[0].push(log.timestamp);
-      processed[1].push(log.record.hv_voltage);
-      processed[2].push(log.record.hv_current);
-      processed[3].push(power);
-      processed[4].push(log.record.lv_voltage);
-      processed[5].push(log.record.temperature);
+      data.processed[0].push(log.timestamp);
+      data.processed[1].push(log.record.hv_voltage);
+      data.processed[2].push(log.record.hv_current);
+      data.processed[3].push(power);
+      data.processed[4].push(log.record.lv_voltage);
+      data.processed[5].push(log.record.temperature);
     };
   }
 
-  return {
-    logs: logs,
-    processed: processed
-  };
+  return data;
 }
 
 /* utility functions***********************************************************/

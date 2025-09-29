@@ -42,13 +42,11 @@ function setup() {
           reader.onload = e => {
             try {
               result = parse(new Uint8Array(e.target.result));
-
-              set_chart_data(result);
+              set_chart_data(calculate_metadata(result));
             } catch (e) {
               uplot.setData([]);
               document.getElementById("error").innerText = e;
               document.getElementById("error").style.display = "block";
-              return;
             } finally {
               document.getElementById("file-selected").innerText = `${filename}.${ext}`;
             }
@@ -68,59 +66,23 @@ function setup() {
                 for (let i = 0; i < csv.length; i++) {
                   if (csv[i] === "original json data" && csv[i + 1]) {
                     flag = true;
-                    result = { logs: JSON.parse(csv [i + 1]) };
+                    result = JSON.parse(csv[i + 1]);
                     break;
                   }
                 }
 
                 if (!flag) {
-                  throw Error("Cannot restore JSON data.");
+                  throw Error("Cannot restore JSON data from CSV.");
                 }
               } else if (ext === 'json') {
-                result = { logs: JSON.parse(e.target.result) };
+                result = JSON.parse(e.target.result);
               }
 
-              result.processed = [[], [], [], [], [], []];
-              result.logs.power = 0;
-              result.logs.max_power = Number.MIN_SAFE_INTEGER;
-              result.logs.max_voltage = Number.MIN_SAFE_INTEGER;
-              result.logs.max_current = Number.MIN_SAFE_INTEGER;
-
-              for (const [i, log] of result.logs.data.entries()) {
-                if (log.type === "LOG_TYPE_RECORD") {
-                  const power = log.record.hv_voltage * log.record.hv_current / 1000;
-
-                  if (i) {
-                    result.logs.power += power * (log.timestamp - result.logs.data[i - 1].timestamp) / 3600000;
-                  }
-
-                  if (power > result.logs.max_power) {
-                    result.logs.max_power = power;
-                  }
-
-                  if (log.record.hv_voltage > result.logs.max_voltage) {
-                    result.logs.max_voltage = log.record.hv_voltage;
-                  }
-
-                  if (log.record.hv_current > result.logs.max_current) {
-                    result.logs.max_current = log.record.hv_current;
-                  }
-
-                  result.processed[0].push(log.timestamp);
-                  result.processed[1].push(log.record.hv_voltage);
-                  result.processed[2].push(log.record.hv_current);
-                  result.processed[3].push(power);
-                  result.processed[4].push(log.record.lv_voltage);
-                  result.processed[5].push(log.record.temperature);
-                };
-              }
-
-              set_chart_data(result);
+              set_chart_data(calculate_metadata(result));
             } catch (e) {
               uplot.setData([]);
               document.getElementById("error").innerText = e;
               document.getElementById("error").style.display = "block";
-              return;
             } finally {
               document.getElementById("file-selected").innerText = `${filename}.${ext}`;
             }
@@ -137,13 +99,22 @@ function setup() {
 
   function set_chart_data(data) {
     uplot.setData(data.processed);
-    display_metadata(data.logs);
-    console.log(data);
+    display_metadata(data);
 
     document.getElementById("export-json").classList.remove("disabled");
     document.getElementById("export-csv").classList.remove("disabled");
     document.getElementById("reverse-current").classList.remove("disabled");
   }
+
+  document.getElementById("reverse-current").addEventListener("click", e => {
+    result.data.forEach(log => {
+      if (log.type === "LOG_TYPE_RECORD") {
+        log.record.hv_current = -log.record.hv_current;
+      }
+    });
+
+    set_chart_data(calculate_metadata(result));
+  });
 
   /* serial command funcntions**************************************************/
   document.getElementById("connect").addEventListener("click", async e => {
@@ -267,7 +238,7 @@ function setup() {
   const export_labels = ["timestamp", "hv_voltage", "hv_current", "hv_power", "lv_voltage", "temperature"];
 
   document.getElementById("export-json").addEventListener("click", e => {
-    download(JSON.stringify(result.logs, null, 2), `${filename}.json`, 'text/plain');
+    download(JSON.stringify(result, null, 2), `${filename}.json`, 'text/plain');
   });
 
   document.getElementById("export-csv").addEventListener("click", e => {
@@ -283,7 +254,7 @@ function setup() {
       csv += record.join(",") + "\n";
     }
 
-    csv += `\noriginal json data\n${JSON.stringify(result.logs)}`;
+    csv += `\noriginal json data\n${JSON.stringify(result)}`;
 
     download(csv, `${filename}.csv`, 'text/plain');
   });
@@ -396,11 +367,11 @@ function init_chart() {
         size: 55,
       }, {
         scale: "kW",
-        stroke: "midiumorchid",
+        stroke: "mediumorchid",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "kW"),
         side: 1,
         splits: () => axis.kW.splits,
-        size: 55,
+        size: 60,
       }, {
         scale: "LV",
         stroke: "green",
