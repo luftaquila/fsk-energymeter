@@ -137,7 +137,7 @@ function setup() {
 
     document.getElementById("export-json").classList.remove("disabled");
     document.getElementById("export-csv").classList.remove("disabled");
-    document.getElementById("export-image").classList.remove("disabled");
+    document.getElementById("reverse-current").classList.remove("disabled");
   }
 
   /* serial command funcntions**************************************************/
@@ -282,10 +282,6 @@ function setup() {
 
     download(csv, `${filename}.csv`, 'text/plain');
   });
-
-  document.getElementById("export-image").addEventListener("click", e => {
-    downloadImage(uplot, filename);
-  });
 }
 
 async function update_device_info() {
@@ -395,7 +391,7 @@ function init_chart() {
         size: 55,
       }, {
         scale: "kW",
-        stroke: "hotpink",
+        stroke: "midiumorchid",
         values: (self, ticks) => ticks.map(rawValue => rawValue.toFixed(1) + "kW"),
         side: 1,
         splits: () => axis.kW.splits,
