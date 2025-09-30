@@ -94,16 +94,18 @@ function wheelZoomPlugin(opts) {
         // wheel scroll zoom
         over.addEventListener("wheel", e => {
           e.preventDefault();
-
-          // Update rect for accurate cursor position calculation
-          rect = over.getBoundingClientRect();
           
-          let { left, top } = u.cursor;
+          // Get fresh bounding rect for accurate position calculation
+          let currentRect = over.getBoundingClientRect();
+          
+          // Get actual mouse position relative to the plot
+          let mouseX = e.clientX - currentRect.left;
+          let mouseY = e.clientY - currentRect.top;
 
-          let leftPct = left / rect.width;
-          let btmPct = 1 - top / rect.height;
-          let xVal = u.posToVal(left, "x");
-          let yVal = u.posToVal(top, "y");
+          let leftPct = mouseX / currentRect.width;
+          let btmPct = 1 - mouseY / currentRect.height;
+          let xVal = u.posToVal(mouseX, "x");
+          let yVal = u.posToVal(mouseY, "y");
           let oxRange = u.scales.x.max - u.scales.x.min;
           let oyRange = u.scales.y.max - u.scales.y.min;
 
