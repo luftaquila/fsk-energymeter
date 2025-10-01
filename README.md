@@ -245,6 +245,8 @@ On macOS, the native app uses the Safari for its WebView, which does not support
 
 ## 8. LICENSE
 
+For non-commercial use only:
+
 ```
 "THE BEERWARE LICENSE" (Revision 42):
 LUFT-AQUILA wrote this project. As long as you retain this notice,
