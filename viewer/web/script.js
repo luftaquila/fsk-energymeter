@@ -107,6 +107,7 @@ function setup() {
 
     document.getElementById("export-json").classList.remove("disabled");
     document.getElementById("export-csv").classList.remove("disabled");
+    document.getElementById("export-image").classList.remove("disabled");
     document.getElementById("power-limit").classList.remove("disabled");
     document.getElementById("reverse-current").classList.remove("disabled");
     document.getElementById("limit").innerText = localStorage.getItem("power-limit");
@@ -132,6 +133,10 @@ function setup() {
     }
 
     set_chart_data(calculate_metadata(result));
+  });
+
+  document.getElementById("export-image").addEventListener("click", e => {
+    downloadImage(uplot, filename);
   });
 
   /* serial command funcntions**************************************************/
