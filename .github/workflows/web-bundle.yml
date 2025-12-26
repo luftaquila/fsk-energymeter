@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
     paths:
-      - 'viewer/web/**'
+      - 'viewer/**'
   workflow_call:
   workflow_dispatch:
   
@@ -19,14 +19,15 @@ jobs:
         submodules: recursive
     - uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 22
         cache: npm
-        cache-dependency-path: viewer/native/package-lock.json
+        cache-dependency-path: viewer/package-lock.json
     - run: |
-        cd viewer/web
+        cd viewer
         npm ci
-        script -qec "npx inliner --inlinemin index.html > fsk-energymeter.html" /dev/null
+        npm run build:single
+        mv dist-single/index.html fsk-energymeter.html
     - uses: actions/upload-artifact@v4
       with:
         name: html
-        path: viewer/web/fsk-energymeter.html
+        path: viewer/fsk-energymeter.html

@@ -1,0 +1,34 @@
+{
+  "name": "fsk-energymeter-viewer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:single": "vite build --mode single",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luftaquila/fsk-energymeter.git"
+  },
+  "author": "LUFT-AQUILA",
+  "license": "Beerware",
+  "bugs": {
+    "url": "https://github.com/luftaquila/fsk-energymeter/issues"
+  },
+  "homepage": "https://github.com/luftaquila/fsk-energymeter#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "notyf": "^3.10.0",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.5",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}

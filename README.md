@@ -191,30 +191,20 @@ make debug    # debug build
 #### Prerequisites
 
 1. [Node.js](https://nodejs.org/en/download/package-manager) >= v20
-2. [Rust](https://www.rust-lang.org/tools/install) >= 1.81.0
-3. Clone the repository and install dependencies
+2. Clone the repository and install dependencies
     ```sh
     git clone https://github.com/luftaquila/fsk-energymeter.git --recursive
-    cd fsk-energymeter/viewer/web
-    npm install
-    cd ../native
+    cd fsk-energymeter/viewer
     npm install
     ```
 
 #### Build and run
 
-* Web
-    ```sh 
-    cd fsk-energymeter/viewer/web
-    python -m http.server 80  # open http://localhost
-    ```
-
-* Native
-    ```sh
-    cd fsk-energymeter/viewer/native
-    npm run tauri dev    # run
-    npm run tauri build  # build executables
-    ```
+```sh 
+cd fsk-energymeter/viewer
+npm run dev    # development server at http://localhost:5174
+npm run build  # production build to dist/
+```
 
 </details>
 
@@ -233,8 +223,6 @@ The RTC sync or record delete functions will work immediately regardless of this
 #### 2. `Web Serial API not supported` error on the FSK-EEM Viewer.
 
 The FSK-EEM Viewer's Device Configuration tab uses the Web Serial API to talk with the device, which has [limited support](https://caniuse.com/?search=Web%20Serial%20API) across the platforms and browsers.
-
-On macOS, the native app uses the Safari for its WebView, which does not supports the API. The web version (URL or html file) of the FSK-EEM Viewer will work on the Chromium. The mobile platforms also does not supports the API.
 
 ## 7. DISCLAIMER
 
