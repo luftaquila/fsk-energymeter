@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import uPlot from '../../lib/uplot/dist/uPlot.esm.js'
+import uPlot from '../lib/uplot/dist/uPlot.esm.js'
 import { useNotification } from '../composables/useNotification'
 import { parse, calculateMetadata, msToHumanTime, formatTimestamp, formatUid } from '../lib/energymeter'
-import { wheelZoomPlugin, touchZoomPlugin, peakAnnotationsPlugin, violationVisibilityPlugin } from '../lib/uplotPlugins'
+import { wheelZoomPlugin, touchZoomPlugin, peakAnnotationsPlugin, violationVisibilityPlugin, downloadImage } from '../lib/uplotPlugins'
 
 const notyf = useNotification()
 const chartContainer = ref(null)
@@ -101,6 +101,7 @@ function reverseCurrent() { if (!result.value) return; result.value.data.forEach
 function togglePowerLimit() { powerLimit.value = powerLimit.value === 80 ? 10 : 80; localStorage.setItem('power-limit', powerLimit.value); if (result.value) setChartData(calculateMetadata(result.value, powerLimit.value)) }
 function exportJson() { if (!result.value) return; download(JSON.stringify(result.value, null, 2), selectedFile.value.replace(/\.[^/.]+$/, '') + '.json', 'text/plain'); notyf.success('JSON exported') }
 function exportCsv() { if (!result.value || !uplot) return; const labels = ['timestamp', 'hv_voltage', 'hv_current', 'hv_power', 'lv_voltage', 'temperature']; let csv = labels.join(',') + '\n'; for (let i = 0; i < uplot._data[0].length; i++) csv += uplot._data.map(d => d[i]).join(',') + '\n'; csv += `\noriginal json data\n${JSON.stringify(result.value)}`; download(csv, selectedFile.value.replace(/\.[^/.]+$/, '') + '.csv', 'text/plain'); notyf.success('CSV exported') }
+async function exportGraph() { if (!result.value || !uplot) return; const filename = selectedFile.value ? selectedFile.value.replace(/\.[^/.]+$/, '') : 'graph'; await downloadImage(uplot, filename); notyf.success('Graph image exported') }
 function download(content, name, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type })); a.download = name; a.click() }
 function handleResize() { if (uplot && chartContainer.value) uplot.setSize({ width: chartContainer.value.clientWidth - 32, height: 500 }) }
 
@@ -116,8 +117,8 @@ onUnmounted(() => { window.removeEventListener('resize', handleResize); uplot?.d
         <div class="file-info"><span class="label">FILE:</span><span class="value">{{ selectedFile || 'No file loaded' }}</span></div>
         <div class="button-group">
           <label class="btn btn-success"><i class="fas fa-file"></i>Select File<input type="file" accept=".log,.json,.csv" @change="handleFileSelect" style="display:none" /></label>
-          <button class="btn btn-primary" :disabled="!result" @click="exportJson"><i class="fas fa-file-code"></i>Export JSON</button>
-          <button class="btn btn-primary" :disabled="!result" @click="exportCsv"><i class="fas fa-file-csv"></i>Export CSV</button>
+          <button class="btn btn-ghost" :disabled="!result" @click="exportJson"><i class="fas fa-file-code"></i>Export JSON</button>
+          <button class="btn btn-ghost" :disabled="!result" @click="exportCsv"><i class="fas fa-file-csv"></i>Export CSV</button>
         </div>
       </div>
     </div>
@@ -137,6 +138,7 @@ onUnmounted(() => { window.removeEventListener('resize', handleResize); uplot?.d
         <div class="button-group center">
           <button class="btn btn-warning" :disabled="!result" @click="togglePowerLimit"><i class="fas fa-car-battery"></i>Power Limit: {{ powerLimit }} kW</button>
           <button class="btn btn-ghost" :disabled="!result" @click="reverseCurrent"><i class="fas fa-arrow-rotate-left"></i>Reverse Current</button>
+          <button class="btn btn-ghost" :disabled="!result" @click="exportGraph"><i class="fas fa-download"></i>Export Graph</button>
         </div>
       </div>
     </div>

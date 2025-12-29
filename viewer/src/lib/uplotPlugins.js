@@ -156,3 +156,67 @@ export function violationVisibilityPlugin() {
   }
 }
 
+export async function downloadImage(uplot, filename) {
+  const html2canvas = (await import('html2canvas')).default;
+  
+  // Hide legend temporarily
+  const legendEl = uplot.root.querySelector('.u-legend');
+  const originalLegendDisplay = legendEl ? legendEl.style.display : null;
+  if (legendEl) {
+    legendEl.style.display = 'none';
+  }
+  
+  try {
+    // Capture the entire uplot root element with higher resolution
+    const canvas = await html2canvas(uplot.root, {
+      backgroundColor: '#ffffff',
+      scale: 3, // Higher resolution (3x)
+      useCORS: true,
+      logging: false,
+      width: uplot.root.offsetWidth,
+      height: uplot.root.offsetHeight
+    });
+    
+    // Restore legend visibility
+    if (legendEl) {
+      legendEl.style.display = originalLegendDisplay;
+    }
+    
+    // Download the image
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = filename + ".png";
+    a.click();
+  } catch (error) {
+    // Restore legend visibility on error
+    if (legendEl) {
+      legendEl.style.display = originalLegendDisplay;
+    }
+    
+    console.error('Failed to export image:', error);
+    // Fallback: just use the canvas
+    const pxRatio = devicePixelRatio;
+    const rootRect = uplot.root.getBoundingClientRect();
+    const canvasRect = uplot.ctx.canvas.getBoundingClientRect();
+    
+    const width = Math.ceil(rootRect.width * pxRatio);
+    const height = Math.ceil(rootRect.height * pxRatio);
+    
+    const can = document.createElement('canvas');
+    const ctx = can.getContext('2d');
+    can.width = width;
+    can.height = height;
+    
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, can.width, can.height);
+    
+    const canvasOffsetY = (canvasRect.top - rootRect.top) * pxRatio;
+    ctx.drawImage(uplot.ctx.canvas, 0, canvasOffsetY);
+    
+    const a = document.createElement('a');
+    a.href = can.toDataURL('image/png');
+    a.download = filename + ".png";
+    a.click();
+  }
+}
+

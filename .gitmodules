@@ -1,6 +1,6 @@
 [submodule "device/firmware/tinyusb"]
 	path = device/firmware/tinyusb
 	url = https://github.com/hathach/tinyusb.git
-[submodule "viewer/lib/uplot"]
-	path = viewer/lib/uplot
+[submodule "viewer/src/lib/uplot"]
+	path = viewer/src/lib/uplot
 	url = https://github.com/leeoniya/uPlot.git
