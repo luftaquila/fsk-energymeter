@@ -9,10 +9,11 @@ const routes = [
 
 const single = import.meta.env.MODE === 'single'
 
+const baseUrl = import.meta.env.PROD ? import.meta.env.BASE_URL : ''
 const router = createRouter({
   history: single
-    ? createWebHashHistory(import.meta.env.BASE_URL)
-    : createWebHistory(import.meta.env.BASE_URL),
+    ? createWebHashHistory(baseUrl)
+    : createWebHistory(baseUrl),
   routes
 })
 
