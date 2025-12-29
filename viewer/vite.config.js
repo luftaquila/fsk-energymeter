@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const single = mode === "single";
 
   return {
+    base: '/energymeter/',
     plugins: [
       vue(),
       single && viteSingleFile(),

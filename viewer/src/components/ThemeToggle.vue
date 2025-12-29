@@ -11,11 +11,25 @@ onMounted(() => {
     isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
   }
   applyTheme()
+  
+  // Listen for theme changes from other services
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'theme') {
+      isDark.value = e.newValue === 'dark'
+      applyTheme()
+    }
+  })
 })
 
 watch(isDark, () => {
   applyTheme()
-  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+  const theme = isDark.value ? 'dark' : 'light'
+  localStorage.setItem('theme', theme)
+  // Trigger storage event for other tabs/services
+  window.dispatchEvent(new StorageEvent('storage', {
+    key: 'theme',
+    newValue: theme
+  }))
 })
 
 function applyTheme() {
