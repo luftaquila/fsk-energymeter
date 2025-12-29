@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
       single && viteSingleFile(),
     ],
     server: {
-      port: 5174
+      port: 9400
     },
     build: {
       outDir: single ? 'dist-single' : 'dist',

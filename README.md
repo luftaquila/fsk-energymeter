@@ -144,7 +144,16 @@ Unplug and reconnect the device to see the change after deletion.
 
 ### 4.4 Final assembly
 
-**TODO**
+1. Prepare 1x busbar, 2x M6 nuts, and 2x 40mm M6 brass bolts for the current measurement line.
+    * The busbar and nuts need to be CNC-machined. The recommended material is C11000 copper alloy.
+    * The 3D model of the busbar is at `fsk-energymeter-3d.zip`.
+2. Prepare 5x 5mm M3 bolts and 4x 20mm M3 bolts for PCB and housing assembly.
+3. Insert the busbar through the Hall sensor and secure it with the M6 bolts and nuts.
+4. Place the PCB-busbar assembly into the housing and assemble the housing and cover.
+
+> [!IMPORTANT]
+> The HV current path is through the M6 nuts and the busbar. The M6 bolts are not intended to carry HV current.\
+> Therefore, the nuts must be thick enough to handle the current and provide sufficient contact area, and tall enough to be exposed above the housing cover.
 
 ## 5. Development
 
@@ -202,8 +211,10 @@ make debug    # debug build
 
 ```sh 
 cd fsk-energymeter/viewer
-npm run dev    # development server at http://localhost:5174
-npm run build  # production build to dist/
+npm run dev          # development server at http://localhost:9400
+npm run build        # production build for Docker image 
+npm run build:dev    # production build with no base url
+npm run build:single # single file html build
 ```
 
 </details>
@@ -228,8 +239,8 @@ The FSK-EEM Viewer's Device Configuration tab uses the Web Serial API to talk wi
 
 > [!IMPORTANT]
 > 차량기술규정 및 출력제한 위반 여부는 대회장에서 제공하는 공식 에너지미터로만 판단합니다.
-> 에너지미터를 직접 만들어 사용하는 경우, 제조 공정의 차이 등으로 인해 공식 에너지미터와 측정값이 상이할 수 있음을 반드시 인지해야 합니다.
-> 팀에서 제작한 에너지미터는 대회 중 인정되지 않으며 단순 참고용으로만 활용할 수 있습니다.
+> 그 밖의 에너지미터는 제조 공정의 차이 등으로 인해 공식 장치와 측정값이 상이할 수 있음을 반드시 인지해야 합니다.
+> 이러한 에너지미터는 대회 중에는 사용할 수 없으며, 차량 제작 시 단순 참고용으로만 활용해야 합니다.
 
 ## 8. LICENSE
 
@@ -242,5 +253,5 @@ you can do whatever you want with this stuff. If we meet someday,
 and you think this stuff is worth it, you can buy me a beer in return.
 ```
 
-이 저장소의 모든 내용물은 얼마든지 자유롭게 사용할 수 있습니다.\
+이 저장소의 모든 내용물은 비상업적 용도에 한해 얼마든지 자유롭게 사용할 수 있습니다.\
 이 프로젝트가 마음에 든다면, 언젠가 우리가 만나게 되었을 때 맥주 한 잔 사 주세요.
