@@ -394,7 +394,7 @@ onUnmounted(() => {
           </div>
         </div>
         <div ref="chartContainer" class="chart-container"></div>
-        <div class="chart-hint"><i class="fas fa-info-circle"></i> drag or scroll to zoom in/out</div>
+        <div class="chart-hint"><i class="fas fa-info-circle"></i> Drag or scroll to zoom, double click to reset.</div>
         <div class="button-group center">
           <button class="btn btn-warning" :disabled="!result" @click="togglePowerLimit">
             <i class="fas fa-car-battery"></i>Power Limit: {{ powerLimit }} kW
