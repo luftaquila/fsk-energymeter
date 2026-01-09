@@ -18,6 +18,7 @@ const result = ref(null);
 const powerLimit = ref(parseInt(localStorage.getItem("power-limit")) || 80);
 
 let uplot = null;
+let resizeObserver = null;
 
 const metadata = ref({
   boot: "N/A",
@@ -266,15 +267,24 @@ function download(content, name, type) {
   a.click();
 }
 function handleResize() {
-  if (uplot && chartContainer.value) uplot.setSize({ width: chartContainer.value.clientWidth - 32, height: 500 });
+  if (!uplot || !chartContainer.value) return;
+  const width = chartContainer.value.clientWidth - 32;
+  uplot.setSize({ width, height: 500 });
 }
 
 onMounted(() => {
   initChart();
-  window.addEventListener("resize", handleResize);
+  resizeObserver = new ResizeObserver(() => {
+    requestAnimationFrame(() => handleResize());
+  });
+  if (chartContainer.value) {
+    resizeObserver.observe(chartContainer.value);
+  }
 });
 onUnmounted(() => {
-  window.removeEventListener("resize", handleResize);
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+  }
   uplot?.destroy();
 });
 </script>
