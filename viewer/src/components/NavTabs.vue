@@ -1,12 +1,12 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute } from "vue-router";
 
-const route = useRoute()
+const route = useRoute();
 
 const navItems = [
-  { id: 'viewer', label: 'Data Viewer', path: '/', icon: 'fa-chart-line' },
-  { id: 'config', label: 'Device Config', path: '/config', icon: 'fa-gear' }
-]
+  { id: "viewer", label: "Data Viewer", path: "/", icon: "fa-chart-line" },
+  { id: "config", label: "Device Config", path: "/config", icon: "fa-gear" },
+];
 </script>
 
 <template>
@@ -67,11 +67,10 @@ const navItems = [
     width: 100%;
     justify-content: center;
   }
-  
+
   .nav-tab {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
   }
 }
 </style>
-

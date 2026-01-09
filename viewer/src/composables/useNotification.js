@@ -1,13 +1,12 @@
-import { Notyf } from 'notyf'
+import { Notyf } from "notyf";
 
 const notyf = new Notyf({
   duration: 3500,
-  position: { x: 'right', y: 'top' },
+  position: { x: "right", y: "top" },
   ripple: false,
-  dismissible: true
-})
+  dismissible: true,
+});
 
 export function useNotification() {
-  return notyf
+  return notyf;
 }
-

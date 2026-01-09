@@ -1,38 +1,38 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from "vue";
 
-const isOpen = ref(false)
-const menuRef = ref(null)
+const isOpen = ref(false);
+const menuRef = ref(null);
 
 function toggleMenu() {
-  isOpen.value = !isOpen.value
+  isOpen.value = !isOpen.value;
 }
 
 function handleClickOutside(event) {
   if (menuRef.value && !menuRef.value.contains(event.target)) {
-    isOpen.value = false
+    isOpen.value = false;
   }
 }
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
+  document.addEventListener("click", handleClickOutside);
+});
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <template>
   <div class="nav-menu" ref="menuRef">
     <button class="menu-btn" @click="toggleMenu" title="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
       </svg>
     </button>
-    
+
     <div class="dropdown" :class="{ open: isOpen }">
       <div class="dropdown-content">
         <div class="dropdown-section">
@@ -143,4 +143,3 @@ onUnmounted(() => {
   color: var(--text-secondary);
 }
 </style>
-

@@ -1,7 +1,7 @@
 <script setup>
-import ThemeToggle from './components/ThemeToggle.vue'
-import NavTabs from './components/NavTabs.vue'
-import NavMenu from './components/NavMenu.vue'
+import ThemeToggle from "./components/ThemeToggle.vue";
+import NavTabs from "./components/NavTabs.vue";
+import NavMenu from "./components/NavMenu.vue";
 </script>
 
 <template>
@@ -90,15 +90,14 @@ import NavMenu from './components/NavMenu.vue'
   .header {
     padding: 1rem;
   }
-  
+
   .header-content {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .main-content {
     padding: 1rem;
   }
 }
 </style>
-
