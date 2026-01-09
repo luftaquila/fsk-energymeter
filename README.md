@@ -144,15 +144,20 @@ Unplug and reconnect the device to see the change after deletion.
 
 ### 4.4 Final assembly
 
-1. Prepare 1x busbar, 2x M6 nuts, and 2x 40mm M6 brass bolts for the current measurement line.
-    * The busbar and nuts need to be CNC-machined. The recommended material is C11000 copper alloy.
+1. Prepare 1x busbar, 2x M6 nuts, and 2x `M6*35mm` brass bolts.
+    * The busbar and nuts are custom-sized and must be CNC-machined.
+        * The recommended material is `C11000` copper alloy.
     * The 3D model of the busbar is at `fsk-energymeter-3d.zip`.
-2. Prepare 5x 5mm M3 bolts and 4x 20mm M3 bolts for PCB and housing assembly.
+        * Dimensions: `75mm(L) * 12mm(W) * 6mm(H)`.
+        * Distance between holes: `57.5mm` (center-to-center).
+    * The nuts are standard-pitch M6 hexagonal nuts.
+        * Dimensions: `14mm(W) * 16mm(H)`.
+2. Prepare 5x `M3*4mm` and 4x `M3*20mm` bolts for PCB and housing assembly.
 3. Insert the busbar through the Hall sensor and secure it with the M6 bolts and nuts.
 4. Place the PCB-busbar assembly into the housing and assemble the housing and cover.
 
 > [!IMPORTANT]
-> The HV current path is through the M6 nuts and the busbar. The M6 bolts are not intended to carry HV current.\
+> The HV current path is through the M6 nuts and the busbar. The M6 bolts are not intended to carry HV current.
 > Therefore, the nuts must be thick enough to handle the current and provide sufficient contact area, and tall enough to be exposed above the housing cover.
 
 ## 5. Development
