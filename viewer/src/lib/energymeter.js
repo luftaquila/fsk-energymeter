@@ -163,66 +163,130 @@ export function parse(data) {
 }
 
 export function calculateMetadata(data, powerLimit = 80) {
-  data.processed = [[], [], [], [], [], [], [], []]
-  data.power = 0
-  data.max_power = Number.MIN_SAFE_INTEGER
-  data.max_power_timestamp = 0
-  data.max_voltage = Number.MIN_SAFE_INTEGER
-  data.max_voltage_timestamp = 0
-  data.max_current = Number.MIN_SAFE_INTEGER
-  data.max_current_timestamp = 0
-  data.violation = []
+  const processed = [[], [], [], [], [], [], [], []];
+  const violations = [];
 
-  const window100ms = []
-  const window500ms = []
-  let sum500ms = 0
-  let last100msViolationTime = 0
-  let last500msViolationTime = 0
+  let totalEnergy = 0;
+  let maxPower = Number.MIN_SAFE_INTEGER;
+  let maxPowerTs = 0;
+  let maxVoltage = Number.MIN_SAFE_INTEGER;
+  let maxVoltageTs = 0;
+  let maxCurrent = Number.MIN_SAFE_INTEGER;
+  let maxCurrentTs = 0;
 
-  for (const [i, log] of data.data.entries()) {
-    if (log.type === 'LOG_TYPE_RECORD') {
-      const power = (log.record.hv_voltage * log.record.hv_current) / 1000
-      if (i) data.power += (power * (log.timestamp - data.data[i - 1].timestamp)) / 3600000
-      if (power > data.max_power) { data.max_power = power; data.max_power_timestamp = log.timestamp }
-      if (log.record.hv_voltage > data.max_voltage) { data.max_voltage = log.record.hv_voltage; data.max_voltage_timestamp = log.timestamp }
-      if (log.record.hv_current > data.max_current) { data.max_current = log.record.hv_current; data.max_current_timestamp = log.timestamp }
+  let pIdx = 0; 
+  
+  let sum500ms = 0;
+  let startIdx500 = 0;
+  let last500msViolationTime = 0;
 
-      if (powerLimit > 0) {
-        window100ms.push({ index: i, power, timestamp: log.timestamp })
-        while (window100ms.length > 0 && log.timestamp - window100ms[0].timestamp > 100) window100ms.shift()
-        if (window100ms.every((e) => e.power > powerLimit) && log.timestamp - last100msViolationTime >= 100) {
-          data.violation.push({ index: i, timestamp: log.timestamp, value: power, type: '100 ms continuous power limit violation' })
-          last100msViolationTime = log.timestamp
-          window100ms.length = 0
+  let continuousOverLimitStartTs = -1; 
+  let last100msViolationTime = 0;
+
+  const logs = data.data;
+  const len = logs.length;
+  let prevTimestamp = null;
+
+  for (let i = 0; i < len; i++) {
+    const log = logs[i];
+    
+    if (log.type !== 'LOG_TYPE_RECORD') continue;
+
+    const record = log.record;
+    const timestamp = log.timestamp;
+    
+    const power = (record.hv_voltage * record.hv_current) / 1000;
+
+    if (prevTimestamp !== null) {
+      totalEnergy += (power * (timestamp - prevTimestamp)) / 3600000;
+    }
+    prevTimestamp = timestamp;
+
+    if (power > maxPower) { maxPower = power; maxPowerTs = timestamp; }
+    if (record.hv_voltage > maxVoltage) { maxVoltage = record.hv_voltage; maxVoltageTs = timestamp; }
+    if (record.hv_current > maxCurrent) { maxCurrent = record.hv_current; maxCurrentTs = timestamp; }
+
+    if (powerLimit > 0) {
+      if (power > powerLimit) {
+        if (continuousOverLimitStartTs === -1) {
+          continuousOverLimitStartTs = timestamp;
         }
-        window500ms.push({ index: i, power, timestamp: log.timestamp })
-        sum500ms += power
-        while (window500ms.length > 0 && log.timestamp - window500ms[0].timestamp > 500) { sum500ms -= window500ms[0].power; window500ms.shift() }
-        const avg = sum500ms / window500ms.length
-        if (avg > powerLimit && log.timestamp - last500msViolationTime >= 500) {
-          data.violation.push({ index: i, timestamp: log.timestamp, value: power, type: '500 ms average power limit violation' })
-          last500msViolationTime = log.timestamp
-          window500ms.length = 0
-          sum500ms = 0
+        
+        if (timestamp - continuousOverLimitStartTs >= 100 && 
+            timestamp - last100msViolationTime >= 100) {
+              
+          violations.push({ 
+            index: pIdx,
+            timestamp: timestamp, 
+            value: power, 
+            type: '100 ms continuous power limit violation' 
+          });
+          last100msViolationTime = timestamp;
+          continuousOverLimitStartTs = timestamp;
+          continuousOverLimitStartTs = timestamp; 
         }
+      } else {
+        continuousOverLimitStartTs = -1;
       }
-      data.processed[0].push(log.timestamp)
-      data.processed[1].push(log.record.hv_voltage)
-      data.processed[2].push(log.record.hv_current)
-      data.processed[3].push(power)
-      data.processed[4].push(log.record.lv_voltage)
-      data.processed[5].push(log.record.temperature)
-      data.processed[6].push(null)
-      data.processed[7].push(null)
+
+      sum500ms += power;
+
+      while (startIdx500 < pIdx && timestamp - processed[0][startIdx500] > 500) {
+        sum500ms -= processed[3][startIdx500];
+        startIdx500++;
+      }
+
+      const count = pIdx - startIdx500 + 1;
+      const avg = sum500ms / count;
+
+      if (timestamp - processed[0][startIdx500] <= 500) {
+         if (avg > powerLimit && timestamp - last500msViolationTime >= 500) {
+            violations.push({ 
+              index: pIdx, 
+              timestamp: timestamp, 
+              value: power, 
+              type: '500 ms average power limit violation' 
+            });
+            last500msViolationTime = timestamp;
+            sum500ms = 0;
+            startIdx500 = pIdx + 1;
+         }
+      }
+    }
+
+    processed[0].push(timestamp);
+    processed[1].push(record.hv_voltage);
+    processed[2].push(record.hv_current);
+    processed[3].push(power);
+    processed[4].push(record.lv_voltage);
+    processed[5].push(record.temperature);
+    processed[6].push(null);
+    processed[7].push(null);
+    
+    pIdx++;
+  }
+
+  for (const v of violations) {
+    if (v.index < processed[6].length) {
+      if (v.type === '100 ms continuous power limit violation') {
+        processed[6][v.index] = processed[3][v.index];
+      } else {
+        processed[7][v.index] = processed[3][v.index];
+      }
     }
   }
-  data.violation.forEach((v) => {
-    if (v.index < data.processed[6].length) {
-      if (v.type === '100 ms continuous power limit violation') data.processed[6][v.index - 1] = data.processed[3][v.index - 1]
-      else if (v.type === '500 ms average power limit violation') data.processed[7][v.index - 1] = data.processed[3][v.index - 1]
-    }
-  })
-  return data
+
+  data.processed = processed;
+  data.power = totalEnergy;
+  data.max_power = maxPower;
+  data.max_power_timestamp = maxPowerTs;
+  data.max_voltage = maxVoltage;
+  data.max_voltage_timestamp = maxVoltageTs;
+  data.max_current = maxCurrent;
+  data.max_current_timestamp = maxCurrentTs;
+  data.violation = violations;
+
+  return data;
 }
 
 export function msToHumanTime(ms) {
