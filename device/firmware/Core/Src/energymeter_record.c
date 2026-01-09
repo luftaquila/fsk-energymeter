@@ -145,6 +145,9 @@ void energymeter_calibrate(void) {
   hv_voltage_cal = v / ADC_AVG_CNT;
   hv_current_cal = c / ADC_AVG_CNT;
 
+  header.v_cal = (uint16_t)(hv_voltage_cal * 100.0f);
+  header.c_cal = (uint16_t)(hv_current_cal * 100.0f);
+
   #ifdef DEBUG
   DEBUG_MSG("CAL: x%d, %.2f V, %.2f A\r\n", ADC_AVG_CNT, hv_voltage_cal / 10.0f, hv_current_cal / 10.0f);
   #endif

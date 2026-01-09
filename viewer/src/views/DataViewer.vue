@@ -13,7 +13,7 @@ const powerLimit = ref(parseInt(localStorage.getItem('power-limit')) || 80)
 
 let uplot = null
 
-const metadata = ref({ boot: 'N/A', logs: 'N/A', duration: 'N/A', uid: 'N/A', energy: 'N/A', power: 'N/A', voltage: 'N/A', current: 'N/A' })
+const metadata = ref({ boot: 'N/A', logs: 'N/A', duration: 'N/A', uid: 'N/A', energy: 'N/A', power: 'N/A', voltage: 'N/A', current: 'N/A', violation: 'N/A', startup: 'N/A', v_cal: 'N/A', c_cal: 'N/A' })
 const alerts = ref({ violations: [], warnings: [], errors: [] })
 
 function splitRange(dMin, dMax) {
@@ -95,6 +95,17 @@ function displayMetadata(logs) {
   alerts.value.errors = logs.error
   alerts.value.violations = logs.violation.slice(0, 5).map(x => `#${x.index}: ${x.type} (${x.value.toFixed(2)} kW at ${formatTimestamp(x.timestamp).split(' ')[1]})`)
   if (logs.violation.length > 5) alerts.value.violations.push(`...and ${logs.violation.length - 5} more violations.`)
+
+  metadata.value.violation = logs.violation.length
+  metadata.value.startup = `${logs.header.startup} ms`
+  if (logs.header.v_cal === 2 && logs.header.c_cal === 0) {
+    metadata.value.v_cal = 'Not Supported'
+    metadata.value.c_cal = 'Not Supported'
+  } else {
+    metadata.value.v_cal = `${logs.header.v_cal.toFixed(2)} V`
+    metadata.value.c_cal = `${logs.header.c_cal.toFixed(2)} A`
+  }
+
 }
 
 function reverseCurrent() { if (!result.value) return; result.value.data.forEach(l => { if (l.type === 'LOG_TYPE_RECORD') l.record.hv_current = -l.record.hv_current }); setChartData(calculateMetadata(result.value, powerLimit.value)) }
@@ -111,7 +122,7 @@ onUnmounted(() => { window.removeEventListener('resize', handleResize); uplot?.d
 
 <template>
   <div class="data-viewer">
-    <div class="card fade-in">
+    <div class="card">
       <div class="card-header"><h3><i class="fas fa-file-import"></i> File Management</h3></div>
       <div class="card-body">
         <div class="file-info"><span class="label">FILE:</span><span class="value">{{ selectedFile || 'No file loaded' }}</span></div>
@@ -123,7 +134,7 @@ onUnmounted(() => { window.removeEventListener('resize', handleResize); uplot?.d
       </div>
     </div>
 
-    <div class="card fade-in" style="animation-delay:0.1s">
+    <div class="card" style="animation-delay:0.1s">
       <div class="card-header"><h3><i class="fas fa-chart-line"></i> Graph Viewer</h3></div>
       <div class="card-body">
         <div v-if="alerts.violations.length" class="alert alert-danger"><div v-for="(v,i) in alerts.violations" :key="i">{{ v }}</div></div>
@@ -132,6 +143,7 @@ onUnmounted(() => { window.removeEventListener('resize', handleResize); uplot?.d
         <div class="stats-grid">
           <div class="stats-card"><table class="stats-table"><tr><td>Boot</td><td>{{ metadata.boot }}</td></tr><tr><td>Logs</td><td>{{ metadata.logs }}</td></tr><tr><td>Duration</td><td>{{ metadata.duration }}</td></tr><tr><td>Device ID</td><td>{{ metadata.uid }}</td></tr></table></div>
           <div class="stats-card"><table class="stats-table"><tr><td>Total Energy</td><td>{{ metadata.energy }}</td></tr><tr><td>Peak Power</td><td>{{ metadata.power }}</td></tr><tr><td>Peak Voltage</td><td>{{ metadata.voltage }}</td></tr><tr><td>Peak Current</td><td>{{ metadata.current }}</td></tr></table></div>
+          <div class="stats-card"><table class="stats-table"><tr><td>Violation</td><td>{{ metadata.violation }}</td></tr><tr><td>Startup Delay</td><td>{{ metadata.startup }}</td></tr><tr><td>Voltage Offset</td><td>{{ metadata.v_cal }}</td></tr><tr><td>Current Offset</td><td>{{ metadata.c_cal }}</td></tr></table></div>
         </div>
         <div ref="chartContainer" class="chart-container"></div>
         <div class="chart-hint"><i class="fas fa-info-circle"></i> drag or scroll to zoom in/out</div>
@@ -152,7 +164,8 @@ onUnmounted(() => { window.removeEventListener('resize', handleResize); uplot?.d
 .file-info .value { font-family: 'JetBrains Mono', monospace; color: var(--text-primary); }
 .button-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 .button-group.center { justify-content: center; margin-top: 1.5rem; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+.stats-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+@media (min-width: 768px) { .stats-grid { grid-template-columns: 4fr 3fr 3fr; } }
 .stats-card { background: var(--bg-secondary); border-radius: 12px; padding: 1rem; border: 1px solid var(--border-color); }
 .chart-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem; border: 1px solid var(--border-color); overflow-x: auto; }
 .chart-hint { text-align: center; font-size: 0.8125rem; color: var(--text-tertiary); margin-top: 1rem; }

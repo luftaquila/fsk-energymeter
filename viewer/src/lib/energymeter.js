@@ -1,4 +1,3 @@
-export const PROTOCOL_VERSION = 0x02
 export const LOG_MAGIC = 0xAA
 
 export const LOG_TYPE = ['LOG_TYPE_HEADER', 'LOG_TYPE_RECORD', 'LOG_TYPE_EVENT', 'LOG_TYPE_CNT']
@@ -11,7 +10,8 @@ export const LOG_POS_CHECKSUM = 2
 export const LOG_POS_TIMESTAMP = 4
 
 export const LOG_POS_HEADER_UID = 8
-export const LOG_POS_HEADER_VERSION = 20
+export const LOG_POS_HEADER_V_CAL = 20
+export const LOG_POS_HEADER_C_CAL = 22
 export const LOG_POS_HEADER_YEAR = 24
 export const LOG_POS_HEADER_MONTH = 25
 export const LOG_POS_HEADER_DAY = 26
@@ -110,7 +110,9 @@ export function parse(data) {
             toUint(32, data, i + LOG_POS_HEADER_UID + 4),
             toUint(32, data, i + LOG_POS_HEADER_UID + 8)
           ],
-          version: toUint(8, data, i + LOG_POS_HEADER_VERSION),
+          startup: toUint(32, data, i + LOG_POS_TIMESTAMP),
+          v_cal: toInt(16, data, i + LOG_POS_HEADER_V_CAL),
+          c_cal: toInt(16, data, i + LOG_POS_HEADER_C_CAL),
           datetime: Number(new Date(
             toUint(8, data, i + LOG_POS_HEADER_YEAR) + 2000,
             toUint(8, data, i + LOG_POS_HEADER_MONTH) - 1,
@@ -119,9 +121,9 @@ export function parse(data) {
             toUint(8, data, i + LOG_POS_HEADER_MINUTE),
             toUint(8, data, i + LOG_POS_HEADER_SECOND),
             toUint(16, data, i + LOG_POS_HEADER_MILLISECOND)
-          ))
+          )),
         }
-        log.timestamp = log.header.datetime + toUint(32, data, i + LOG_POS_TIMESTAMP)
+        log.timestamp = log.header.datetime + log.header.startup
         logs.header = log.header
         break
       }

@@ -16,7 +16,7 @@ async function handleDelete() { try { await deviceStore.deleteRecords(); notyf.s
 
 <template>
   <div class="device-config">
-    <div class="card fade-in">
+    <div class="card">
       <div class="card-header"><h3><i class="fas fa-microchip"></i> Device</h3></div>
       <div class="card-body">
         <table class="stats-table">
@@ -30,7 +30,7 @@ async function handleDelete() { try { await deviceStore.deleteRecords(); notyf.s
       </div>
     </div>
 
-    <div class="card fade-in" style="animation-delay:0.1s">
+    <div class="card" style="animation-delay:0.1s">
       <div class="card-header"><h3><i class="fas fa-clock"></i> Clock Synchronization</h3></div>
       <div class="card-body">
         <p class="info-text"><i class="fas fa-info-circle"></i> Set the device clock to match the current time of the host PC.</p>
@@ -38,7 +38,7 @@ async function handleDelete() { try { await deviceStore.deleteRecords(); notyf.s
       </div>
     </div>
 
-    <div class="card fade-in" style="animation-delay:0.2s">
+    <div class="card" style="animation-delay:0.2s">
       <div class="card-header"><h3><i class="fas fa-eraser"></i> Delete Records</h3></div>
       <div class="card-body">
         <p class="info-text"><i class="fas fa-info-circle"></i> Delete all log files stored in the device storage. Disconnect and re-connect the device to see the changes.</p>

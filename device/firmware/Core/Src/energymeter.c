@@ -23,7 +23,6 @@ void energymeter_init(void) {
 
   header.magic = LOG_MAGIC;
   header.type = LOG_TYPE_HEADER;
-  header.version = PROTOCOL_VERSION;
 
   header.uid[0] = HAL_GetUIDw0();
   header.uid[1] = HAL_GetUIDw1();

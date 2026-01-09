@@ -81,8 +81,8 @@ typedef struct {
   uint16_t checksum;
   uint32_t timestamp;
   uint32_t uid[3]; // 96-bit device uid
-  uint8_t version; // log protocol version
-  uint8_t _reserved[3];
+  uint16_t v_cal;
+  uint16_t c_cal;
   struct {
     uint8_t year;
     uint8_t month;

@@ -314,14 +314,6 @@ input[type="number"] {
   }
 }
 
-.fade-in {
-  animation: fadeIn 0.3s ease forwards;
-}
-
-.slide-in {
-  animation: slideIn 0.3s ease forwards;
-}
-
 .u-legend {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
