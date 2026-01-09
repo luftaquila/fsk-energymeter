@@ -111,8 +111,8 @@ export function parse(data) {
             toUint(32, data, i + LOG_POS_HEADER_UID + 8),
           ],
           startup: toUint(32, data, i + LOG_POS_TIMESTAMP),
-          v_cal: toInt(16, data, i + LOG_POS_HEADER_V_CAL),
-          c_cal: toInt(16, data, i + LOG_POS_HEADER_C_CAL),
+          v_cal: toInt(16, data, i + LOG_POS_HEADER_V_CAL) / 100 / 10,
+          c_cal: toInt(16, data, i + LOG_POS_HEADER_C_CAL) / 100 / 10,
           datetime: Number(
             new Date(
               toUint(8, data, i + LOG_POS_HEADER_YEAR) + 2000,

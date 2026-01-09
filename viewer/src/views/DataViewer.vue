@@ -219,7 +219,7 @@ function displayMetadata(logs) {
 
   metadata.value.violation = logs.violation.length;
   metadata.value.startup = `${logs.header.startup} ms`;
-  if (logs.header.v_cal === 2 && logs.header.c_cal === 0) {
+  if (logs.header.v_cal === 0.002 && logs.header.c_cal === 0) {
     metadata.value.v_cal = "Not Supported";
     metadata.value.c_cal = "Not Supported";
   } else {
