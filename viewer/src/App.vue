@@ -8,10 +8,10 @@ import NavMenu from "./components/NavMenu.vue";
   <div class="app-container">
     <header class="header">
       <div class="header-content">
-        <div class="logo">
+        <a href="/" class="logo">
           <span class="logo-icon">💡</span>
-          <h1>FSK Energy Meter Data Viewer</h1>
-        </div>
+          <h1>FSK Energy Meter</h1>
+        </a>
         <NavTabs />
         <div class="header-actions">
           <ThemeToggle />
@@ -52,6 +52,7 @@ import NavMenu from "./components/NavMenu.vue";
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+  text-decoration: none;
 }
 
 .logo-icon {
