@@ -46,7 +46,12 @@ function splitRange(dMin, dMax) {
     dMax += r * 0.05;
   }
   const step = (dMax - dMin) / 9;
-  return { min: dMin, max: dMax, splits: Array.from({ length: 11 }, (_, i) => dMin + i * step) };
+
+  return {
+    min: dMin,
+    max: dMax,
+    splits: Array.from({ length: 11 }, (_, i) => dMin + i * step),
+  };
 }
 
 function initChart() {
@@ -78,16 +83,59 @@ function initChart() {
       ms: true,
       series: [
         { value: (_, v) => fmt(v) },
-        { label: "HV", scale: "HV", stroke: "red", value: (_, v) => (v ?? "-") + "V" },
-        { label: "HV Amp", scale: "A", stroke: "dodgerblue", value: (_, v) => (v ?? "-") + "A" },
-        { label: "HV Power", scale: "kW", stroke: "mediumorchid", value: (_, v) => (v?.toFixed(1) ?? "-") + "kW" },
-        { label: "LV", scale: "LV", stroke: "green", value: (_, v) => (v ?? "-") + "V", show: false },
-        { label: "Temp", scale: "C", stroke: "orange", value: (_, v) => (v ?? "-") + "°C", show: false },
-        { label: "100ms", scale: "kW", points: { show: true, size: 6, fill: "dimgray", stroke: "dimgray", width: 2 } },
+        {
+          label: "HV",
+          scale: "HV",
+          stroke: "red",
+          value: (_, v) => (v ?? "-") + "V",
+        },
+        {
+          label: "HV Amp",
+          scale: "A",
+          stroke: "dodgerblue",
+          value: (_, v) => (v ?? "-") + "A",
+        },
+        {
+          label: "HV Power",
+          scale: "kW",
+          stroke: "mediumorchid",
+          value: (_, v) => (v?.toFixed(1) ?? "-") + "kW",
+        },
+        {
+          label: "LV",
+          scale: "LV",
+          stroke: "green",
+          value: (_, v) => (v ?? "-") + "V",
+          show: false,
+        },
+        {
+          label: "Temp",
+          scale: "C",
+          stroke: "orange",
+          value: (_, v) => (v ?? "-") + "°C",
+          show: false,
+        },
+        {
+          label: "100ms",
+          scale: "kW",
+          points: {
+            show: true,
+            size: 6,
+            fill: "dimgray",
+            stroke: "dimgray",
+            width: 2,
+          },
+        },
         {
           label: "500ms",
           scale: "kW",
-          points: { show: true, size: 6, fill: "darkgray", stroke: "darkgray", width: 2 },
+          points: {
+            show: true,
+            size: 6,
+            fill: "darkgray",
+            stroke: "darkgray",
+            width: 2,
+          },
         },
       ],
       axes: [

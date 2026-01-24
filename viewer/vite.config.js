@@ -1,35 +1,31 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
 export default defineConfig(({ mode }) => {
   const single = mode === "single";
   // Only use base path in production mode
   // In development mode (including build:dev), base is empty
-  const isProduction = mode === 'production'
+  const isProduction = mode === "production";
 
   return {
-    base: isProduction ? '/energymeter/' : '',
-    plugins: [
-      vue(),
-      single && viteSingleFile(),
-    ],
+    base: isProduction ? "/energymeter/" : "",
+    plugins: [vue(), single && viteSingleFile()],
     server: {
-      port: 9400
+      port: 9400,
     },
     build: {
-      outDir: single ? 'dist-single' : 'dist',
+      outDir: single ? "dist-single" : "dist",
       emptyOutDir: true,
       rollupOptions: {
-        input: resolve(__dirname, 'index.html')
-      }
+        input: resolve(__dirname, "index.html"),
+      },
     },
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'src')
-      }
-    }
+        "@": resolve(__dirname, "src"),
+      },
+    },
   };
-})
-
+});
