@@ -11,5 +11,6 @@ RUN npm --prefix viewer run build
 RUN npm install -g serve
 
 EXPOSE 9400
+USER node
 CMD [ "serve", "-s", "viewer/dist", "-l", "9400" ]
 
