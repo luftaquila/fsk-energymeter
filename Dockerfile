@@ -10,7 +10,7 @@ RUN npm --prefix viewer run build
 # Install serve globally for static file serving
 RUN npm install -g serve
 
-EXPOSE 9400
+EXPOSE 9800
 USER node
-CMD [ "serve", "-s", "viewer/dist", "-l", "9400" ]
+CMD [ "serve", "-s", "viewer/dist", "-l", "9800" ]
 

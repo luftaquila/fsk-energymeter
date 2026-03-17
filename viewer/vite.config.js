@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
     base: isProduction ? "/energymeter/" : "",
     plugins: [vue(), single && viteSingleFile()],
     server: {
-      port: 9400,
+      port: 9800,
     },
     build: {
       outDir: single ? "dist-single" : "dist",
