@@ -89,14 +89,41 @@ jobs:
             -t ghcr.io/${{ github.repository }}:latest \
             $(printf 'ghcr.io/${{ github.repository }}@sha256:%s ' *)
 
-  cleanup:
-    needs: merge
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete old image versions
-        uses: actions/delete-package-versions@v5
+      - name: Delete orphaned versions
+        uses: actions/github-script@v7
         with:
-          package-name: fsk-energymeter
-          package-type: container
-          min-versions-to-keep: 1
-          delete-only-untagged-versions: true
+          script: |
+            const image = '${{ github.repository }}';
+
+            // Get referenced digests from current manifest list
+            const tokenRes = await fetch(
+              `https://ghcr.io/token?service=ghcr.io&scope=repository:${image}:pull`
+            );
+            const { token } = await tokenRes.json();
+            const manifestRes = await fetch(
+              `https://ghcr.io/v2/${image}/manifests/latest`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  Accept: 'application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.oci.image.index.v1+json'
+                }
+              }
+            );
+            const manifest = await manifestRes.json();
+            const referenced = new Set(manifest.manifests.map(m => m.digest));
+
+            // Delete untagged versions not referenced by manifest list
+            const versions = await github.paginate(
+              github.rest.packages.getAllPackageVersionsForPackageOwnedByAuthenticatedUser,
+              { package_type: 'container', package_name: 'fsk-energymeter' }
+            );
+            for (const v of versions) {
+              if (v.metadata.container.tags.length === 0 && !referenced.has(v.name)) {
+                console.log(`Deleting orphaned: ${v.id} (${v.name})`);
+                await github.rest.packages.deletePackageVersionForAuthenticatedUser({
+                  package_type: 'container',
+                  package_name: 'fsk-energymeter',
+                  package_version_id: v.id
+                });
+              }
+            }
