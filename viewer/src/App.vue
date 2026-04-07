@@ -36,6 +36,17 @@ import NavMenu from "./components/NavMenu.vue";
   background: #1a1b21;
   padding: 1rem 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* Header is always dark — scope dark theme variables for children */
+  --bg-primary: #16171c;
+  --bg-secondary: #1e2027;
+  --bg-card: #1e2027;
+  --bg-hover: #2a2c34;
+  --bg-tab-active: #2a2c34;
+  --text-primary: #e2e4e9;
+  --text-secondary: #b0b4be;
+  --text-tertiary: #7e838e;
+  --border-color: rgba(255, 255, 255, 0.08);
 }
 
 .header-content {
