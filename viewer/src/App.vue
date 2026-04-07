@@ -33,9 +33,9 @@ import NavMenu from "./components/NavMenu.vue";
 }
 
 .header {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  background: #1a1b21;
   padding: 1rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .header-content {
@@ -57,15 +57,14 @@ import NavMenu from "./components/NavMenu.vue";
 
 .logo-icon {
   font-size: 2rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .logo h1 {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
+  color: #e2e4e9;
+  font-size: 1.25rem;
+  font-weight: 600;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  letter-spacing: -0.02em;
 }
 
 .header-actions {
@@ -78,23 +77,25 @@ import NavMenu from "./components/NavMenu.vue";
 .main-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-}
-
-@media (max-width: 1024px) {
-  .header-content {
-    flex-wrap: wrap;
-  }
+  padding: 1.5rem 2rem;
 }
 
 @media (max-width: 640px) {
   .header {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
   }
 
   .header-content {
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+
+  .logo h1 {
+    font-size: 1.05rem;
   }
 
   .main-content {

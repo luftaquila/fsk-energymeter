@@ -50,7 +50,7 @@ async function handleDelete() {
         <h3><i class="fas fa-microchip"></i> Device</h3>
       </div>
       <div class="card-body">
-        <table class="stats-table">
+        <table class="stats-table"><tbody>
           <tr>
             <td>ID</td>
             <td>{{ deviceStore.uid ? formatUid(deviceStore.uid) : "UNKNOWN" }}</td>
@@ -59,7 +59,7 @@ async function handleDelete() {
             <td>TIME</td>
             <td>{{ deviceStore.deviceTime || "N/A" }}</td>
           </tr>
-        </table>
+        </tbody></table>
         <div class="button-group">
           <button
             class="btn"

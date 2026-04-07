@@ -1,28 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
 
 :root {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
+  color-scheme: light;
+  --bg-primary: #f5f6f8;
+  --bg-secondary: #eef0f3;
   --bg-card: #ffffff;
-  --bg-hover: #f1f5f9;
+  --bg-hover: #e8eaee;
   --bg-input: #ffffff;
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
+  --text-primary: #2c2e3a;
+  --text-secondary: #6b6f7b;
+  --text-tertiary: #9196a1;
 
   --accent-primary: #3b82f6;
-  --accent-secondary: #8b5cf6;
-  --accent-success: #10b981;
+  --accent-secondary: #60a5fa;
+  --accent-success: #27a644;
   --accent-warning: #f59e0b;
   --accent-danger: #ef4444;
 
-  --border-color: #e2e8f0;
+  --border-color: #d0d6e0;
   --border-focus: #3b82f6;
 
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
 
   --chart-voltage: #ef4444;
   --chart-current: #3b82f6;
@@ -32,20 +32,21 @@
 }
 
 [data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-card: #1e293b;
-  --bg-hover: #334155;
-  --bg-input: #0f172a;
+  color-scheme: dark;
+  --bg-primary: #16171c;
+  --bg-secondary: #1e2027;
+  --bg-card: #1e2027;
+  --bg-hover: #2a2c34;
+  --bg-input: #16171c;
 
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-tertiary: #64748b;
+  --text-primary: #e2e4e9;
+  --text-secondary: #b0b4be;
+  --text-tertiary: #7e838e;
 
-  --border-color: #334155;
+  --border-color: rgba(255, 255, 255, 0.08);
 
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-card: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px;
+  --shadow-hover: rgba(0, 0, 0, 0.2) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 * {
@@ -59,10 +60,13 @@ html {
 }
 
 body {
-  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "cv01", "ss03";
   background: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition:
@@ -113,7 +117,7 @@ input[type="number"] {
   gap: 0.5rem;
   padding: 0.625rem 1.25rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
@@ -127,14 +131,15 @@ input[type="number"] {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  background: var(--accent-primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  box-shadow: none;
 }
 
 .btn-primary:hover:not(:disabled) {
+  background: #60a5fa;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-success {
@@ -189,11 +194,13 @@ input[type="number"] {
 
 .card {
   background: var(--bg-card);
-  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   box-shadow: var(--shadow-card);
   overflow: hidden;
   transition:
     background-color 0.3s ease,
+    border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 
@@ -239,7 +246,7 @@ input[type="number"] {
   padding: 0.625rem 0.875rem;
   background: var(--bg-input);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text-primary);
   font-size: 0.875rem;
   transition: all 0.2s ease;

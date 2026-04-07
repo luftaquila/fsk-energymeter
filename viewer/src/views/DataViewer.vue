@@ -381,7 +381,7 @@ onUnmounted(() => {
         </div>
         <div class="stats-grid">
           <div class="stats-card">
-            <table class="stats-table">
+            <table class="stats-table"><tbody>
               <tr>
                 <td>Boot</td>
                 <td>{{ metadata.boot }}</td>
@@ -398,10 +398,10 @@ onUnmounted(() => {
                 <td>Device ID</td>
                 <td>{{ metadata.uid }}</td>
               </tr>
-            </table>
+            </tbody></table>
           </div>
           <div class="stats-card">
-            <table class="stats-table">
+            <table class="stats-table"><tbody>
               <tr>
                 <td>Total Energy</td>
                 <td>{{ metadata.energy }}</td>
@@ -418,10 +418,10 @@ onUnmounted(() => {
                 <td>Peak Current</td>
                 <td>{{ metadata.current }}</td>
               </tr>
-            </table>
+            </tbody></table>
           </div>
           <div class="stats-card">
-            <table class="stats-table">
+            <table class="stats-table"><tbody>
               <tr>
                 <td>Violation</td>
                 <td>{{ metadata.violation }}</td>
@@ -438,7 +438,7 @@ onUnmounted(() => {
                 <td>Current Offset</td>
                 <td>{{ metadata.c_cal }}</td>
               </tr>
-            </table>
+            </tbody></table>
           </div>
         </div>
         <div ref="chartContainer" class="chart-container"></div>

@@ -37,25 +37,23 @@ const navItems = [
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1.25rem;
-  border-radius: 10px;
-  color: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  color: #b0b4be;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s ease;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-tab:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e4e9;
 }
 
 .nav-tab.active {
-  background: rgba(255, 255, 255, 0.25);
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.12);
+  color: #e2e4e9;
 }
 
 .nav-tab i {
@@ -64,11 +62,14 @@ const navItems = [
 
 @media (max-width: 640px) {
   .nav-tabs {
-    width: 100%;
+    order: 3;
+    flex: 0 0 100%;
     justify-content: center;
   }
 
   .nav-tab {
+    flex: 1;
+    justify-content: center;
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
   }
