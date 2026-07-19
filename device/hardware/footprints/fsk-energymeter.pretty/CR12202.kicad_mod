@@ -1,0 +1,311 @@
+(footprint "CR12202"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "QIJEY CR1220-2 horizontal CR1220 coin-cell holder, LCSC C70381; pad 1 positive, pad 2 negative")
+	(tags "battery holder CR1220 QIJEY CR1220-2 C70381")
+	(property "Reference" "BT**"
+		(at 0 -7.8 0)
+		(layer "F.SilkS")
+		(uuid "6fa38607-bee6-4348-8f8b-3a3791dbf124")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "CR12202"
+		(at 0.1 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "675a2357-73fa-4999-af05-4d72e6b7f632")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/7c6826a127a13df35bb923f15634c1a9.pdf?productCode=C70381"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "45eaf9b7-a924-4934-80b2-cb005714911b")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" "Horizontal SMD holder for one CR1220 coin cell, QIJEY CR1220-2, LCSC C70381"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "6aa8b3a1-01e5-4c7b-92ea-5427280d38fb")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start 3.5 6)
+		(end 8 6)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "078b8b20-2496-4d44-928c-9dc11fff4fd2")
+	)
+	(fp_line
+		(start 3.9 -6)
+		(end 8 -6)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "0c5f2df7-30ef-4faf-b167-a6d5cc416b26")
+	)
+	(fp_line
+		(start 8 -6)
+		(end 8 -2)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "f1fdcc2c-746a-4dcf-bf5b-5570243f51ca")
+	)
+	(fp_line
+		(start 8 6)
+		(end 8 2)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "8df89a2c-2f29-49b3-b895-802def970f16")
+	)
+	(fp_arc
+		(start 0 -6.45)
+		(mid -4.032 -5.031)
+		(end -6.296 -1.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "0efcde8d-858c-44cf-9f89-91ea0c7ca660")
+	)
+	(fp_arc
+		(start 0 -6.45)
+		(mid 3.789 -5.22)
+		(end 6.132 -2)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "79c074fe-0b0e-4dbd-89e4-6ddcbf7a2108")
+	)
+	(fp_arc
+		(start 6.132 2)
+		(mid 3.789 5.22)
+		(end 0 6.45)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "76519ce2-5bd7-4cf3-807b-fe0f16fe0130")
+	)
+	(fp_arc
+		(start 0 6.45)
+		(mid -4.032 5.031)
+		(end -6.296 1.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "4a76195c-8458-4931-b81c-f810ff5de6bd")
+	)
+	(fp_text user "+"
+		(at -9.5 -2.5 0)
+		(layer "F.SilkS")
+		(uuid "41756dcc-9acc-40b2-9182-af358aa8cb2a")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+		)
+	)
+	(fp_text user "-"
+		(at 9.5 -2.5 0)
+		(layer "F.SilkS")
+		(uuid "68b26d89-9678-4288-a0a9-b18c4629a653")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+			)
+		)
+	)
+	(fp_line
+		(start -11 -7.45)
+		(end 11.2 -7.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "6f03b14b-ebec-4100-99f7-62129bc9603a")
+	)
+	(fp_line
+		(start -11 7.45)
+		(end -11 -7.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "69100bb3-a933-4f3e-b5c8-5865261a6d52")
+	)
+	(fp_line
+		(start 11.2 -7.45)
+		(end 11.2 7.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "9ad27d00-32ae-4bf3-9ee9-f11774072410")
+	)
+	(fp_line
+		(start 11.2 7.45)
+		(end -11 7.45)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "56377521-46b4-4cad-9e4e-b1643d7b3b96")
+	)
+	(fp_line
+		(start 0 -6.45)
+		(end 0 -6.45)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "a9e4b7b8-f7ee-4e5a-ba90-ec42fa3db2f6")
+	)
+	(fp_line
+		(start 0 6.45)
+		(end 0 6.45)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "f646ec65-ca04-44a0-8979-872b9078346d")
+	)
+	(fp_line
+		(start 2.5 6)
+		(end 8 6)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "f5627cf2-5bf7-4a50-be46-4bc37d1f3e9c")
+	)
+	(fp_line
+		(start 8 -6)
+		(end 2.5 -6)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "8ffaf620-91f5-4c8f-8f58-be76dad338a0")
+	)
+	(fp_line
+		(start 8 6)
+		(end 8 -6)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "0a43aec1-f580-44b3-9ca6-413b62f50007")
+	)
+	(fp_arc
+		(start 0 -6.45)
+		(mid 6.45 0)
+		(end 0 6.45)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "d3511511-7e1c-44ac-88f2-3c53ed1d61f3")
+	)
+	(fp_arc
+		(start 0 6.45)
+		(mid -6.45 0)
+		(end 0 -6.45)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "15d781d0-6165-43ae-aa5c-b7d91216b8ef")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0.1 0 0)
+		(layer "F.Fab")
+		(uuid "d04fca2a-0fa4-4189-9d9f-5efdc47ebdda")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "" np_thru_hole circle
+		(at -3.6 0)
+		(size 1.2 1.2)
+		(drill 1.2)
+		(layers "*.Cu" "*.Mask")
+		(uuid "343aa977-7e1a-4deb-b306-ac6ef1d7d717")
+	)
+	(pad "" np_thru_hole circle
+		(at 3.9 0)
+		(size 1.2 1.2)
+		(drill 1.2)
+		(layers "*.Cu" "*.Mask")
+		(uuid "4e8f6aee-d61b-43c7-83cc-834528b0bf81")
+	)
+	(pad "1" smd rect
+		(at -8 0 90)
+		(size 2.3 4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "70043b9d-aaa6-431b-8812-98aea407adb2")
+	)
+	(pad "2" smd rect
+		(at 8 0 90)
+		(size 2.3 4.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "833b4fa8-22fc-4ca4-a349-80f5e76cb3fc")
+	)
+	(embedded_fonts no)
+)

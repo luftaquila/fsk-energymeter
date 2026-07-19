@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "fsk-energymeter")(type "KiCad")(uri "${KIPRJMOD}/footprints/fsk-energymeter.pretty")(options "")(descr "Project footprints downloaded from Component Search Engine"))
+)
