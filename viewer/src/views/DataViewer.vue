@@ -2,7 +2,15 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import uPlot from "../lib/uplot/dist/uPlot.esm.js";
 import { useNotification } from "../composables/useNotification";
-import { parse, calculateMetadata, msToHumanTime, formatTimestamp, formatUid, formatEnergy } from "../lib/energymeter";
+import {
+  parse,
+  calculateMetadata,
+  msToHumanTime,
+  formatTimestamp,
+  formatUid,
+  formatEnergy,
+  formatEnergyBreakdown,
+} from "../lib/energymeter";
 import {
   wheelZoomPlugin,
   touchZoomPlugin,
@@ -26,11 +34,13 @@ const metadata = ref({
   duration: "N/A",
   uid: "N/A",
   energy: "N/A",
-  regen: "",
+  breakdown: { discharge: "N/A", regen: "N/A", total: "N/A" },
   power: "N/A",
   voltage: "N/A",
   current: "N/A",
   violation: "N/A",
+  violation100: "N/A",
+  violation500: "N/A",
   startup: "N/A",
   v_cal: "N/A",
   c_cal: "N/A",
@@ -100,7 +110,7 @@ function initChart() {
           label: "HV Power",
           scale: "kW",
           stroke: "mediumorchid",
-          value: (_, v) => (v?.toFixed(1) ?? "-") + "kW",
+          value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
         },
         {
           label: "LV",
@@ -119,6 +129,7 @@ function initChart() {
         {
           label: "100ms",
           scale: "kW",
+          value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
           points: {
             show: true,
             size: 6,
@@ -130,6 +141,7 @@ function initChart() {
         {
           label: "500ms",
           scale: "kW",
+          value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
           points: {
             show: true,
             size: 6,
@@ -253,8 +265,8 @@ function displayMetadata(logs) {
   metadata.value.duration = `${msToHumanTime(dur)} (${dur.toLocaleString()} ms)`;
   metadata.value.uid = formatUid(logs.header.uid);
   metadata.value.energy = formatEnergy(logs.power);
-  metadata.value.regen = formatEnergy(logs.regen_energy);
-  metadata.value.power = `${logs.max_power.toFixed(1)} kW`;
+  metadata.value.breakdown = formatEnergyBreakdown(logs.power, logs.regen_energy);
+  metadata.value.power = `${logs.max_power.toFixed(3)} kW`;
   metadata.value.voltage = `${logs.max_voltage.toFixed(1)} V / ${logs.min_voltage.toFixed(1)} V`;
   metadata.value.current = `${logs.max_current.toFixed(1)} A / ${logs.min_current.toFixed(1)} A`;
   alerts.value.warnings =
@@ -262,12 +274,18 @@ function displayMetadata(logs) {
       ? ["Invalid RTC date detected. Sync the clock in the Device configuration tab."]
       : [];
   alerts.value.errors = logs.error;
+  const time = (ts) => formatTimestamp(ts).split(" ")[1];
   alerts.value.violations = logs.violation
     .slice(0, 5)
-    .map((x) => `#${x.index}: ${x.type} (${x.value.toFixed(2)} kW at ${formatTimestamp(x.timestamp).split(" ")[1]})`);
+    .map(
+      (x) =>
+        `#${x.index}: ${x.type} (peak ${x.value.toFixed(3)} kW at ${time(x.timestamp)} / ${time(x.start)} ~ ${time(x.end)})`,
+    );
   if (logs.violation.length > 5) alerts.value.violations.push(`...and ${logs.violation.length - 5} more violations.`);
 
   metadata.value.violation = logs.violation.length;
+  metadata.value.violation100 = logs.violation.filter((v) => v.type === "100 ms continuous power limit violation").length;
+  metadata.value.violation500 = logs.violation.filter((v) => v.type === "500 ms average power limit violation").length;
   metadata.value.startup = `${logs.header.startup} ms`;
   if (logs.header.v_cal === 0.002 && logs.header.c_cal === 0) {
     metadata.value.v_cal = "Not Supported";
@@ -405,11 +423,18 @@ onUnmounted(() => {
           <div class="stats-card">
             <table class="stats-table"><tbody>
               <tr>
-                <td>Total Energy</td>
-                <td>
-                  {{ metadata.energy }}
-                  <span v-if="metadata.regen" style="white-space: nowrap">({{ metadata.regen }} regen)</span>
+                <td class="info-tip-cell">
+                  Total Energy
+                  <span v-if="result" class="info-tip" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="info-tip-content">
+                      <span>Discharge</span><span>{{ metadata.breakdown.discharge }}</span>
+                      <span>Regen</span><span>{{ metadata.breakdown.regen }}</span>
+                      <span>Total</span><span>{{ metadata.breakdown.total }}</span>
+                    </span>
+                  </span>
                 </td>
+                <td>{{ metadata.energy }}</td>
               </tr>
               <tr>
                 <td>Peak Power</td>
@@ -428,7 +453,16 @@ onUnmounted(() => {
           <div class="stats-card">
             <table class="stats-table"><tbody>
               <tr>
-                <td>Violations</td>
+                <td class="info-tip-cell">
+                  Violations
+                  <span v-if="result" class="info-tip" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="info-tip-content">
+                      <span>100ms continuous</span><span>{{ metadata.violation100 }}</span>
+                      <span>500ms average</span><span>{{ metadata.violation500 }}</span>
+                    </span>
+                  </span>
+                </td>
                 <td>{{ metadata.violation }}</td>
               </tr>
               <tr>
@@ -517,10 +551,50 @@ onUnmounted(() => {
   border: 1px solid var(--border-color);
 }
 
-.stats-card .stats-table td:first-child {
-  width: 1%;
+.info-tip-cell {
+  position: relative;
+}
+
+.info-tip {
+  margin-left: 0.25rem;
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+  cursor: help;
+  outline: none;
+}
+
+.info-tip:hover,
+.info-tip:focus {
+  color: var(--text-secondary);
+}
+
+.info-tip-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 10;
+  grid-template-columns: auto auto;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-hover);
+  color: var(--text-primary);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8125rem;
   white-space: nowrap;
-  padding-right: 1rem;
+}
+
+.info-tip-content span:nth-child(even) {
+  text-align: right;
+}
+
+.info-tip:hover .info-tip-content,
+.info-tip:focus .info-tip-content {
+  display: grid;
 }
 
 .chart-container {

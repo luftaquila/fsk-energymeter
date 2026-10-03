@@ -184,9 +184,11 @@ export function calculateMetadata(data, powerLimit = 80) {
   let sum500ms = 0;
   let startIdx500 = 0;
   let last500msViolationTime = 0;
+  let last500msViolation = null;
 
   let continuousOverLimitStartTs = -1;
   let last100msViolationTime = 0;
+  let peak100ms = null;
 
   const logs = data.data;
   const len = logs.length;
@@ -232,18 +234,21 @@ export function calculateMetadata(data, powerLimit = 80) {
       if (power > powerLimit) {
         if (continuousOverLimitStartTs === -1) {
           continuousOverLimitStartTs = timestamp;
+          peak100ms = { index: pIdx, timestamp: timestamp, value: power };
+        } else if (power > peak100ms.value) {
+          peak100ms = { index: pIdx, timestamp: timestamp, value: power };
         }
 
         if (timestamp - continuousOverLimitStartTs >= 100 && timestamp - last100msViolationTime >= 100) {
           violations.push({
-            index: pIdx,
-            timestamp: timestamp,
-            value: power,
+            ...peak100ms,
             type: "100 ms continuous power limit violation",
+            start: continuousOverLimitStartTs,
+            end: timestamp,
           });
           last100msViolationTime = timestamp;
           continuousOverLimitStartTs = timestamp;
-          continuousOverLimitStartTs = timestamp;
+          peak100ms = { index: pIdx, timestamp: timestamp, value: power };
         }
       } else {
         continuousOverLimitStartTs = -1;
@@ -259,17 +264,26 @@ export function calculateMetadata(data, powerLimit = 80) {
       const count = pIdx - startIdx500 + 1;
       const avg = sum500ms / count;
 
-      if (timestamp - processed[0][startIdx500] <= 500) {
-        if (avg > powerLimit && timestamp - last500msViolationTime >= 500) {
-          violations.push({
+      if (timestamp - processed[0][0] >= 500 && avg > powerLimit) {
+        // a violation is reported as the 500 ms window with the highest average
+        if (timestamp - last500msViolationTime >= 500) {
+          last500msViolation = {
             index: pIdx,
             timestamp: timestamp,
-            value: power,
+            value: avg,
             type: "500 ms average power limit violation",
-          });
+            start: timestamp - 500,
+            end: timestamp,
+          };
+          violations.push(last500msViolation);
           last500msViolationTime = timestamp;
-          sum500ms = 0;
-          startIdx500 = pIdx + 1;
+        } else if (avg > last500msViolation.value) {
+          // still within 500 ms of the latest violation, so it belongs to that violation
+          last500msViolation.index = pIdx;
+          last500msViolation.timestamp = timestamp;
+          last500msViolation.value = avg;
+          last500msViolation.start = timestamp - 500;
+          last500msViolation.end = timestamp;
         }
       }
     }
@@ -324,8 +338,17 @@ export function msToHumanTime(ms) {
 }
 
 export function formatEnergy(kwh) {
-  const wh = (kwh * 1000).toFixed(1);
-  return Math.abs(wh) < 1000 ? `${wh} Wh` : `${kwh.toFixed(3)} kWh`;
+  return formatEnergyBreakdown(kwh, 0).total;
+}
+
+// one unit for all lines, with discharge derived from the rounded values so the lines add up
+export function formatEnergyBreakdown(total, regen) {
+  const kwh = Math.abs(Math.round((total + regen) * 10000)) >= 10000;
+  const steps = kwh ? 1000 : 10000;
+  const t = Math.round(total * steps);
+  const r = Math.round(regen * steps);
+  const format = (n) => (kwh ? `${(n / 1000).toFixed(3)} kWh` : `${(n / 10).toFixed(1)} Wh`);
+  return { discharge: format(t + r), regen: format(-r), total: format(t) };
 }
 
 export function formatTimestamp(timestamp) {
