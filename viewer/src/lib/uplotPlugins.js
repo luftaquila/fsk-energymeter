@@ -1,64 +1,46 @@
-let shouldSyncX = true;
-let shouldSyncY = true;
+// narrowest x window (ms), about 5 records at 100 Hz; also keeps zoom clear of float precision limits
+export const MIN_X_RANGE = 50;
+
+// x scale range for every zoom/pan path (wheel, touch, drag select, middle-button pan):
+// keeps the view inside the data and no narrower than MIN_X_RANGE
+export function limitXRange(u, min, max) {
+  if (min == null || max == null) return [null, null];
+  const ts = u.data[0];
+  if (!ts?.length || ts[ts.length - 1] - ts[0] <= MIN_X_RANGE) return [min, max];
+  const lo = ts[0],
+    hi = ts[ts.length - 1];
+  let range = max - min;
+  if (range >= hi - lo) return [lo, hi];
+  if (range < MIN_X_RANGE) {
+    const mid = (min + max) / 2;
+    range = MIN_X_RANGE;
+    min = mid - range / 2;
+    max = mid + range / 2;
+  }
+  if (min < lo) return [lo, lo + range];
+  if (max > hi) return [hi - range, hi];
+  return [min, max];
+}
 
 export function wheelZoomPlugin(opts = {}) {
   const factor = opts.factor || 0.75;
-  let xMin, xMax, yMin, yMax, xRange, yRange;
-
-  function clamp(nRange, nMin, nMax, fRange, fMin, fMax) {
-    if (nRange > fRange) {
-      nMin = fMin;
-      nMax = fMax;
-    } else if (nMin < fMin) {
-      nMin = fMin;
-      nMax = fMin + nRange;
-    } else if (nMax > fMax) {
-      nMax = fMax;
-      nMin = fMax - nRange;
-    }
-    return [nMin, nMax];
-  }
 
   return {
     hooks: {
-      setData: () => {
-        shouldSyncX = true;
-        shouldSyncY = true;
-      },
-      setScale: (u, key) => {
-        if (key == "x" && shouldSyncX) {
-          xMin = u.scales.x.min;
-          xMax = u.scales.x.max;
-          xRange = xMax - xMin;
-          shouldSyncX = false;
-        }
-        if (key == "y" && shouldSyncY) {
-          yMin = u.scales.y.min;
-          yMax = u.scales.y.max;
-          yRange = yMax - yMin;
-          shouldSyncY = false;
-        }
-      },
       ready: (u) => {
-        xMin = u.scales.x.min;
-        xMax = u.scales.x.max;
-        yMin = u.scales.y.min;
-        yMax = u.scales.y.max;
-        xRange = xMax - xMin;
-        yRange = yMax - yMin;
         const over = u.over;
 
         over.addEventListener("mousedown", (e) => {
           if (e.button == 1) {
             e.preventDefault();
-            const left0 = e.clientX,
-              scXMin0 = u.scales.x.min,
-              scXMax0 = u.scales.x.max;
+            let left0 = e.clientX;
             const xUnitsPerPx = u.posToVal(1, "x") - u.posToVal(0, "x");
+            // pan by the movement since the last event so the view follows back right away after stopping at a data edge
             function onmove(e) {
               e.preventDefault();
               const dx = xUnitsPerPx * (e.clientX - left0);
-              u.setScale("x", { min: scXMin0 - dx, max: scXMax0 - dx });
+              left0 = e.clientX;
+              u.setScale("x", { min: u.scales.x.min - dx, max: u.scales.x.max - dx });
             }
             function onup() {
               document.removeEventListener("mousemove", onmove);
@@ -72,26 +54,13 @@ export function wheelZoomPlugin(opts = {}) {
         over.addEventListener("wheel", (e) => {
           e.preventDefault();
           const rect = over.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left,
-            mouseY = e.clientY - rect.top;
-          const leftPct = mouseX / rect.width,
-            btmPct = 1 - mouseY / rect.height;
-          const xVal = u.posToVal(mouseX, "x"),
-            yVal = u.posToVal(mouseY, "y");
-          const oxRange = u.scales.x.max - u.scales.x.min,
-            oyRange = u.scales.y.max - u.scales.y.min;
-          let nxRange = e.deltaY < 0 ? oxRange * factor : oxRange / factor;
-          let nxMin = xVal - leftPct * nxRange,
-            nxMax = nxMin + nxRange;
-          [nxMin, nxMax] = clamp(nxRange, nxMin, nxMax, xRange, xMin, xMax);
-          let nyRange = e.deltaY < 0 ? oyRange * factor : oyRange / factor;
-          let nyMin = yVal - btmPct * nyRange,
-            nyMax = nyMin + nyRange;
-          [nyMin, nyMax] = clamp(nyRange, nyMin, nyMax, yRange, yMin, yMax);
-          u.batch(() => {
-            u.setScale("x", { min: nxMin, max: nxMax });
-            u.setScale("y", { min: nyMin, max: nyMax });
-          });
+          const mouseX = e.clientX - rect.left;
+          const leftPct = mouseX / rect.width;
+          const xVal = u.posToVal(mouseX, "x");
+          const oxRange = u.scales.x.max - u.scales.x.min;
+          const nxRange = Math.max(MIN_X_RANGE, e.deltaY < 0 ? oxRange * factor : oxRange / factor);
+          const nxMin = xVal - leftPct * nxRange;
+          u.setScale("x", { min: nxMin, max: nxMin + nxRange });
         });
       },
     },
