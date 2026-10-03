@@ -115,7 +115,7 @@ export function touchZoomPlugin() {
     function touchmove(e) {
       e.preventDefault();
       const pos = getPos(e);
-      // a finger was added or lifted outside the plot, where no touchstart/touchend reaches over
+      // a finger was added outside the plot, where no touchstart reaches over
       if (pos.key != fr.key) return begin(e);
       to = pos;
       if (!rafPending) {
@@ -123,12 +123,18 @@ export function touchZoomPlugin() {
         requestAnimationFrame(zoom);
       }
     }
+    // on document, so fingers that started outside the plot also end the gesture; remaining fingers carry it on
+    function touchend(e) {
+      if (e.touches.length) return begin(e);
+      document.removeEventListener("touchmove", touchmove, { passive: false });
+      document.removeEventListener("touchend", touchend);
+      document.removeEventListener("touchcancel", touchend);
+    }
     over.addEventListener("touchstart", (e) => {
       begin(e);
       document.addEventListener("touchmove", touchmove, { passive: false });
-    });
-    over.addEventListener("touchend", () => {
-      document.removeEventListener("touchmove", touchmove, { passive: false });
+      document.addEventListener("touchend", touchend);
+      document.addEventListener("touchcancel", touchend);
     });
   }
   return { hooks: { init } };
