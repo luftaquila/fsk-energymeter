@@ -164,6 +164,10 @@ export function parse(data) {
   return logs;
 }
 
+export const VIOLATION_100MS = "100 ms continuous power limit violation";
+export const VIOLATION_500MS = "500 ms average power limit violation";
+
+// each record stands for the interval since the previous record, as in the energy calculation
 export function calculateMetadata(data, powerLimit = 80) {
   const processed = [[], [], [], [], [], [], [], []];
   const violations = [];
@@ -187,7 +191,6 @@ export function calculateMetadata(data, powerLimit = 80) {
   let last500msViolation = null;
 
   let continuousOverLimitStartTs = -1;
-  let last100msViolationTime = 0;
   let peak100ms = null;
 
   const logs = data.data;
@@ -233,30 +236,32 @@ export function calculateMetadata(data, powerLimit = 80) {
     if (powerLimit > 0) {
       if (power > powerLimit) {
         if (continuousOverLimitStartTs === -1) {
-          continuousOverLimitStartTs = timestamp;
-          peak100ms = { index: pIdx, timestamp: timestamp, value: power };
-        } else if (power > peak100ms.value) {
+          // the over-limit interval starts at the last record below the limit
+          continuousOverLimitStartTs = pIdx > 0 ? processed[0][pIdx - 1] : timestamp;
+        }
+        if (peak100ms === null || power > peak100ms.value) {
           peak100ms = { index: pIdx, timestamp: timestamp, value: power };
         }
 
-        if (timestamp - continuousOverLimitStartTs >= 100 && timestamp - last100msViolationTime >= 100) {
+        if (timestamp - continuousOverLimitStartTs >= 100) {
           violations.push({
             ...peak100ms,
-            type: "100 ms continuous power limit violation",
+            type: VIOLATION_100MS,
             start: continuousOverLimitStartTs,
             end: timestamp,
           });
-          last100msViolationTime = timestamp;
           continuousOverLimitStartTs = timestamp;
-          peak100ms = { index: pIdx, timestamp: timestamp, value: power };
+          peak100ms = null;
         }
       } else {
         continuousOverLimitStartTs = -1;
+        peak100ms = null;
       }
 
       sum500ms += power;
 
-      while (startIdx500 < pIdx && timestamp - processed[0][startIdx500] > 500) {
+      // the window (timestamp - 500, timestamp] holds 500 ms worth of records
+      while (startIdx500 < pIdx && timestamp - processed[0][startIdx500] >= 500) {
         sum500ms -= processed[3][startIdx500];
         startIdx500++;
       }
@@ -271,7 +276,7 @@ export function calculateMetadata(data, powerLimit = 80) {
             index: pIdx,
             timestamp: timestamp,
             value: avg,
-            type: "500 ms average power limit violation",
+            type: VIOLATION_500MS,
             start: timestamp - 500,
             end: timestamp,
           };
@@ -300,9 +305,11 @@ export function calculateMetadata(data, powerLimit = 80) {
     pIdx++;
   }
 
+  violations.sort((a, b) => a.start - b.start);
+
   for (const v of violations) {
     if (v.index < processed[6].length) {
-      if (v.type === "100 ms continuous power limit violation") {
+      if (v.type === VIOLATION_100MS) {
         processed[6][v.index] = processed[3][v.index];
       } else {
         processed[7][v.index] = processed[3][v.index];

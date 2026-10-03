@@ -10,6 +10,8 @@ import {
   formatUid,
   formatEnergy,
   formatEnergyBreakdown,
+  VIOLATION_100MS,
+  VIOLATION_500MS,
 } from "../lib/energymeter";
 import {
   wheelZoomPlugin,
@@ -275,17 +277,17 @@ function displayMetadata(logs) {
       : [];
   alerts.value.errors = logs.error;
   const time = (ts) => formatTimestamp(ts).split(" ")[1];
-  alerts.value.violations = logs.violation
-    .slice(0, 5)
-    .map(
-      (x) =>
-        `#${x.index}: ${x.type} (peak ${x.value.toFixed(3)} kW at ${time(x.timestamp)} / ${time(x.start)} ~ ${time(x.end)})`,
-    );
-  if (logs.violation.length > 5) alerts.value.violations.push(`...and ${logs.violation.length - 5} more violations.`);
+  alerts.value.violations = logs.violation.slice(0, 5).map((x) => ({
+    prefix: `#${x.index}: ${x.type} (peak `,
+    power: `${x.value.toFixed(3)} kW`,
+    suffix: ` @ ${time(x.timestamp)} / ${time(x.start)} ~ ${time(x.end)})`,
+  }));
+  if (logs.violation.length > 5)
+    alerts.value.violations.push({ prefix: `...and ${logs.violation.length - 5} more violations.` });
 
   metadata.value.violation = logs.violation.length;
-  metadata.value.violation100 = logs.violation.filter((v) => v.type === "100 ms continuous power limit violation").length;
-  metadata.value.violation500 = logs.violation.filter((v) => v.type === "500 ms average power limit violation").length;
+  metadata.value.violation100 = logs.violation.filter((v) => v.type === VIOLATION_100MS).length;
+  metadata.value.violation500 = logs.violation.filter((v) => v.type === VIOLATION_500MS).length;
   metadata.value.startup = `${logs.header.startup} ms`;
   if (logs.header.v_cal === 0.002 && logs.header.c_cal === 0) {
     metadata.value.v_cal = "Not Supported";
@@ -391,7 +393,9 @@ onUnmounted(() => {
       </div>
       <div class="card-body">
         <div v-if="alerts.violations.length" class="alert alert-danger">
-          <div v-for="(v, i) in alerts.violations" :key="i">{{ v }}</div>
+          <div v-for="(v, i) in alerts.violations" :key="i">
+            {{ v.prefix }}<strong v-if="v.power">{{ v.power }}</strong>{{ v.suffix }}
+          </div>
         </div>
         <div v-if="alerts.warnings.length" class="alert alert-warning">
           <div v-for="(w, i) in alerts.warnings" :key="i">{{ w }}</div>
