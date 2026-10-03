@@ -172,6 +172,10 @@ export function calculateMetadata(data, powerLimit = 80) {
   const processed = [[], [], [], [], [], [], [], []];
   const violations = [];
 
+  // power checks use integer power in 0.01 W so the moving sum and the limit comparisons are exact
+  const powerRaw = [];
+  const powerLimitRaw = powerLimit * 100000;
+
   let totalEnergy = 0;
   let regenEnergy = 0;
   let maxPower = Number.MIN_SAFE_INTEGER;
@@ -206,6 +210,7 @@ export function calculateMetadata(data, powerLimit = 80) {
     const timestamp = log.timestamp;
 
     const power = (record.hv_voltage * record.hv_current) / 1000;
+    const raw = Math.round(record.hv_voltage * 10) * Math.round(record.hv_current * 10);
 
     if (prevTimestamp !== null) {
       const energy = (power * (timestamp - prevTimestamp)) / 3600000;
@@ -234,7 +239,7 @@ export function calculateMetadata(data, powerLimit = 80) {
     }
 
     if (powerLimit > 0) {
-      if (power > powerLimit) {
+      if (raw > powerLimitRaw) {
         if (continuousOverLimitStartTs === -1) {
           // the over-limit interval starts at the last record below the limit
           continuousOverLimitStartTs = pIdx > 0 ? processed[0][pIdx - 1] : timestamp;
@@ -258,18 +263,18 @@ export function calculateMetadata(data, powerLimit = 80) {
         peak100ms = null;
       }
 
-      sum500ms += power;
+      sum500ms += raw;
 
       // the window (timestamp - 500, timestamp] holds 500 ms worth of records
       while (startIdx500 < pIdx && timestamp - processed[0][startIdx500] >= 500) {
-        sum500ms -= processed[3][startIdx500];
+        sum500ms -= powerRaw[startIdx500];
         startIdx500++;
       }
 
       const count = pIdx - startIdx500 + 1;
-      const avg = sum500ms / count;
+      const avg = sum500ms / count / 100000;
 
-      if (timestamp - processed[0][0] >= 500 && avg > powerLimit) {
+      if (timestamp - processed[0][0] >= 500 && sum500ms > powerLimitRaw * count) {
         // a violation is reported as the 500 ms window with the highest average
         if (timestamp - last500msViolationTime >= 500) {
           last500msViolation = {
@@ -301,6 +306,7 @@ export function calculateMetadata(data, powerLimit = 80) {
     processed[5].push(record.temperature);
     processed[6].push(null);
     processed[7].push(null);
+    powerRaw.push(raw);
 
     pIdx++;
   }
@@ -310,9 +316,9 @@ export function calculateMetadata(data, powerLimit = 80) {
   for (const v of violations) {
     if (v.index < processed[6].length) {
       if (v.type === VIOLATION_100MS) {
-        processed[6][v.index] = processed[3][v.index];
+        processed[6][v.index] = v.value;
       } else {
-        processed[7][v.index] = processed[3][v.index];
+        processed[7][v.index] = v.value;
       }
     }
   }

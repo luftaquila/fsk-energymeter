@@ -131,7 +131,6 @@ function initChart() {
         {
           label: "100ms",
           scale: "kW",
-          value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
           points: {
             show: true,
             size: 6,
@@ -143,7 +142,6 @@ function initChart() {
         {
           label: "500ms",
           scale: "kW",
-          value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
           points: {
             show: true,
             size: 6,
