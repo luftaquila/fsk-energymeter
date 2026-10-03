@@ -22,6 +22,14 @@ export function limitXRange(u, min, max) {
   return [min, max];
 }
 
+// uPlot rebuilds every series on any x setScale, even an unchanged one, so skip those (zoom/pan held at a limit).
+// batch commits right away, so u.scales.x is up to date on return
+function setX(u, min, max) {
+  [min, max] = limitXRange(u, min, max);
+  if (min == u.scales.x.min && max == u.scales.x.max) return;
+  u.batch(() => u.setScale("x", { min, max }));
+}
+
 export function wheelZoomPlugin(opts = {}) {
   const factor = opts.factor || 0.75;
 
@@ -40,7 +48,7 @@ export function wheelZoomPlugin(opts = {}) {
               e.preventDefault();
               const dx = xUnitsPerPx * (e.clientX - left0);
               left0 = e.clientX;
-              u.setScale("x", { min: u.scales.x.min - dx, max: u.scales.x.max - dx });
+              setX(u, u.scales.x.min - dx, u.scales.x.max - dx);
             }
             function onup() {
               document.removeEventListener("mousemove", onmove);
@@ -64,7 +72,7 @@ export function wheelZoomPlugin(opts = {}) {
           const steps = e.deltaMode == 0 ? Math.max(-1, Math.min(1, e.deltaY / 100)) : Math.sign(e.deltaY);
           const nxRange = Math.max(MIN_X_RANGE, (u.scales.x.max - u.scales.x.min) * factor ** -steps);
           const nxMin = xVal - leftPct * nxRange;
-          u.setScale("x", { min: nxMin, max: nxMin + nxRange });
+          setX(u, nxMin, nxMin + nxRange);
         });
       },
     },
@@ -104,8 +112,7 @@ export function touchZoomPlugin() {
         nxRange = Math.max(MIN_X_RANGE, reqRange),
         nxMin = xVal - (to.x / rect.width) * nxRange,
         nxMax = nxMin + nxRange;
-      // batch commits right away, so the scale read below is already updated
-      u.batch(() => u.setScale("x", { min: nxMin, max: nxMax }));
+      setX(u, nxMin, nxMax);
       // view hit a limit: continue from where it stopped instead of building up overshoot
       if (reqRange < MIN_X_RANGE || u.scales.x.min != nxMin || u.scales.x.max != nxMax) {
         fr = to;
