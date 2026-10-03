@@ -169,12 +169,15 @@ export function calculateMetadata(data, powerLimit = 80) {
   const violations = [];
 
   let totalEnergy = 0;
+  let regenEnergy = 0;
   let maxPower = Number.MIN_SAFE_INTEGER;
   let maxPowerTs = 0;
   let maxVoltage = Number.MIN_SAFE_INTEGER;
   let maxVoltageTs = 0;
+  let minVoltage = Number.MAX_SAFE_INTEGER;
   let maxCurrent = Number.MIN_SAFE_INTEGER;
   let maxCurrentTs = 0;
+  let minCurrent = Number.MAX_SAFE_INTEGER;
 
   let pIdx = 0;
 
@@ -200,7 +203,9 @@ export function calculateMetadata(data, powerLimit = 80) {
     const power = (record.hv_voltage * record.hv_current) / 1000;
 
     if (prevTimestamp !== null) {
-      totalEnergy += (power * (timestamp - prevTimestamp)) / 3600000;
+      const energy = (power * (timestamp - prevTimestamp)) / 3600000;
+      totalEnergy += energy;
+      if (energy < 0) regenEnergy -= energy;
     }
     prevTimestamp = timestamp;
 
@@ -212,9 +217,15 @@ export function calculateMetadata(data, powerLimit = 80) {
       maxVoltage = record.hv_voltage;
       maxVoltageTs = timestamp;
     }
+    if (record.hv_voltage < minVoltage) {
+      minVoltage = record.hv_voltage;
+    }
     if (record.hv_current > maxCurrent) {
       maxCurrent = record.hv_current;
       maxCurrentTs = timestamp;
+    }
+    if (record.hv_current < minCurrent) {
+      minCurrent = record.hv_current;
     }
 
     if (powerLimit > 0) {
@@ -287,12 +298,15 @@ export function calculateMetadata(data, powerLimit = 80) {
 
   data.processed = processed;
   data.power = totalEnergy;
+  data.regen_energy = regenEnergy;
   data.max_power = maxPower;
   data.max_power_timestamp = maxPowerTs;
   data.max_voltage = maxVoltage;
   data.max_voltage_timestamp = maxVoltageTs;
+  data.min_voltage = minVoltage;
   data.max_current = maxCurrent;
   data.max_current_timestamp = maxCurrentTs;
+  data.min_current = minCurrent;
   data.violation = violations;
 
   return data;
@@ -307,6 +321,11 @@ export function msToHumanTime(ms) {
   else if (minutes < 60) return minutes + " Minutes";
   else if (hours < 24) return hours + " Hours";
   else return days + " Days";
+}
+
+export function formatEnergy(kwh) {
+  const wh = (kwh * 1000).toFixed(1);
+  return Math.abs(wh) < 1000 ? `${wh} Wh` : `${kwh.toFixed(3)} kWh`;
 }
 
 export function formatTimestamp(timestamp) {

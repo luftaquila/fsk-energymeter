@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import uPlot from "../lib/uplot/dist/uPlot.esm.js";
 import { useNotification } from "../composables/useNotification";
-import { parse, calculateMetadata, msToHumanTime, formatTimestamp, formatUid } from "../lib/energymeter";
+import { parse, calculateMetadata, msToHumanTime, formatTimestamp, formatUid, formatEnergy } from "../lib/energymeter";
 import {
   wheelZoomPlugin,
   touchZoomPlugin,
@@ -26,6 +26,7 @@ const metadata = ref({
   duration: "N/A",
   uid: "N/A",
   energy: "N/A",
+  regen: "",
   power: "N/A",
   voltage: "N/A",
   current: "N/A",
@@ -251,11 +252,11 @@ function displayMetadata(logs) {
   const dur = logs.data[logs.data.length - 1].timestamp - logs.data[0].timestamp;
   metadata.value.duration = `${msToHumanTime(dur)} (${dur.toLocaleString()} ms)`;
   metadata.value.uid = formatUid(logs.header.uid);
-  const wh = (logs.power * 1000).toFixed(1);
-  metadata.value.energy = Math.abs(wh) < 1000 ? `${wh} Wh` : `${logs.power.toFixed(3)} kWh`;
+  metadata.value.energy = formatEnergy(logs.power);
+  metadata.value.regen = formatEnergy(logs.regen_energy);
   metadata.value.power = `${logs.max_power.toFixed(1)} kW`;
-  metadata.value.voltage = `${logs.max_voltage.toFixed(1)} V`;
-  metadata.value.current = `${logs.max_current.toFixed(1)} A`;
+  metadata.value.voltage = `${logs.max_voltage.toFixed(1)} V / ${logs.min_voltage.toFixed(1)} V`;
+  metadata.value.current = `${logs.max_current.toFixed(1)} A / ${logs.min_current.toFixed(1)} A`;
   alerts.value.warnings =
     logs.header.datetime > Number(new Date(2099, 0))
       ? ["Invalid RTC date detected. Sync the clock in the Device configuration tab."]
@@ -405,7 +406,10 @@ onUnmounted(() => {
             <table class="stats-table"><tbody>
               <tr>
                 <td>Total Energy</td>
-                <td>{{ metadata.energy }}</td>
+                <td>
+                  {{ metadata.energy }}
+                  <span v-if="metadata.regen" style="white-space: nowrap">({{ metadata.regen }} regen)</span>
+                </td>
               </tr>
               <tr>
                 <td>Peak Power</td>
@@ -424,7 +428,7 @@ onUnmounted(() => {
           <div class="stats-card">
             <table class="stats-table"><tbody>
               <tr>
-                <td>Violation</td>
+                <td>Violations</td>
                 <td>{{ metadata.violation }}</td>
               </tr>
               <tr>
@@ -511,6 +515,12 @@ onUnmounted(() => {
   border-radius: 12px;
   padding: 1rem;
   border: 1px solid var(--border-color);
+}
+
+.stats-card .stats-table td:first-child {
+  width: 1%;
+  white-space: nowrap;
+  padding-right: 1rem;
 }
 
 .chart-container {
