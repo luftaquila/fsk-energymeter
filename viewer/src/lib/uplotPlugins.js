@@ -200,28 +200,26 @@ export function peakAnnotationsPlugin(resultRef) {
     }
   }
 
-  let lastVP = null;
-  function checkVP(u) {
-    const vp = { xMin: u.scales.x.min, xMax: u.scales.x.max };
-    if (!lastVP || lastVP.xMin !== vp.xMin || lastVP.xMax !== vp.xMax) {
-      lastVP = vp;
+  // positions depend on every scale, the plot size, series visibility and the peak values themselves
+  let pending = false;
+  function schedule(u) {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {
+      pending = false;
       place(u);
-    }
+    });
   }
 
   return {
     hooks: {
       ready: [place],
+      setData: [schedule],
+      setSize: [schedule],
+      setSeries: [schedule],
       setScale: [
         (u, key) => {
-          if (["x", "kW", "HV", "A"].includes(key)) {
-            if (u._annPending) return;
-            u._annPending = true;
-            requestAnimationFrame(() => {
-              u._annPending = false;
-              checkVP(u);
-            });
-          }
+          if (["x", "kW", "HV", "A"].includes(key)) schedule(u);
         },
       ],
     },
