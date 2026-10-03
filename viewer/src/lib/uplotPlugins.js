@@ -70,67 +70,58 @@ export function wheelZoomPlugin(opts = {}) {
 export function touchZoomPlugin() {
   function init(u) {
     const over = u.over;
-    let rect, oxRange, oyRange, xVal, yVal;
-    const fr = { x: 0, y: 0, dx: 0, dy: 0, d: 0 },
-      to = { x: 0, y: 0, dx: 0, dy: 0, d: 0 };
-
-    function storePos(t, e) {
-      const ts = e.touches,
-        t0 = ts[0],
-        t0x = t0.clientX - rect.left,
-        t0y = t0.clientY - rect.top;
-      if (ts.length == 1) {
-        t.x = t0x;
-        t.y = t0y;
-        t.d = t.dx = t.dy = 1;
-      } else {
-        const t1 = ts[1],
-          t1x = t1.clientX - rect.left,
-          t1y = t1.clientY - rect.top;
-        const xMin = Math.min(t0x, t1x),
-          yMin = Math.min(t0y, t1y),
-          xMax = Math.max(t0x, t1x),
-          yMax = Math.max(t0y, t1y);
-        t.y = (yMin + yMax) / 2;
-        t.x = (xMin + xMax) / 2;
-        t.dx = xMax - xMin;
-        t.dy = yMax - yMin;
-        t.d = Math.sqrt(t.dx * t.dx + t.dy * t.dy);
-      }
-    }
+    let rect, oxRange, xVal, fr, to;
     let rafPending = false;
+
+    // midpoint and spread of the first two touches, keyed by which fingers they are
+    function getPos(e) {
+      const ts = e.touches,
+        t0 = ts[0];
+      if (ts.length == 1) return { key: `${t0.identifier}`, x: t0.clientX - rect.left, d: 1 };
+      const t1 = ts[1];
+      return {
+        key: `${t0.identifier},${t1.identifier}`,
+        x: (t0.clientX + t1.clientX) / 2 - rect.left,
+        d: Math.max(1, Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY)),
+      };
+    }
+    // (re)starts the gesture from the current view
+    function begin(e) {
+      zoom(); // apply movement still pending for the previous fingers
+      rect = over.getBoundingClientRect();
+      fr = to = getPos(e);
+      oxRange = u.scales.x.max - u.scales.x.min;
+      xVal = u.posToVal(fr.x, "x");
+    }
     function zoom() {
+      if (!rafPending) return;
       rafPending = false;
-      const xFactor = fr.d / to.d,
-        yFactor = fr.d / to.d;
-      const leftPct = to.x / rect.width,
-        btmPct = 1 - to.y / rect.height;
-      const nxRange = oxRange * xFactor,
-        nxMin = xVal - leftPct * nxRange,
+      const reqRange = (oxRange * fr.d) / to.d,
+        nxRange = Math.max(MIN_X_RANGE, reqRange),
+        nxMin = xVal - (to.x / rect.width) * nxRange,
         nxMax = nxMin + nxRange;
-      const nyRange = oyRange * yFactor,
-        nyMin = yVal - btmPct * nyRange,
-        nyMax = nyMin + nyRange;
-      u.batch(() => {
-        u.setScale("x", { min: nxMin, max: nxMax });
-        u.setScale("y", { min: nyMin, max: nyMax });
-      });
+      // batch commits right away, so the scale read below is already updated
+      u.batch(() => u.setScale("x", { min: nxMin, max: nxMax }));
+      // view hit a limit: continue from where it stopped instead of building up overshoot
+      if (reqRange < MIN_X_RANGE || u.scales.x.min != nxMin || u.scales.x.max != nxMax) {
+        fr = to;
+        oxRange = u.scales.x.max - u.scales.x.min;
+        xVal = u.posToVal(fr.x, "x");
+      }
     }
     function touchmove(e) {
       e.preventDefault();
-      storePos(to, e);
+      const pos = getPos(e);
+      // a finger was added or lifted outside the plot, where no touchstart/touchend reaches over
+      if (pos.key != fr.key) return begin(e);
+      to = pos;
       if (!rafPending) {
         rafPending = true;
         requestAnimationFrame(zoom);
       }
     }
     over.addEventListener("touchstart", (e) => {
-      rect = over.getBoundingClientRect();
-      storePos(fr, e);
-      oxRange = u.scales.x.max - u.scales.x.min;
-      oyRange = u.scales.y.max - u.scales.y.min;
-      xVal = u.posToVal(fr.x, "x");
-      yVal = u.posToVal(fr.y, "y");
+      begin(e);
       document.addEventListener("touchmove", touchmove, { passive: false });
     });
     over.addEventListener("touchend", () => {
