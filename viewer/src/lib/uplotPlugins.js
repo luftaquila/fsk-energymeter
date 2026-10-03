@@ -52,13 +52,16 @@ export function wheelZoomPlugin(opts = {}) {
         });
 
         over.addEventListener("wheel", (e) => {
+          // horizontal scrolling is not a zoom gesture
+          if (e.deltaY == 0) return;
           e.preventDefault();
           const rect = over.getBoundingClientRect();
           const mouseX = e.clientX - rect.left;
           const leftPct = mouseX / rect.width;
           const xVal = u.posToVal(mouseX, "x");
-          const oxRange = u.scales.x.max - u.scales.x.min;
-          const nxRange = Math.max(MIN_X_RANGE, e.deltaY < 0 ? oxRange * factor : oxRange / factor);
+          // pixel deltas (trackpads, smooth scrolling) zoom in proportion; a 100px notch or a line/page step zooms by `factor`
+          const steps = e.deltaMode == 0 ? Math.max(-1, Math.min(1, e.deltaY / 100)) : Math.sign(e.deltaY);
+          const nxRange = Math.max(MIN_X_RANGE, (u.scales.x.max - u.scales.x.min) * factor ** -steps);
           const nxMin = xVal - leftPct * nxRange;
           u.setScale("x", { min: nxMin, max: nxMin + nxRange });
         });
