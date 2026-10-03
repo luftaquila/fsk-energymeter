@@ -52,9 +52,10 @@ export function wheelZoomPlugin(opts = {}) {
         });
 
         over.addEventListener("wheel", (e) => {
-          // horizontal scrolling is not a zoom gesture
-          if (e.deltaY == 0) return;
+          // consume every wheel event, so horizontal trackpad swipes don't reach the browser as back/forward navigation
           e.preventDefault();
+          // mostly horizontal swipes are not zoom gestures
+          if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
           const rect = over.getBoundingClientRect();
           const mouseX = e.clientX - rect.left;
           const leftPct = mouseX / rect.width;
