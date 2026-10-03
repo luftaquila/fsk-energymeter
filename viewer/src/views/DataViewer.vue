@@ -251,7 +251,8 @@ function displayMetadata(logs) {
   const dur = logs.data[logs.data.length - 1].timestamp - logs.data[0].timestamp;
   metadata.value.duration = `${msToHumanTime(dur)} (${dur.toLocaleString()} ms)`;
   metadata.value.uid = formatUid(logs.header.uid);
-  metadata.value.energy = `${logs.power.toFixed(2)} kWh`;
+  const wh = (logs.power * 1000).toFixed(1);
+  metadata.value.energy = Math.abs(wh) < 1000 ? `${wh} Wh` : `${logs.power.toFixed(3)} kWh`;
   metadata.value.power = `${logs.max_power.toFixed(1)} kW`;
   metadata.value.voltage = `${logs.max_voltage.toFixed(1)} V`;
   metadata.value.current = `${logs.max_current.toFixed(1)} A`;
