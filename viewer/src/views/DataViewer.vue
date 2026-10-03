@@ -2,7 +2,17 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import uPlot from "../lib/uplot/dist/uPlot.esm.js";
 import { useNotification } from "../composables/useNotification";
-import { parse, calculateMetadata, msToHumanTime, formatTimestamp, formatUid } from "../lib/energymeter";
+import {
+  parse,
+  calculateMetadata,
+  msToHumanTime,
+  formatTimestamp,
+  formatUid,
+  formatEnergy,
+  formatEnergyBreakdown,
+  VIOLATION_100MS,
+  VIOLATION_500MS,
+} from "../lib/energymeter";
 import {
   wheelZoomPlugin,
   touchZoomPlugin,
@@ -26,10 +36,13 @@ const metadata = ref({
   duration: "N/A",
   uid: "N/A",
   energy: "N/A",
+  breakdown: { discharge: "N/A", regen: "N/A", total: "N/A" },
   power: "N/A",
   voltage: "N/A",
   current: "N/A",
   violation: "N/A",
+  violation100: "N/A",
+  violation500: "N/A",
   startup: "N/A",
   v_cal: "N/A",
   c_cal: "N/A",
@@ -99,7 +112,7 @@ function initChart() {
           label: "HV Power",
           scale: "kW",
           stroke: "mediumorchid",
-          value: (_, v) => (v?.toFixed(1) ?? "-") + "kW",
+          value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
         },
         {
           label: "LV",
@@ -251,21 +264,28 @@ function displayMetadata(logs) {
   const dur = logs.data[logs.data.length - 1].timestamp - logs.data[0].timestamp;
   metadata.value.duration = `${msToHumanTime(dur)} (${dur.toLocaleString()} ms)`;
   metadata.value.uid = formatUid(logs.header.uid);
-  metadata.value.energy = `${logs.power.toFixed(2)} kWh`;
-  metadata.value.power = `${logs.max_power.toFixed(1)} kW`;
-  metadata.value.voltage = `${logs.max_voltage.toFixed(1)} V`;
-  metadata.value.current = `${logs.max_current.toFixed(1)} A`;
+  metadata.value.energy = formatEnergy(logs.power);
+  metadata.value.breakdown = formatEnergyBreakdown(logs.power, logs.regen_energy);
+  metadata.value.power = `${logs.max_power.toFixed(3)} kW`;
+  metadata.value.voltage = `${logs.max_voltage.toFixed(1)} V / ${logs.min_voltage.toFixed(1)} V`;
+  metadata.value.current = `${logs.max_current.toFixed(1)} A / ${logs.min_current.toFixed(1)} A`;
   alerts.value.warnings =
     logs.header.datetime > Number(new Date(2099, 0))
       ? ["Invalid RTC date detected. Sync the clock in the Device configuration tab."]
       : [];
   alerts.value.errors = logs.error;
-  alerts.value.violations = logs.violation
-    .slice(0, 5)
-    .map((x) => `#${x.index}: ${x.type} (${x.value.toFixed(2)} kW at ${formatTimestamp(x.timestamp).split(" ")[1]})`);
-  if (logs.violation.length > 5) alerts.value.violations.push(`...and ${logs.violation.length - 5} more violations.`);
+  const time = (ts) => formatTimestamp(ts).split(" ")[1];
+  alerts.value.violations = logs.violation.slice(0, 5).map((x) => ({
+    prefix: `#${x.index}: ${x.type} (peak `,
+    power: `${x.value.toFixed(3)} kW`,
+    suffix: ` @ ${time(x.timestamp)} / ${time(x.start)} ~ ${time(x.end)})`,
+  }));
+  if (logs.violation.length > 5)
+    alerts.value.violations.push({ prefix: `...and ${logs.violation.length - 5} more violations.` });
 
   metadata.value.violation = logs.violation.length;
+  metadata.value.violation100 = logs.violation.filter((v) => v.type === VIOLATION_100MS).length;
+  metadata.value.violation500 = logs.violation.filter((v) => v.type === VIOLATION_500MS).length;
   metadata.value.startup = `${logs.header.startup} ms`;
   if (logs.header.v_cal === 0.002 && logs.header.c_cal === 0) {
     metadata.value.v_cal = "Not Supported";
@@ -371,7 +391,9 @@ onUnmounted(() => {
       </div>
       <div class="card-body">
         <div v-if="alerts.violations.length" class="alert alert-danger">
-          <div v-for="(v, i) in alerts.violations" :key="i">{{ v }}</div>
+          <div v-for="(v, i) in alerts.violations" :key="i">
+            {{ v.prefix }}<strong v-if="v.power">{{ v.power }}</strong>{{ v.suffix }}
+          </div>
         </div>
         <div v-if="alerts.warnings.length" class="alert alert-warning">
           <div v-for="(w, i) in alerts.warnings" :key="i">{{ w }}</div>
@@ -403,7 +425,17 @@ onUnmounted(() => {
           <div class="stats-card">
             <table class="stats-table"><tbody>
               <tr>
-                <td>Total Energy</td>
+                <td class="info-tip-cell">
+                  Total Energy
+                  <span v-if="result" class="info-tip" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="info-tip-content">
+                      <span>Discharge</span><span>{{ metadata.breakdown.discharge }}</span>
+                      <span>Regen</span><span>{{ metadata.breakdown.regen }}</span>
+                      <span>Total</span><span>{{ metadata.breakdown.total }}</span>
+                    </span>
+                  </span>
+                </td>
                 <td>{{ metadata.energy }}</td>
               </tr>
               <tr>
@@ -423,7 +455,16 @@ onUnmounted(() => {
           <div class="stats-card">
             <table class="stats-table"><tbody>
               <tr>
-                <td>Violation</td>
+                <td class="info-tip-cell">
+                  Violations
+                  <span v-if="result" class="info-tip" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="info-tip-content">
+                      <span>100ms continuous</span><span>{{ metadata.violation100 }}</span>
+                      <span>500ms average</span><span>{{ metadata.violation500 }}</span>
+                    </span>
+                  </span>
+                </td>
                 <td>{{ metadata.violation }}</td>
               </tr>
               <tr>
@@ -510,6 +551,52 @@ onUnmounted(() => {
   border-radius: 12px;
   padding: 1rem;
   border: 1px solid var(--border-color);
+}
+
+.info-tip-cell {
+  position: relative;
+}
+
+.info-tip {
+  margin-left: 0.25rem;
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+  cursor: help;
+  outline: none;
+}
+
+.info-tip:hover,
+.info-tip:focus {
+  color: var(--text-secondary);
+}
+
+.info-tip-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 10;
+  grid-template-columns: auto auto;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-hover);
+  color: var(--text-primary);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.info-tip-content span:nth-child(even) {
+  text-align: right;
+}
+
+.info-tip:hover .info-tip-content,
+.info-tip:focus .info-tip-content {
+  display: grid;
 }
 
 .chart-container {

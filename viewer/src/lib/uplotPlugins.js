@@ -176,12 +176,12 @@ export function peakAnnotationsPlugin(resultRef) {
     voltageAnnotation = null,
     currentAnnotation = null;
 
-  function createAnnotation(value, color, unit, zIndex) {
+  function createAnnotation(value, color, unit, zIndex, digits = 1) {
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;pointer-events:none;z-index:${zIndex}`;
     const box = document.createElement("div");
     box.style.cssText = `background:${color};color:white;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2)`;
-    box.textContent = `${value.toFixed(1)} ${unit}`;
+    box.textContent = `${value.toFixed(digits)} ${unit}`;
     const arrow = document.createElement("div");
     arrow.style.cssText = `position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid ${color}`;
     box.appendChild(arrow);
@@ -205,7 +205,7 @@ export function peakAnnotationsPlugin(resultRef) {
       r.max_power &&
       isInView(u, r.max_power_timestamp, r.max_power, "kW")
     ) {
-      powerAnnotation = createAnnotation(r.max_power, "mediumorchid", "kW", 1003);
+      powerAnnotation = createAnnotation(r.max_power, "mediumorchid", "kW", 1003, 3);
       u.over.appendChild(powerAnnotation);
       const rect = powerAnnotation.getBoundingClientRect();
       powerAnnotation.style.left = `${u.valToPos(r.max_power_timestamp, "x") - rect.width / 2}px`;
