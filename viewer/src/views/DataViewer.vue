@@ -21,6 +21,7 @@ import {
   violationVisibilityPlugin,
   downloadImage,
 } from "../lib/uplotPlugins";
+import { minMaxLinear, visibleMinMax, visibleNonNull } from "../lib/uplotMinMax";
 
 const notyf = useNotification();
 const chartContainer = ref(null);
@@ -78,8 +79,9 @@ function initChart() {
   const scales = { x: { range: limitXRange } };
   for (const k of Object.keys(axis)) {
     scales[k] = {
-      range: (u, dMin, dMax) => {
-        if (dMin === null && dMax === null) return [null, null];
+      range: (u) => {
+        const [dMin, dMax] = visibleMinMax(u, k);
+        if (dMin === null) return [null, null];
         axis[k] = splitRange(dMin, dMax);
         return [axis[k].min, axis[k].max];
       },
@@ -91,6 +93,8 @@ function initChart() {
       p = (n) => String(n).padStart(2, "0");
     return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}.${String(d.getMilliseconds()).padStart(3, "0")}`;
   };
+  // y scales range themselves through visibleMinMax, so uPlot's own scan of every visible record is turned off
+  const line = { paths: minMaxLinear(), auto: false };
 
   uplot = new uPlot(
     {
@@ -100,24 +104,28 @@ function initChart() {
       series: [
         { value: (_, v) => fmt(v) },
         {
+          ...line,
           label: "HV",
           scale: "HV",
           stroke: "red",
           value: (_, v) => (v ?? "-") + "V",
         },
         {
+          ...line,
           label: "HV Amp",
           scale: "A",
           stroke: "dodgerblue",
           value: (_, v) => (v ?? "-") + "A",
         },
         {
+          ...line,
           label: "HV Power",
           scale: "kW",
           stroke: "mediumorchid",
           value: (_, v) => (v?.toFixed(3) ?? "-") + "kW",
         },
         {
+          ...line,
           label: "LV",
           scale: "LV",
           stroke: "green",
@@ -125,6 +133,7 @@ function initChart() {
           show: false,
         },
         {
+          ...line,
           label: "Temp",
           scale: "C",
           stroke: "orange",
@@ -136,8 +145,10 @@ function initChart() {
           scale: "kW",
           // markers only (no stroke), so skip building a line path over the mostly-null data
           paths: () => null,
+          auto: false,
           points: {
             show: true,
+            filter: visibleNonNull,
             size: 6,
             fill: "dimgray",
             stroke: "dimgray",
@@ -148,8 +159,10 @@ function initChart() {
           label: "500ms",
           scale: "kW",
           paths: () => null,
+          auto: false,
           points: {
             show: true,
+            filter: visibleNonNull,
             size: 6,
             fill: "darkgray",
             stroke: "darkgray",
