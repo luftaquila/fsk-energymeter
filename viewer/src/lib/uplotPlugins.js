@@ -30,6 +30,32 @@ function setX(u, min, max) {
   u.batch(() => u.setScale("x", { min, max }));
 }
 
+// wraps a series path builder to stroke at most 1 device pixel wide. on high-DPI screens Chrome took 40-200+ ms of
+// GPU process time per frame to stroke wider lines over thousands of jagged segments, unless zoomed in to a few
+// hundred records, while hairlines stay cheap. the series width is kept by repeating the hairline shifted by whole
+// device pixels over the rows and columns the wider stroke would cover, so it stays centered on the point markers
+export function hairlinePaths(build) {
+  return (u, si, idx0, idx1) => {
+    const paths = build(u, si, idx0, idx1);
+    const width = u.series[si].width;
+    paths._width = Math.min(width, 1 / u.pxRatio);
+    const w = width * u.pxRatio,
+      n = Math.round(w);
+    if (n > 1) {
+      // uPlot shifts a stroke of device width w by (w % 2) / 2 to align it to pixels, and a hairline by 0.5
+      const from = Math.round((w % 2) / 2 - n / 2);
+      const line = paths.stroke;
+      paths.stroke = new Path2D(line);
+      for (let d = from; d < from + n; d++) {
+        if (d == 0) continue;
+        paths.stroke.addPath(line, { e: d });
+        paths.stroke.addPath(line, { f: d });
+      }
+    }
+    return paths;
+  };
+}
+
 export function wheelZoomPlugin(opts = {}) {
   const factor = opts.factor || 0.75;
 
