@@ -134,6 +134,8 @@ function initChart() {
         {
           label: "100ms",
           scale: "kW",
+          // markers only (no stroke), so skip building a line path over the mostly-null data
+          paths: () => null,
           points: {
             show: true,
             size: 6,
@@ -145,6 +147,7 @@ function initChart() {
         {
           label: "500ms",
           scale: "kW",
+          paths: () => null,
           points: {
             show: true,
             size: 6,
