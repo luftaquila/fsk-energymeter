@@ -55,40 +55,75 @@ const metadata = ref({
 });
 const alerts = ref({ violations: [], warnings: [], errors: [] });
 
-function splitRange(dMin, dMax) {
-  if (dMin === dMax) {
-    dMin *= 0.85;
-    dMax *= 1.15;
-  } else {
-    const r = dMax - dMin;
-    dMin -= r * 0.05;
-    dMax += r * 0.05;
-  }
-  const step = (dMax - dMin) / 9;
+// every y axis splits into the same number of intervals so that their gridlines coincide
+const INTERVALS = [6, 7, 8, 9, 10, 11, 12];
 
-  return {
-    min: dMin,
-    max: dMax,
-    splits: Array.from({ length: 11 }, (_, i) => dMin + i * step),
-  };
+// smallest round step (1, 2, 4, 5, 6, 8 x 10^e, and 25 x 10^e from 25 up) whose n intervals starting at a multiple of it,
+// j * step, cover [lo, hi]. a scale starting on a multiple of its step has a tick at 0 whenever 0 is in view
+function fitAxis(lo, hi, n) {
+  const need = (hi - lo) / n;
+  for (let e = Math.floor(Math.log10(need)); ; e++) {
+    for (const m of [1, 2, 2.5, 4, 5, 6, 8]) {
+      if (m === 2.5 && e < 1) continue;
+      const step = e < 0 ? m / 10 ** -e : m * 10 ** e;
+      if (step < need) continue;
+      const j = Math.floor(lo / step);
+      if ((j + n) * step >= hi) return { step, j, dec: Math.max(0, -e) };
+    }
+  }
+}
+
+// ranges and ticks of every shown y axis, with the interval count that leaves the least empty height on the
+// worst-filled axis. the spare intervals are split between the top and bottom of each axis
+function layoutAxes(u, axis) {
+  const spans = [];
+  for (const k of Object.keys(axis)) {
+    const [dMin, dMax] = visibleMinMax(u, k);
+    axis[k] = null;
+    if (dMin === null) continue;
+    const pad = dMin === dMax ? Math.abs(dMin) * 0.15 || 1 : (dMax - dMin) * 0.05;
+    spans.push({ k, lo: dMin - pad, hi: dMax + pad });
+  }
+  if (!spans.length) return;
+
+  let best = null;
+  for (const n of INTERVALS) {
+    const fits = spans.map((s) => fitAxis(s.lo, s.hi, n));
+    const fills = fits.map((f, i) => (spans[i].hi - spans[i].lo) / (n * f.step));
+    const worst = Math.min(...fills),
+      sum = fills.reduce((a, b) => a + b, 0);
+    if (!best || worst > best.worst || (worst === best.worst && sum > best.sum)) best = { n, fits, worst, sum };
+  }
+
+  const n = best.n;
+  spans.forEach(({ k, lo, hi }, i) => {
+    let { step, j, dec } = best.fits[i];
+    j -= Math.max(0, Math.floor(((j + n) * step - hi - (lo - j * step)) / (2 * step)));
+    axis[k] = {
+      min: j * step,
+      max: (j + n) * step,
+      splits: Array.from({ length: n + 1 }, (_, i) => (j + i) * step),
+      dec,
+    };
+  });
 }
 
 function initChart() {
   if (!chartContainer.value) {
     return;
   }
-  const axis = { HV: {}, A: {}, kW: {}, LV: {}, C: {} };
+  const axis = { HV: null, A: null, kW: null, LV: null, C: null };
   const scales = { x: { range: limitXRange } };
   for (const k of Object.keys(axis)) {
     scales[k] = {
+      // the axes share one layout, so each scale recomputes all of it; it only reads the visible min/max pyramids
       range: (u) => {
-        const [dMin, dMax] = visibleMinMax(u, k);
-        if (dMin === null) return [null, null];
-        axis[k] = splitRange(dMin, dMax);
-        return [axis[k].min, axis[k].max];
+        layoutAxes(u, axis);
+        return axis[k] ? [axis[k].min, axis[k].max] : [null, null];
       },
     };
   }
+  const tick = (k, unit) => (_, t) => t.map((v) => v.toFixed(axis[k].dec) + unit);
   const fmt = (v) => {
     if (!v) return "-";
     const d = new Date(v),
@@ -185,21 +220,21 @@ function initChart() {
         {
           scale: "A",
           stroke: "dodgerblue",
-          values: (_, t) => t.map((v) => v.toFixed(1) + "A"),
+          values: tick("A", "A"),
           splits: () => axis.A.splits,
           size: 55,
         },
         {
           scale: "HV",
           stroke: "red",
-          values: (_, t) => t.map((v) => v.toFixed(1) + "V"),
+          values: tick("HV", "V"),
           splits: () => axis.HV.splits,
           size: 55,
         },
         {
           scale: "kW",
           stroke: "mediumorchid",
-          values: (_, t) => t.map((v) => v.toFixed(1) + "kW"),
+          values: tick("kW", "kW"),
           side: 1,
           splits: () => axis.kW.splits,
           size: 60,
@@ -207,7 +242,7 @@ function initChart() {
         {
           scale: "LV",
           stroke: "green",
-          values: (_, t) => t.map((v) => v.toFixed(1) + "V"),
+          values: tick("LV", "V"),
           side: 1,
           splits: () => axis.LV.splits,
           size: 55,
@@ -215,13 +250,17 @@ function initChart() {
         {
           scale: "C",
           stroke: "orange",
-          values: (_, t) => t.map((v) => v.toFixed(1) + "°C"),
+          values: tick("C", "°C"),
           side: 1,
           splits: () => axis.C.splits,
           size: 55,
         },
       ],
       scales,
+      hooks: {
+        // showing or hiding a series changes the shared axis layout, so re-range every y scale, not only its own
+        setSeries: [(u, i, opts) => opts.show != null && u.data?.[0]?.length && u.redraw()],
+      },
       plugins: [
         touchZoomPlugin(),
         wheelZoomPlugin({ factor: 0.75 }),
