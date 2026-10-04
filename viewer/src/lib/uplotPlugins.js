@@ -179,16 +179,25 @@ export function peakAnnotationsPlugin(resultRef) {
     voltageAnnotation = null,
     currentAnnotation = null;
 
-  function createAnnotation(value, color, unit, zIndex, digits = 1) {
+  // label above the peak at (x, y) in plot px. it is centered on the peak but kept inside the plot, and the arrow
+  // slides along its bottom edge to stay over the peak
+  function addAnnotation(u, x, y, value, color, unit, zIndex, digits = 1) {
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;pointer-events:none;z-index:${zIndex}`;
     const box = document.createElement("div");
-    box.style.cssText = `background:${color};color:white;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.2)`;
+    box.style.cssText = `background:${color};color:white;padding:4px 8px;border-radius:4px;font-size:12px;font-weight:bold;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.2)`;
     box.textContent = `${value.toFixed(digits)} ${unit}`;
     const arrow = document.createElement("div");
-    arrow.style.cssText = `position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid ${color}`;
+    arrow.style.cssText = `position:absolute;top:100%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid ${color}`;
     box.appendChild(arrow);
     el.appendChild(box);
+    u.over.appendChild(el);
+
+    const { width, height } = el.getBoundingClientRect();
+    const left = Math.max(0, Math.min(x - width / 2, u.over.clientWidth - width));
+    el.style.left = `${left}px`;
+    el.style.top = `${y - height - 10}px`;
+    arrow.style.left = `${Math.max(6, Math.min(x - left, width - 6))}px`;
     return el;
   }
 
@@ -208,11 +217,16 @@ export function peakAnnotationsPlugin(resultRef) {
       r.max_power &&
       isInView(u, r.max_power_timestamp, r.max_power, "kW")
     ) {
-      powerAnnotation = createAnnotation(r.max_power, "mediumorchid", "kW", 1003, 3);
-      u.over.appendChild(powerAnnotation);
-      const rect = powerAnnotation.getBoundingClientRect();
-      powerAnnotation.style.left = `${u.valToPos(r.max_power_timestamp, "x") - rect.width / 2}px`;
-      powerAnnotation.style.top = `${u.valToPos(r.max_power, "kW") - rect.height - 10}px`;
+      powerAnnotation = addAnnotation(
+        u,
+        u.valToPos(r.max_power_timestamp, "x"),
+        u.valToPos(r.max_power, "kW"),
+        r.max_power,
+        "mediumorchid",
+        "kW",
+        1003,
+        3,
+      );
     }
     if (
       u.series[1].show &&
@@ -220,11 +234,15 @@ export function peakAnnotationsPlugin(resultRef) {
       r.max_voltage &&
       isInView(u, r.max_voltage_timestamp, r.max_voltage, "HV")
     ) {
-      voltageAnnotation = createAnnotation(r.max_voltage, "red", "V", 1002);
-      u.over.appendChild(voltageAnnotation);
-      const rect = voltageAnnotation.getBoundingClientRect();
-      voltageAnnotation.style.left = `${u.valToPos(r.max_voltage_timestamp, "x") - rect.width / 2}px`;
-      voltageAnnotation.style.top = `${u.valToPos(r.max_voltage, "HV") - rect.height - 10}px`;
+      voltageAnnotation = addAnnotation(
+        u,
+        u.valToPos(r.max_voltage_timestamp, "x"),
+        u.valToPos(r.max_voltage, "HV"),
+        r.max_voltage,
+        "red",
+        "V",
+        1002,
+      );
     }
     if (
       u.series[2].show &&
@@ -232,11 +250,15 @@ export function peakAnnotationsPlugin(resultRef) {
       r.max_current &&
       isInView(u, r.max_current_timestamp, r.max_current, "A")
     ) {
-      currentAnnotation = createAnnotation(r.max_current, "dodgerblue", "A", 1001);
-      u.over.appendChild(currentAnnotation);
-      const rect = currentAnnotation.getBoundingClientRect();
-      currentAnnotation.style.left = `${u.valToPos(r.max_current_timestamp, "x") - rect.width / 2}px`;
-      currentAnnotation.style.top = `${u.valToPos(r.max_current, "A") - rect.height - 10}px`;
+      currentAnnotation = addAnnotation(
+        u,
+        u.valToPos(r.max_current_timestamp, "x"),
+        u.valToPos(r.max_current, "A"),
+        r.max_current,
+        "dodgerblue",
+        "A",
+        1001,
+      );
     }
   }
 
