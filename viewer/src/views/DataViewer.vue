@@ -14,6 +14,7 @@ import {
   VIOLATION_500MS,
 } from "../lib/energymeter";
 import {
+  limitXRange,
   wheelZoomPlugin,
   touchZoomPlugin,
   peakAnnotationsPlugin,
@@ -72,7 +73,7 @@ function initChart() {
     return;
   }
   const axis = { HV: {}, A: {}, kW: {}, LV: {}, C: {} };
-  const scales = {};
+  const scales = { x: { range: limitXRange } };
   for (const k of Object.keys(axis)) {
     scales[k] = {
       range: (u, dMin, dMax) => {

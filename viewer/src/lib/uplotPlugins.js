@@ -1,64 +1,54 @@
-let shouldSyncX = true;
-let shouldSyncY = true;
+// narrowest x window (ms), about 5 records at 100 Hz; also keeps zoom clear of float precision limits
+export const MIN_X_RANGE = 50;
+
+// x scale range for every zoom/pan path (wheel, touch, drag select, middle-button pan):
+// keeps the view inside the data and no narrower than MIN_X_RANGE
+export function limitXRange(u, min, max) {
+  if (min == null || max == null) return [null, null];
+  const ts = u.data[0];
+  if (!ts?.length || ts[ts.length - 1] - ts[0] <= MIN_X_RANGE) return [min, max];
+  const lo = ts[0],
+    hi = ts[ts.length - 1];
+  let range = max - min;
+  if (range >= hi - lo) return [lo, hi];
+  if (range < MIN_X_RANGE) {
+    const mid = (min + max) / 2;
+    range = MIN_X_RANGE;
+    min = mid - range / 2;
+    max = mid + range / 2;
+  }
+  if (min < lo) return [lo, lo + range];
+  if (max > hi) return [hi - range, hi];
+  return [min, max];
+}
+
+// uPlot rebuilds every series on any x setScale, even an unchanged one, so skip those (zoom/pan held at a limit).
+// batch commits right away, so u.scales.x is up to date on return
+function setX(u, min, max) {
+  [min, max] = limitXRange(u, min, max);
+  if (min == u.scales.x.min && max == u.scales.x.max) return;
+  u.batch(() => u.setScale("x", { min, max }));
+}
 
 export function wheelZoomPlugin(opts = {}) {
   const factor = opts.factor || 0.75;
-  let xMin, xMax, yMin, yMax, xRange, yRange;
-
-  function clamp(nRange, nMin, nMax, fRange, fMin, fMax) {
-    if (nRange > fRange) {
-      nMin = fMin;
-      nMax = fMax;
-    } else if (nMin < fMin) {
-      nMin = fMin;
-      nMax = fMin + nRange;
-    } else if (nMax > fMax) {
-      nMax = fMax;
-      nMin = fMax - nRange;
-    }
-    return [nMin, nMax];
-  }
 
   return {
     hooks: {
-      setData: () => {
-        shouldSyncX = true;
-        shouldSyncY = true;
-      },
-      setScale: (u, key) => {
-        if (key == "x" && shouldSyncX) {
-          xMin = u.scales.x.min;
-          xMax = u.scales.x.max;
-          xRange = xMax - xMin;
-          shouldSyncX = false;
-        }
-        if (key == "y" && shouldSyncY) {
-          yMin = u.scales.y.min;
-          yMax = u.scales.y.max;
-          yRange = yMax - yMin;
-          shouldSyncY = false;
-        }
-      },
       ready: (u) => {
-        xMin = u.scales.x.min;
-        xMax = u.scales.x.max;
-        yMin = u.scales.y.min;
-        yMax = u.scales.y.max;
-        xRange = xMax - xMin;
-        yRange = yMax - yMin;
         const over = u.over;
 
         over.addEventListener("mousedown", (e) => {
           if (e.button == 1) {
             e.preventDefault();
-            const left0 = e.clientX,
-              scXMin0 = u.scales.x.min,
-              scXMax0 = u.scales.x.max;
+            let left0 = e.clientX;
             const xUnitsPerPx = u.posToVal(1, "x") - u.posToVal(0, "x");
+            // pan by the movement since the last event so the view follows back right away after stopping at a data edge
             function onmove(e) {
               e.preventDefault();
               const dx = xUnitsPerPx * (e.clientX - left0);
-              u.setScale("x", { min: scXMin0 - dx, max: scXMax0 - dx });
+              left0 = e.clientX;
+              setX(u, u.scales.x.min - dx, u.scales.x.max - dx);
             }
             function onup() {
               document.removeEventListener("mousemove", onmove);
@@ -70,28 +60,19 @@ export function wheelZoomPlugin(opts = {}) {
         });
 
         over.addEventListener("wheel", (e) => {
+          // consume every wheel event, so horizontal trackpad swipes don't reach the browser as back/forward navigation
           e.preventDefault();
+          // mostly horizontal swipes are not zoom gestures
+          if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
           const rect = over.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left,
-            mouseY = e.clientY - rect.top;
-          const leftPct = mouseX / rect.width,
-            btmPct = 1 - mouseY / rect.height;
-          const xVal = u.posToVal(mouseX, "x"),
-            yVal = u.posToVal(mouseY, "y");
-          const oxRange = u.scales.x.max - u.scales.x.min,
-            oyRange = u.scales.y.max - u.scales.y.min;
-          let nxRange = e.deltaY < 0 ? oxRange * factor : oxRange / factor;
-          let nxMin = xVal - leftPct * nxRange,
-            nxMax = nxMin + nxRange;
-          [nxMin, nxMax] = clamp(nxRange, nxMin, nxMax, xRange, xMin, xMax);
-          let nyRange = e.deltaY < 0 ? oyRange * factor : oyRange / factor;
-          let nyMin = yVal - btmPct * nyRange,
-            nyMax = nyMin + nyRange;
-          [nyMin, nyMax] = clamp(nyRange, nyMin, nyMax, yRange, yMin, yMax);
-          u.batch(() => {
-            u.setScale("x", { min: nxMin, max: nxMax });
-            u.setScale("y", { min: nyMin, max: nyMax });
-          });
+          const mouseX = e.clientX - rect.left;
+          const leftPct = mouseX / rect.width;
+          const xVal = u.posToVal(mouseX, "x");
+          // pixel deltas (trackpads, smooth scrolling) zoom in proportion; a 100px notch or a line/page step zooms by `factor`
+          const steps = e.deltaMode == 0 ? Math.max(-1, Math.min(1, e.deltaY / 100)) : Math.sign(e.deltaY);
+          const nxRange = Math.max(MIN_X_RANGE, (u.scales.x.max - u.scales.x.min) * factor ** -steps);
+          const nxMin = xVal - leftPct * nxRange;
+          setX(u, nxMin, nxMin + nxRange);
         });
       },
     },
@@ -101,71 +82,67 @@ export function wheelZoomPlugin(opts = {}) {
 export function touchZoomPlugin() {
   function init(u) {
     const over = u.over;
-    let rect, oxRange, oyRange, xVal, yVal;
-    const fr = { x: 0, y: 0, dx: 0, dy: 0, d: 0 },
-      to = { x: 0, y: 0, dx: 0, dy: 0, d: 0 };
-
-    function storePos(t, e) {
-      const ts = e.touches,
-        t0 = ts[0],
-        t0x = t0.clientX - rect.left,
-        t0y = t0.clientY - rect.top;
-      if (ts.length == 1) {
-        t.x = t0x;
-        t.y = t0y;
-        t.d = t.dx = t.dy = 1;
-      } else {
-        const t1 = ts[1],
-          t1x = t1.clientX - rect.left,
-          t1y = t1.clientY - rect.top;
-        const xMin = Math.min(t0x, t1x),
-          yMin = Math.min(t0y, t1y),
-          xMax = Math.max(t0x, t1x),
-          yMax = Math.max(t0y, t1y);
-        t.y = (yMin + yMax) / 2;
-        t.x = (xMin + xMax) / 2;
-        t.dx = xMax - xMin;
-        t.dy = yMax - yMin;
-        t.d = Math.sqrt(t.dx * t.dx + t.dy * t.dy);
-      }
-    }
+    let rect, oxRange, xVal, fr, to;
     let rafPending = false;
+
+    // midpoint and spread of the first two touches, keyed by which fingers they are
+    function getPos(e) {
+      const ts = e.touches,
+        t0 = ts[0];
+      if (ts.length == 1) return { key: `${t0.identifier}`, x: t0.clientX - rect.left, d: 1 };
+      const t1 = ts[1];
+      return {
+        key: `${t0.identifier},${t1.identifier}`,
+        x: (t0.clientX + t1.clientX) / 2 - rect.left,
+        d: Math.max(1, Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY)),
+      };
+    }
+    // (re)starts the gesture from the current view
+    function begin(e) {
+      zoom(); // apply movement still pending for the previous fingers
+      rect = over.getBoundingClientRect();
+      fr = to = getPos(e);
+      oxRange = u.scales.x.max - u.scales.x.min;
+      xVal = u.posToVal(fr.x, "x");
+    }
     function zoom() {
+      if (!rafPending) return;
       rafPending = false;
-      const xFactor = fr.d / to.d,
-        yFactor = fr.d / to.d;
-      const leftPct = to.x / rect.width,
-        btmPct = 1 - to.y / rect.height;
-      const nxRange = oxRange * xFactor,
-        nxMin = xVal - leftPct * nxRange,
+      const reqRange = (oxRange * fr.d) / to.d,
+        nxRange = Math.max(MIN_X_RANGE, reqRange),
+        nxMin = xVal - (to.x / rect.width) * nxRange,
         nxMax = nxMin + nxRange;
-      const nyRange = oyRange * yFactor,
-        nyMin = yVal - btmPct * nyRange,
-        nyMax = nyMin + nyRange;
-      u.batch(() => {
-        u.setScale("x", { min: nxMin, max: nxMax });
-        u.setScale("y", { min: nyMin, max: nyMax });
-      });
+      setX(u, nxMin, nxMax);
+      // view hit a limit: continue from where it stopped instead of building up overshoot
+      if (reqRange < MIN_X_RANGE || u.scales.x.min != nxMin || u.scales.x.max != nxMax) {
+        fr = to;
+        oxRange = u.scales.x.max - u.scales.x.min;
+        xVal = u.posToVal(fr.x, "x");
+      }
     }
     function touchmove(e) {
       e.preventDefault();
-      storePos(to, e);
+      const pos = getPos(e);
+      // a finger was added outside the plot, where no touchstart reaches over
+      if (pos.key != fr.key) return begin(e);
+      to = pos;
       if (!rafPending) {
         rafPending = true;
         requestAnimationFrame(zoom);
       }
     }
-    over.addEventListener("touchstart", (e) => {
-      rect = over.getBoundingClientRect();
-      storePos(fr, e);
-      oxRange = u.scales.x.max - u.scales.x.min;
-      oyRange = u.scales.y.max - u.scales.y.min;
-      xVal = u.posToVal(fr.x, "x");
-      yVal = u.posToVal(fr.y, "y");
-      document.addEventListener("touchmove", touchmove, { passive: false });
-    });
-    over.addEventListener("touchend", () => {
+    // on document, so fingers that started outside the plot also end the gesture; remaining fingers carry it on
+    function touchend(e) {
+      if (e.touches.length) return begin(e);
       document.removeEventListener("touchmove", touchmove, { passive: false });
+      document.removeEventListener("touchend", touchend);
+      document.removeEventListener("touchcancel", touchend);
+    }
+    over.addEventListener("touchstart", (e) => {
+      begin(e);
+      document.addEventListener("touchmove", touchmove, { passive: false });
+      document.addEventListener("touchend", touchend);
+      document.addEventListener("touchcancel", touchend);
     });
   }
   return { hooks: { init } };
@@ -237,28 +214,26 @@ export function peakAnnotationsPlugin(resultRef) {
     }
   }
 
-  let lastVP = null;
-  function checkVP(u) {
-    const vp = { xMin: u.scales.x.min, xMax: u.scales.x.max };
-    if (!lastVP || lastVP.xMin !== vp.xMin || lastVP.xMax !== vp.xMax) {
-      lastVP = vp;
+  // positions depend on every scale, the plot size, series visibility and the peak values themselves
+  let pending = false;
+  function schedule(u) {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {
+      pending = false;
       place(u);
-    }
+    });
   }
 
   return {
     hooks: {
       ready: [place],
+      setData: [schedule],
+      setSize: [schedule],
+      setSeries: [schedule],
       setScale: [
         (u, key) => {
-          if (["x", "kW", "HV", "A"].includes(key)) {
-            if (u._annPending) return;
-            u._annPending = true;
-            requestAnimationFrame(() => {
-              u._annPending = false;
-              checkVP(u);
-            });
-          }
+          if (["x", "kW", "HV", "A"].includes(key)) schedule(u);
         },
       ],
     },
