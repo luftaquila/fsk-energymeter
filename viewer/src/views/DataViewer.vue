@@ -19,6 +19,7 @@ import {
   touchZoomPlugin,
   peakAnnotationsPlugin,
   violationVisibilityPlugin,
+  hairlinePaths,
   downloadImage,
 } from "../lib/uplotPlugins";
 import { minMaxLinear, visibleMinMax, visibleNonNull } from "../lib/uplotMinMax";
@@ -94,7 +95,7 @@ function initChart() {
     return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}.${String(d.getMilliseconds()).padStart(3, "0")}`;
   };
   // y scales range themselves through visibleMinMax, so uPlot's own scan of every visible record is turned off
-  const line = { paths: minMaxLinear(), auto: false };
+  const line = { paths: hairlinePaths(minMaxLinear()), auto: false };
 
   uplot = new uPlot(
     {
