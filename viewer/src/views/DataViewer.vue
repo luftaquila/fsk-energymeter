@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, shallowRef, onMounted, onUnmounted } from "vue";
 import uPlot from "../lib/uplot/dist/uPlot.esm.js";
 import { useNotification } from "../composables/useNotification";
 import {
@@ -25,7 +25,9 @@ import {
 const notyf = useNotification();
 const chartContainer = ref(null);
 const selectedFile = ref(null);
-const result = ref(null);
+// shallow: uPlot reads the processed arrays on every redraw, which is many times slower through reactive proxies.
+// only result itself is reactive, so the template must not read fields that calculateMetadata updates in place
+const result = shallowRef(null);
 const powerLimit = ref(parseInt(localStorage.getItem("power-limit")) || 80);
 
 let uplot = null;
