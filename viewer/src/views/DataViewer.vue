@@ -26,6 +26,7 @@ import { minMaxLinear, visibleMinMax, visibleNonNull } from "../lib/uplotMinMax"
 
 const notyf = useNotification();
 const chartContainer = ref(null);
+const exportArea = ref(null);
 const selectedFile = ref(null);
 // shallow: uPlot reads the processed arrays on every redraw, which is many times slower through reactive proxies.
 // only result itself is reactive, so the template must not read fields that calculateMetadata updates in place
@@ -345,7 +346,7 @@ function exportCsv() {
 async function exportGraph() {
   if (!result.value || !uplot) return;
   const filename = selectedFile.value ? selectedFile.value.replace(/\.[^/.]+$/, "") : "graph";
-  await downloadImage(uplot, filename);
+  await downloadImage(exportArea.value, uplot, filename);
   notyf.success("Graph image exported");
 }
 function download(content, name, type) {
@@ -421,88 +422,91 @@ onUnmounted(() => {
         <div v-if="alerts.errors.length" class="alert alert-danger">
           <div v-for="(e, i) in alerts.errors" :key="i">{{ e }}</div>
         </div>
-        <div class="stats-grid">
-          <div class="stats-card">
-            <table class="stats-table"><tbody>
-              <tr>
-                <td>Boot</td>
-                <td>{{ metadata.boot }}</td>
-              </tr>
-              <tr>
-                <td>Logs</td>
-                <td>{{ metadata.logs }}</td>
-              </tr>
-              <tr>
-                <td>Duration</td>
-                <td>{{ metadata.duration }}</td>
-              </tr>
-              <tr>
-                <td>Device ID</td>
-                <td>{{ metadata.uid }}</td>
-              </tr>
-            </tbody></table>
-          </div>
-          <div class="stats-card">
-            <table class="stats-table"><tbody>
-              <tr>
-                <td class="info-tip-cell">
-                  Total Energy
-                  <span v-if="result" class="info-tip" tabindex="0">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="info-tip-content">
-                      <span>Discharge</span><span>{{ metadata.breakdown.discharge }}</span>
-                      <span>Regen</span><span>{{ metadata.breakdown.regen }}</span>
-                      <span>Total</span><span>{{ metadata.breakdown.total }}</span>
+        <!-- what Export Graph captures -->
+        <div ref="exportArea">
+          <div class="stats-grid">
+            <div class="stats-card">
+              <table class="stats-table"><tbody>
+                <tr>
+                  <td>Boot</td>
+                  <td>{{ metadata.boot }}</td>
+                </tr>
+                <tr>
+                  <td>Logs</td>
+                  <td>{{ metadata.logs }}</td>
+                </tr>
+                <tr>
+                  <td>Duration</td>
+                  <td>{{ metadata.duration }}</td>
+                </tr>
+                <tr>
+                  <td>Device ID</td>
+                  <td>{{ metadata.uid }}</td>
+                </tr>
+              </tbody></table>
+            </div>
+            <div class="stats-card">
+              <table class="stats-table"><tbody>
+                <tr>
+                  <td class="info-tip-cell">
+                    Total Energy
+                    <span v-if="result" class="info-tip" tabindex="0">
+                      <i class="fas fa-info-circle"></i>
+                      <span class="info-tip-content">
+                        <span>Discharge</span><span>{{ metadata.breakdown.discharge }}</span>
+                        <span>Regen</span><span>{{ metadata.breakdown.regen }}</span>
+                        <span>Total</span><span>{{ metadata.breakdown.total }}</span>
+                      </span>
                     </span>
-                  </span>
-                </td>
-                <td>{{ metadata.energy }}</td>
-              </tr>
-              <tr>
-                <td>Peak Power</td>
-                <td>{{ metadata.power }}</td>
-              </tr>
-              <tr>
-                <td>Peak Voltage</td>
-                <td>{{ metadata.voltage }}</td>
-              </tr>
-              <tr>
-                <td>Peak Current</td>
-                <td>{{ metadata.current }}</td>
-              </tr>
-            </tbody></table>
-          </div>
-          <div class="stats-card">
-            <table class="stats-table"><tbody>
-              <tr>
-                <td class="info-tip-cell">
-                  Violations
-                  <span v-if="result" class="info-tip" tabindex="0">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="info-tip-content">
-                      <span>100ms continuous</span><span>{{ metadata.violation100 }}</span>
-                      <span>500ms average</span><span>{{ metadata.violation500 }}</span>
+                  </td>
+                  <td>{{ metadata.energy }}</td>
+                </tr>
+                <tr>
+                  <td>Peak Power</td>
+                  <td>{{ metadata.power }}</td>
+                </tr>
+                <tr>
+                  <td>Peak Voltage</td>
+                  <td>{{ metadata.voltage }}</td>
+                </tr>
+                <tr>
+                  <td>Peak Current</td>
+                  <td>{{ metadata.current }}</td>
+                </tr>
+              </tbody></table>
+            </div>
+            <div class="stats-card">
+              <table class="stats-table"><tbody>
+                <tr>
+                  <td class="info-tip-cell">
+                    Violations
+                    <span v-if="result" class="info-tip" tabindex="0">
+                      <i class="fas fa-info-circle"></i>
+                      <span class="info-tip-content">
+                        <span>100ms continuous</span><span>{{ metadata.violation100 }}</span>
+                        <span>500ms average</span><span>{{ metadata.violation500 }}</span>
+                      </span>
                     </span>
-                  </span>
-                </td>
-                <td>{{ metadata.violation }}</td>
-              </tr>
-              <tr>
-                <td>Startup Delay</td>
-                <td>{{ metadata.startup }}</td>
-              </tr>
-              <tr>
-                <td>Voltage Offset</td>
-                <td>{{ metadata.v_cal }}</td>
-              </tr>
-              <tr>
-                <td>Current Offset</td>
-                <td>{{ metadata.c_cal }}</td>
-              </tr>
-            </tbody></table>
+                  </td>
+                  <td>{{ metadata.violation }}</td>
+                </tr>
+                <tr>
+                  <td>Startup Delay</td>
+                  <td>{{ metadata.startup }}</td>
+                </tr>
+                <tr>
+                  <td>Voltage Offset</td>
+                  <td>{{ metadata.v_cal }}</td>
+                </tr>
+                <tr>
+                  <td>Current Offset</td>
+                  <td>{{ metadata.c_cal }}</td>
+                </tr>
+              </tbody></table>
+            </div>
           </div>
+          <div ref="chartContainer" class="chart-container"></div>
         </div>
-        <div ref="chartContainer" class="chart-container"></div>
         <div class="chart-hint"><i class="fas fa-info-circle"></i> Drag or scroll to zoom, double click to reset.</div>
         <div class="button-group center">
           <button class="btn btn-warning" :disabled="!result" @click="togglePowerLimit">
