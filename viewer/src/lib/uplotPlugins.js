@@ -292,8 +292,11 @@ export function violationVisibilityPlugin() {
   };
 }
 
-export async function downloadImage(uplot, filename) {
+// captures `target` (the stats cards and the chart) as a PNG, always in the light theme on white
+export async function downloadImage(target, uplot, filename) {
   const html2canvas = (await import("html2canvas")).default;
+  const scale = 3; // Higher resolution (3x)
+  const margin = 24; // white border around the capture, CSS px
 
   // Hide legend temporarily
   const legendEl = uplot.root.querySelector(".u-legend");
@@ -303,14 +306,22 @@ export async function downloadImage(uplot, filename) {
   }
 
   try {
-    // Capture the entire uplot root element with higher resolution
-    const canvas = await html2canvas(uplot.root, {
+    // Capture the target element with higher resolution
+    const canvas = await html2canvas(target, {
       backgroundColor: "#ffffff",
-      scale: 3, // Higher resolution (3x)
+      scale,
       useCORS: true,
       logging: false,
-      width: uplot.root.offsetWidth,
-      height: uplot.root.offsetHeight,
+      width: target.offsetWidth,
+      height: target.offsetHeight,
+      // only the copy being rendered changes, so the page itself doesn't flash
+      onclone: (doc) => {
+        const style = doc.createElement("style");
+        // transitions would capture the theme colors mid-change; info tip icons have no use in an image
+        style.textContent = "* { transition: none !important; } .info-tip { visibility: hidden; }";
+        doc.head.appendChild(style);
+        doc.documentElement.setAttribute("data-theme", "light");
+      },
     });
 
     // Restore legend visibility
@@ -318,9 +329,17 @@ export async function downloadImage(uplot, filename) {
       legendEl.style.display = originalLegendDisplay;
     }
 
+    const framed = document.createElement("canvas");
+    framed.width = canvas.width + margin * scale * 2;
+    framed.height = canvas.height + margin * scale * 2;
+    const ctx = framed.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, framed.width, framed.height);
+    ctx.drawImage(canvas, margin * scale, margin * scale);
+
     // Download the image
     const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
+    a.href = framed.toDataURL("image/png");
     a.download = filename + ".png";
     a.click();
   } catch (error) {
